@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A router component for Svelte and your Single Page Applications.",
   "main": "src/index.js",
-  "svelte": "src/index.html",
+  "svelte": "src/index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -13,9 +13,6 @@
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "mocha": "^6.1.4"
-  },
-  "peerDependencies": {
-    "svelte": "^3.5.1"
   },
   "dependencies": {
     "svelte": "^3.5.1"

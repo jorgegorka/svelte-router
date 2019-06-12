@@ -1,6 +1,5 @@
 <script>
   export let currentRoute = {}
-  console.log(currentRoute)
 </script>
 
 {#if currentRoute.layout}

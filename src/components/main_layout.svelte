@@ -1,16 +1,16 @@
 <script>
-  import { onDestroy } from "svelte";
-  import Route from "./route.svelte";
-  import { activeRoute } from "../store";
+  import { onDestroy } from 'svelte'
+  import Route from './route.svelte'
+  import { activeRoute } from '../store'
 
-  let currentRoute = {};
+  let currentRoute = {}
   const unsubscribe = activeRoute.subscribe(route => {
-    currentRoute = route;
-  });
+    currentRoute = route
+  })
 
   onDestroy(() => {
-    unsubscribe();
-  });
+    unsubscribe()
+  })
 </script>
 
 <Route {currentRoute} />
