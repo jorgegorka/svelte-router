@@ -1,6 +1,6 @@
-const svelte = require("svelte/store");
+const writable = require("svelte/store").writable;
 
-const router = svelte.writable({});
+const router = writable({});
 
 const set = route => {
   router.set(route);

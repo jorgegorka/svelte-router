@@ -2,7 +2,8 @@
   "name": "svelte-router-spa",
   "version": "1.0.0",
   "description": "A router component for Svelte and your Single Page Applications.",
-  "main": "index.js",
+  "main": "src/index.js",
+  "svelte": "src/index.html",
   "scripts": {
     "test": "mocha"
   },
@@ -14,6 +15,9 @@
     "mocha": "^6.1.4"
   },
   "peerDependencies": {
-    "svelte": "^3.x"
+    "svelte": "^3.5.1"
+  },
+  "dependencies": {
+    "svelte": "^3.5.1"
   }
 }

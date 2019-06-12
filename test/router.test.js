@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-const Router = require("../src/router").Router;
+const SpaRouter = require("../src/router").SpaRouter;
 
 let testRouter = null;
 let pathName = "/";
@@ -8,7 +8,7 @@ let routes = [];
 describe("Router", () => {
   describe("When route does not exist", () => {
     beforeEach(() => {
-      testRouter = Router({ routes, pathName });
+      testRouter = SpaRouter({ routes, pathName });
     });
 
     it("component", () => {
@@ -26,7 +26,7 @@ describe("Router", () => {
 
   describe("When route does not exist and there is a pathname", () => {
     beforeEach(() => {
-      testRouter = Router({
+      testRouter = SpaRouter({
         routes,
         pathName: "/this/route/does/not/exist"
       });
@@ -61,7 +61,7 @@ describe("Router", () => {
     describe("When root path", () => {
       beforeEach(() => {
         pathName = "/";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path to root path", () => {
@@ -80,7 +80,7 @@ describe("Router", () => {
     describe("When path is first level", () => {
       beforeEach(() => {
         pathName = "/signup";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path to root path", () => {
@@ -113,7 +113,7 @@ describe("Router", () => {
     describe("When path is first level", () => {
       beforeEach(() => {
         pathName = "/project/easy-routing";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path to root path", () => {
@@ -150,7 +150,7 @@ describe("Router", () => {
     describe("When path is first level", () => {
       beforeEach(() => {
         pathName = "/project/easy-routing/2019-03-26";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path to root path", () => {
@@ -213,7 +213,7 @@ describe("Router", () => {
       let activeRoute;
       beforeEach(() => {
         pathName = "/admin/employees/show/12/Danny-filth";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
         activeRoute = testRouter.activeRoute;
         const employeeRoute = activeRoute.nestedRoutes[0];
         showEmployeeRoute = employeeRoute.nestedRoutes[0];
@@ -277,7 +277,7 @@ describe("Router", () => {
     describe("Admin route", () => {
       beforeEach(() => {
         pathName = "/admin";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path to root path", () => {
@@ -296,7 +296,7 @@ describe("Router", () => {
     describe("Employees route", () => {
       beforeEach(() => {
         pathName = "/admin/employees";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path", () => {
@@ -329,7 +329,7 @@ describe("Router", () => {
     describe("Employee show route", () => {
       beforeEach(() => {
         pathName = "/admin/employees/show";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path", () => {
@@ -412,7 +412,7 @@ describe("Router", () => {
     describe("Employee show route", () => {
       beforeEach(() => {
         pathName = "/admin/employees/show";
-        testRouter = Router({ routes, pathName });
+        testRouter = SpaRouter({ routes, pathName });
       });
 
       it("set path", () => {

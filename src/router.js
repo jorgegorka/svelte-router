@@ -75,7 +75,7 @@ const findActiveRoutes = (routes, basePath, pathNames) => {
  * @param pathName
  * @param notFound
  **/
-const Router = ({ routes, pathName, notFound }) => {
+const SpaRouter = ({ routes, pathName, notFound }) => {
   if (typeof pathName === "undefined" || pathName.trim().length === 0) {
     pathName = document.location.pathname;
   }
@@ -111,7 +111,7 @@ const Router = ({ routes, pathName, notFound }) => {
  * @param pathName
  **/
 const navigateTo = pathName => {
-  Router({ routes, pathName }).activeRoute;
+  SpaRouter({ routes, pathName }).activeRoute;
 };
 
 if (typeof window !== "undefined") {
@@ -124,4 +124,4 @@ if (typeof window !== "undefined") {
   });
 }
 
-module.exports = { Router, navigateTo };
+module.exports = { SpaRouter, navigateTo };
