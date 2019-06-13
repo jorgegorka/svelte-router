@@ -114,7 +114,7 @@ const navigateTo = pathName => {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('click', event => {
-    if (event.target.pathname && event.target.localName === 'a') {
+    if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
       event.preventDefault()
       event.stopPropagation()
       navigateTo(event.target.pathname)
