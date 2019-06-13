@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 1.0.4
+
+* Update docs
+
 ## 1.0.3
 
 * Add Navigate component

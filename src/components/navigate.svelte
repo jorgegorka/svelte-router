@@ -1,5 +1,5 @@
 <script>
-  import { navigateTo } from './router'
+  import { navigateTo } from '../router'
   export let to = '/'
   export let title = ''
   export let styles = ''
