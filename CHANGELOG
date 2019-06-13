@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 1.0.3
+
+* Add Navigate component
+
 ## 1.0.2
 
 * Fix an error in navigateTo method
