@@ -2,7 +2,7 @@
 
 ## What is Svelte Router?
 
-Svelte Router adds routing to your Svelte apps. It's specially designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using Sapper.
+Svelte Router adds routing to your Svelte apps. It's specially designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
 
 - Define your routes in a single interface
 - Layouts global, per page or nested.
@@ -74,7 +74,6 @@ import App from './App.svelte'
 import { SpaRouter } from 'svelte-router-spa'
 import { routes } from './routes'
 import NotFound from './views/not_found.svelte'
-import './middleware/users/auth'
 
 SpaRouter({
   routes,
@@ -247,7 +246,7 @@ The layout and/or the component that matches the active route will be rendered i
 
 ## Route
 
-import { Route } from 'svelte-router-spa'
+`import { Route } from 'svelte-router-spa'`
 
 This component is only needed if you create a layout. It will take care of rendering the content for the child components or child layouts recursively. You can have as many nested layouts as you need.
 
@@ -271,3 +270,26 @@ Example:
   <FooterContent />
 </div>
 ```
+
+## Navigate
+
+`import { Navigate } from 'svelte-router-spa'`
+
+Navigate is a wrapper around the <a href=""></a> element to help you generate links quickly and easily.
+
+Example:
+
+```
+<script>
+  import { Navigate } from 'svelte-router-spa'
+</script>
+
+<div class="app">
+  <h1>My content</h1>
+  <p>Now I want to generate a <Navigate to="admin/employees">Link</Navigate>
+</div>
+```
+
+## Credits
+
+Svelte Router SPA has been developed by [Jorge Alvarez](https://alvareznavarro.es).

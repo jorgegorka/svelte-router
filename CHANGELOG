@@ -1,5 +1,13 @@
 # Svelte Router changelog
 
+## 1.0.2
+
+* Fix an error in navigateTo method
+
+## 1.0.1
+
+* Docs updated
+
 ## 1.0.0
 
 * Initial version published

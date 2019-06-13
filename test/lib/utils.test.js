@@ -1,222 +1,232 @@
-const expect = require("chai").expect;
-const getPathNames = require("../../src/lib/utils").getPathNames;
-const parseQueryString = require("../../src/lib/utils").parseQueryString;
-const getNamedParams = require("../../src/lib/utils").getNamedParams;
-const nameToPath = require("../../src/lib/utils").nameToPath;
+const expect = require('chai').expect
+const getPathNames = require('../../src/lib/utils').getPathNames
+const parseQueryString = require('../../src/lib/utils').parseQueryString
+const getNamedParams = require('../../src/lib/utils').getNamedParams
+const nameToPath = require('../../src/lib/utils').nameToPath
 
-let pathNames = [];
-let queryParams = {};
-let namedParams = [];
-let routeName = "";
+let pathNames = []
+let queryParams = {}
+let namedParams = []
+let routeName = ''
 
-describe("getPathNames", () => {
-  describe("Home route", () => {
+describe('getPathNames', () => {
+  describe('Home route', () => {
     beforeEach(() => {
-      pathNames = getPathNames("/");
-    });
+      pathNames = getPathNames('/')
+    })
 
-    it("component", () => {
-      expect(pathNames.length).to.equal(1);
-    });
+    it('component', () => {
+      expect(pathNames.length).to.equal(1)
+    })
 
-    it("component", () => {
-      expect(pathNames).to.include("/");
-    });
-  });
+    it('component', () => {
+      expect(pathNames).to.include('/')
+    })
+  })
 
-  describe("First level route", () => {
+  describe('First level route', () => {
     beforeEach(() => {
-      pathNames = getPathNames("contact-us");
-    });
+      pathNames = getPathNames('contact-us')
+    })
 
-    it("component", () => {
-      expect(pathNames.length).to.equal(1);
-    });
+    it('component', () => {
+      expect(pathNames.length).to.equal(1)
+    })
 
-    it("component", () => {
-      expect(pathNames).to.include("contact-us");
-    });
-  });
+    it('component', () => {
+      expect(pathNames).to.include('contact-us')
+    })
+  })
 
-  describe("Two levels route", () => {
+  describe('Two levels route', () => {
     beforeEach(() => {
-      pathNames = getPathNames("contact-us/now");
-    });
+      pathNames = getPathNames('contact-us/now')
+    })
 
-    it("should have 2 items", () => {
-      expect(pathNames.length).to.equal(2);
-    });
+    it('should have 2 items', () => {
+      expect(pathNames.length).to.equal(2)
+    })
 
-    it("should include route name", () => {
-      expect(pathNames).to.include("contact-us");
-    });
+    it('should include route name', () => {
+      expect(pathNames).to.include('contact-us')
+    })
 
-    it("should include named param", () => {
-      expect(pathNames).to.include("now");
-    });
-  });
+    it('should include named param', () => {
+      expect(pathNames).to.include('now')
+    })
+  })
 
-  describe("Three levels route", () => {
+  describe('Three levels route', () => {
     beforeEach(() => {
-      pathNames = getPathNames("contact-us/now/PLEASE");
-    });
+      pathNames = getPathNames('contact-us/now/PLEASE')
+    })
 
-    it("should have 2 items", () => {
-      expect(pathNames.length).to.equal(3);
-    });
+    it('should have 2 items', () => {
+      expect(pathNames.length).to.equal(3)
+    })
 
-    it("should include route name", () => {
-      expect(pathNames).to.include("contact-us");
-    });
+    it('should include route name', () => {
+      expect(pathNames).to.include('contact-us')
+    })
 
-    it("should include named param", () => {
-      expect(pathNames).to.include("now");
-    });
+    it('should include named param', () => {
+      expect(pathNames).to.include('now')
+    })
 
-    it("should include named param", () => {
-      expect(pathNames).to.include("PLEASE");
-    });
-  });
+    it('should include named param', () => {
+      expect(pathNames).to.include('PLEASE')
+    })
+  })
 
-  describe("Route with forward slash", () => {
+  describe('Route with forward slash', () => {
     beforeEach(() => {
-      pathNames = getPathNames("/contact-us/please");
-    });
+      pathNames = getPathNames('/contact-us/please')
+    })
 
-    it("should return one element", () => {
-      expect(pathNames.length).to.equal(2);
-    });
+    it('should return one element', () => {
+      expect(pathNames.length).to.equal(2)
+    })
 
-    it("should include the name", () => {
-      expect(pathNames).to.include("contact-us");
-    });
+    it('should include the name', () => {
+      expect(pathNames).to.include('contact-us')
+    })
 
-    it("should include the name", () => {
-      expect(pathNames).to.include("please");
-    });
-  });
-});
+    it('should include the name', () => {
+      expect(pathNames).to.include('please')
+    })
+  })
+})
 
-describe("parseQueryString", () => {
-  describe("When is empty", () => {
+describe('parseQueryString', () => {
+  describe('When is empty', () => {
     beforeEach(() => {
-      queryParams = parseQueryString();
-    });
+      queryParams = parseQueryString()
+    })
 
-    it("should return an empty object", () => {
-      expect(queryParams).to.deep.equal({});
-    });
-  });
+    it('should return an empty object', () => {
+      expect(queryParams).to.deep.equal({})
+    })
+  })
 
-  describe("When there is one param", () => {
+  describe('When there is one param', () => {
     beforeEach(() => {
-      queryParams = parseQueryString("?name=value");
-    });
+      queryParams = parseQueryString('?name=value')
+    })
 
-    it("should return an object", () => {
-      expect(queryParams).to.deep.equal({ name: "value" });
-    });
-  });
+    it('should return an object', () => {
+      expect(queryParams).to.deep.equal({ name: 'value' })
+    })
+  })
 
-  describe("When there are more than one param", () => {
+  describe('When there are more than one param', () => {
     beforeEach(() => {
-      queryParams = parseQueryString("name=value&name2=2019-10-10");
-    });
+      queryParams = parseQueryString('name=value&name2=2019-10-10')
+    })
 
-    it("should return an object", () => {
-      expect(queryParams).to.deep.equal({ name: "value", name2: "2019-10-10" });
-    });
-  });
-});
+    it('should return an object', () => {
+      expect(queryParams).to.deep.equal({ name: 'value', name2: '2019-10-10' })
+    })
+  })
+})
 
-describe("getNamedParams", () => {
-  describe("When there are no named params", () => {
+describe('getNamedParams', () => {
+  describe('When there are no named params', () => {
     beforeEach(() => {
-      namedParams = getNamedParams();
-    });
+      namedParams = getNamedParams()
+    })
 
-    it("should return an empty object", () => {
-      expect(namedParams).to.deep.equal([]);
-    });
-  });
+    it('should return an empty object', () => {
+      expect(namedParams).to.deep.equal([])
+    })
+  })
 
-  describe("When there is one named param", () => {
+  describe('When there is one named param', () => {
     beforeEach(() => {
-      namedParams = getNamedParams("/employee/:id");
-    });
+      namedParams = getNamedParams('/employee/:id')
+    })
 
-    it("should return one param", () => {
-      expect(namedParams.length).to.equal(1);
-    });
+    it('should return one param', () => {
+      expect(namedParams.length).to.equal(1)
+    })
 
-    it("should return the param name", () => {
-      expect(namedParams).to.deep.equal(["id"]);
-    });
-  });
+    it('should return the param name', () => {
+      expect(namedParams).to.deep.equal(['id'])
+    })
+  })
 
-  describe("When there are many params", () => {
+  describe('When there are many params', () => {
     beforeEach(() => {
-      namedParams = getNamedParams("/project/show/:name/:date/:id");
-    });
+      namedParams = getNamedParams('/project/show/:name/:date/:id')
+    })
 
-    it("should return one param", () => {
-      expect(namedParams.length).to.equal(3);
-    });
+    it('should return one param', () => {
+      expect(namedParams.length).to.equal(3)
+    })
 
-    it("should return the param name", () => {
-      expect(namedParams).to.deep.equal(["name", "date", "id"]);
-    });
-  });
-});
+    it('should return the param name', () => {
+      expect(namedParams).to.deep.equal(['name', 'date', 'id'])
+    })
+  })
+})
 
-describe("nameToPath", () => {
-  describe("When is empty", () => {
+describe('nameToPath', () => {
+  describe('When is empty', () => {
     beforeEach(() => {
-      routeName = nameToPath();
-    });
+      routeName = nameToPath()
+    })
 
-    it("component", () => {
-      expect(routeName).to.equal("");
-    });
-  });
+    it('component', () => {
+      expect(routeName).to.equal('')
+    })
+  })
 
-  describe("When param has named params with it", () => {
+  describe('When is the root path', () => {
     beforeEach(() => {
-      routeName = nameToPath("employee/:id");
-    });
+      routeName = nameToPath('/')
+    })
 
-    it("should return the name", () => {
-      expect(routeName).to.equal("employee");
-    });
-  });
+    it('component', () => {
+      expect(routeName).to.equal('/')
+    })
+  })
 
-  describe("When param has one value", () => {
+  describe('When param has named params with it', () => {
     beforeEach(() => {
-      routeName = nameToPath("projects");
-    });
+      routeName = nameToPath('employee/:id')
+    })
 
-    it("should return the name", () => {
-      expect(routeName).to.equal("projects");
-    });
-  });
+    it('should return the name', () => {
+      expect(routeName).to.equal('employee')
+    })
+  })
 
-  describe("When param has uppercase letters", () => {
+  describe('When param has one value', () => {
     beforeEach(() => {
-      routeName = nameToPath("proJECTS");
-    });
+      routeName = nameToPath('projects')
+    })
 
-    it("should return the name", () => {
-      expect(routeName).to.equal("projects");
-    });
-  });
+    it('should return the name', () => {
+      expect(routeName).to.equal('projects')
+    })
+  })
 
-  describe("When param has named params with it", () => {
+  describe('When param has uppercase letters', () => {
     beforeEach(() => {
-      routeName = nameToPath("employee/:id");
-    });
+      routeName = nameToPath('proJECTS')
+    })
 
-    it("should return the name", () => {
-      expect(routeName).to.equal("employee");
-    });
-  });
-});
+    it('should return the name', () => {
+      expect(routeName).to.equal('projects')
+    })
+  })
+
+  describe('When param has named params with it', () => {
+    beforeEach(() => {
+      routeName = nameToPath('employee/:id')
+    })
+
+    it('should return the name', () => {
+      expect(routeName).to.equal('employee')
+    })
+  })
+})
