@@ -5,6 +5,9 @@
   "main": "src/index.js",
   "svelte": "src/index.js",
   "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -cw",
+    "prepublishOnly": "npm test",
     "test": "mocha"
   },
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
@@ -12,9 +15,29 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "rollup": "^1.10.1",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-plugin-svelte": "^5.0.3",
+    "rollup-plugin-terser": "^4.0.4",
+    "sirv-cli": "^0.4.0"
   },
   "dependencies": {
     "svelte": "^3.5.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/jorgealvarez/svelte-router"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/jorgealvarez/svelte-router/issues"
+  },
+  "homepage": "https://gitlab.com/jorgealvarez/svelte-router/blob/master/README.md",
+  "keywords": [
+    "svelte",
+    "router",
+    "spa"
+  ]
 }
