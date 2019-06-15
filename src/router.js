@@ -19,12 +19,30 @@ const pushActiveRoute = () => {
 }
 
 /**
+ * Add named params to currentRoute as an object with the param name and the value.
+ * @param pathNames
+ * @param currentRoute
+ * @param routeName
+ **/
+const addNamedParams = (pathNames, currentRoute, routeName) => {
+  const paramNames = getNamedParams(routeName)
+  if (paramNames.length > 0) {
+    pathNames.forEach((pathName, index) => {
+      const paramName = paramNames[index]
+      if (paramName) {
+        currentRoute.params[paramName] = pathName
+      }
+    })
+  }
+}
+
+/**
  * Gets an array of routes and the browser pathname and return the active route
  * @param routes
  * @param basePath
  * @param pathNames
  **/
-const findActiveRoutes = (routes, basePath, pathNames) => {
+const searchActiveRoutes = (routes, basePath, pathNames) => {
   const currentRoutes = []
   const currentPathName = pathNames.shift().toLowerCase()
 
@@ -42,18 +60,10 @@ const findActiveRoutes = (routes, basePath, pathNames) => {
       }
 
       if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
-        currentRoute.nestedRoutes = findActiveRoutes(route.nestedRoutes, routePath, pathNames)
+        currentRoute.nestedRoutes = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
       } else {
         if (pathNames.length > 0) {
-          const paramNames = getNamedParams(route.name)
-          if (paramNames.length > 0) {
-            pathNames.forEach((pathName, index) => {
-              const paramName = paramNames[index]
-              if (paramName) {
-                currentRoute.params[paramName] = pathName
-              }
-            })
-          }
+          addNamedParams(pathNames, currentRoute, route.name)
         }
         currentRoute.queryParams = parseQueryString()
       }
@@ -86,9 +96,9 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
   userDefinedRoutes = routes
   notFoundPage = notFound
 
-  const getActiveRoute = () => {
+  const findActiveRoute = () => {
     let currentRoute
-    const currentRoutes = findActiveRoutes(routes, '', getPathNames(pathName))
+    const currentRoutes = searchActiveRoutes(routes, '', getPathNames(pathName))
 
     if (currentRoutes.length === 0) {
       currentRoute = { name: '404', component: notFound, path: '404' }
@@ -96,6 +106,12 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
       currentRoute = currentRoutes[0]
       currentRoute.path = pathName
     }
+
+    return currentRoute
+  }
+
+  const generate = () => {
+    const currentRoute = findActiveRoute()
 
     currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
@@ -105,7 +121,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
   }
 
   return Object.freeze({
-    activeRoute: getActiveRoute()
+    activeRoute: generate()
   })
 }
 
