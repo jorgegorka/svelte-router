@@ -22,12 +22,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/jorgealvarez/svelte-router"
+    "url": "https://github.com/jorgegorka/svelte-router"
   },
   "bugs": {
-    "url": "https://gitlab.com/jorgealvarez/svelte-router/issues"
+    "url": "https://github.com/jorgegorka/svelte-router/issues"
   },
-  "homepage": "https://gitlab.com/jorgealvarez/svelte-router/blob/master/README.md",
+  "homepage": "https://github.com/jorgegorka/svelte-router/blob/master/README.md",
   "keywords": [
     "svelte",
     "router",
