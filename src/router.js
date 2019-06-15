@@ -4,6 +4,10 @@ const parseQueryString = require('./lib/utils').parseQueryString
 const getNamedParams = require('./lib/utils').getNamedParams
 const nameToPath = require('./lib/utils').nameToPath
 
+let userDefinedRoutes = []
+let notFoundPage = ''
+let currentActiveRoute = ''
+
 /**
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
@@ -13,10 +17,6 @@ const pushActiveRoute = () => {
     window.history.pushState({ page: currentActiveRoute }, '', currentActiveRoute)
   }
 }
-
-let userDefinedRoutes = []
-let notFoundPage = ''
-let currentActiveRoute = ''
 
 /**
  * Gets an array of routes and the browser pathname and return the active route
