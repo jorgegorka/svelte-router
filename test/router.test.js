@@ -534,6 +534,17 @@ describe('currentRoute', () => {
     })
   })
 
+  describe('a route without first forward slash', () => {
+    beforeEach(() => {
+      pathName = 'current/active/route/4343?test=true&routing=awesome'
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return true', () => {
+      expect(currentRoute(pathName)).to.be.true
+    })
+  })
+
   describe('a non active route', () => {
     beforeEach(() => {
       SpaRouter({ routes, pathName }).activeRoute

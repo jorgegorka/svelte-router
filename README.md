@@ -27,13 +27,13 @@ yarn add svelte-router-spa
 
 Start your development server in SPA mode. Edit your package.json and change:
 
-```
+```javascript
 "start:dev": "sirv public -s --dev"
 ```
 
 Add a routes.js file with your routes info. Example:
 
-```
+```javascript
 import Login from './views/public/login.svelte'
 import PublicIndex from './views/public/index.svelte'
 import PublicLayout from './views/public/layout.svelte'
@@ -56,9 +56,7 @@ const routes = [
       {
         name: 'employees',
         component: EmployeesIndex,
-        nestedRoutes: [
-          { name: 'show/:id', component: EmployeesShow }
-        ]
+        nestedRoutes: [{ name: 'show/:id', component: EmployeesShow }]
       }
     ]
   }
@@ -69,7 +67,7 @@ export { routes }
 
 Import the routes into main.js
 
-```
+```javascript
 import App from './App.svelte'
 import { SpaRouter } from 'svelte-router-spa'
 import { routes } from './routes'
@@ -90,7 +88,7 @@ export default app
 
 Edit App.svelte and add the main layout.
 
-```
+```javascript
 <script>
   import { MainLayout } from 'svelte-router-spa'
 </script>
@@ -104,7 +102,7 @@ Every Route file will receive a currentRoute prop with information about the cur
 
 public_layout.svelte
 
-```
+```javascript
 <script>
   import { Route } from '../../lib/router.svelte'
   import TopHeader from './top_header.svelte'
@@ -121,7 +119,7 @@ public_layout.svelte
 
 admin_layout.svelte
 
-```
+```javascript
 <script>
   import { onMount, onDestroy } from "svelte";
   import { Route } from "svelte-router-spa";
@@ -170,7 +168,7 @@ In the following example both the home root ('/' and 'login' will use the same l
 
 Example of routes:
 
-```
+```javascript
 const routes = [
   {
     name: '/',
@@ -186,9 +184,7 @@ const routes = [
       {
         name: 'employees',
         component: EmployeesIndex,
-        nestedRoutes: [
-          { name: 'show/:id', component: EmployeesShow }
-        ]
+        nestedRoutes: [{ name: 'show/:id', component: EmployeesShow }]
       }
     ]
   }
@@ -218,12 +214,32 @@ navigateTo receives a path name as a param and will try to navigate to that rout
 
 Example:
 
-```
+```javascript
 if (loginSuccess) {
-    navigateTo('admin')
+  navigateTo('admin')
 } else {
-  alert('Incorrect credentials');
+  alert('Incorrect credentials')
 }
+```
+
+### currentRoute
+
+`import { currentRoute } from 'svelte-router-app'`
+
+Returns a boolean if the path is the current active route.
+
+This is useful, for instance to set an _active_ class on a menu.
+
+The Navigate component does this automatically and adds an _is-active_ class if the generated route is the active one.
+
+Example:
+
+```javascript
+import { currentRoute } from 'svelte-router-spa'
+
+;<a href="/contact-us" class:is-active={currentRoute('/contact-us')}>
+  Say hello
+</a>
 ```
 
 ### MainLayout
@@ -234,7 +250,7 @@ This is the main component that needs to be included before any other content as
 
 The best approach is to have an App.svelte file like this:
 
-```
+```javascript
 <script>
   import { MainLayout } from 'svelte-router-spa'
 </script>
@@ -254,7 +270,7 @@ The info about the current route will be received as a prop so you need to defin
 
 Example:
 
-```
+```javascript
 <script>
   import { Route } from 'svelte-router-spa'
   import TopHeader from './top_header.svelte'
@@ -277,9 +293,11 @@ Example:
 
 Navigate is a wrapper around the < a href="" > element to help you generate links quickly and easily.
 
+It adds an _is-active_ class if the generated route is the active one.
+
 Example:
 
-```
+```javascript
 <script>
   import { Navigate } from 'svelte-router-spa'
 </script>
