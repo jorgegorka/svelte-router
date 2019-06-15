@@ -1,5 +1,10 @@
 # Svelte Router changelog
 
+## 1.1.0
+
+* New currentRoute method returns true/false if pathName is the active route.
+* SpaRouter: If pathName is an empty string then navigate to home.
+
 ## 1.0.5
 
 * Fix bug where external links where ignored.

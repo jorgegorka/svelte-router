@@ -1,6 +1,7 @@
 const expect = require('chai').expect
 const SpaRouter = require('../src/router').SpaRouter
 const navigateTo = require('../src/router').navigateTo
+const currentRoute = require('../src/router').currentRoute
 
 let testRouter = null
 let pathName = '/'
@@ -12,15 +13,15 @@ describe('Router', () => {
       testRouter = SpaRouter({ routes, pathName })
     })
 
-    it('component', () => {
+    it('should set the component', () => {
       expect(testRouter.activeRoute.component).to.equal('')
     })
 
-    it('route name is 404', () => {
+    it('should set the route name to 404', () => {
       expect(testRouter.activeRoute.name).to.equal('404')
     })
 
-    it('route path is 404', () => {
+    it('should set the route path to 404', () => {
       expect(testRouter.activeRoute.path).to.equal('404')
     })
   })
@@ -33,15 +34,15 @@ describe('Router', () => {
       })
     })
 
-    it('component', () => {
+    it('should set thecomponent', () => {
       expect(testRouter.activeRoute.component).to.equal('')
     })
 
-    it('route name is 404', () => {
+    it('should set the route name to 404', () => {
       expect(testRouter.activeRoute.name).to.equal('404')
     })
 
-    it('route path is 404', () => {
+    it('should set the route path to 404', () => {
       expect(testRouter.activeRoute.path).to.equal('404')
     })
   })
@@ -65,15 +66,34 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(testRouter.activeRoute.path).to.equal('/')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('PublicIndex')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
+        expect(testRouter.activeRoute.layout).to.equal('PublicLayout')
+      })
+    })
+
+    describe('When empty root path', () => {
+      beforeEach(() => {
+        pathName = ''
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path to root path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('PublicIndex')
+      })
+
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.equal('PublicLayout')
       })
     })
@@ -84,15 +104,15 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(testRouter.activeRoute.path).to.equal('/signup')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('SignUp')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.be.undefined
       })
     })
@@ -117,19 +137,19 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(testRouter.activeRoute.path).to.equal('/project/easy-routing')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('ProjectList')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.be.undefined
       })
 
-      it('set named params', () => {
+      it('should set named params', () => {
         expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
       })
     })
@@ -154,23 +174,23 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(testRouter.activeRoute.path).to.equal('/project/easy-routing/2019-03-26')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('ProjectList')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.be.undefined
       })
 
-      it('set named params', () => {
+      it('should set named params', () => {
         expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
       })
 
-      it('set named params', () => {
+      it('should set named params', () => {
         expect(testRouter.activeRoute.params.date).to.equal('2019-03-26')
       })
     })
@@ -218,23 +238,23 @@ describe('Router', () => {
         showEmployeeRoute = employeeRoute.nestedRoutes[0]
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(activeRoute.path).to.equal('/admin/employees/show/12/Danny-filth')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(showEmployeeRoute.component).to.equal('ShowEmployee')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(showEmployeeRoute.layout).to.equal('EmployeeLayout')
       })
 
-      it('set named params', () => {
+      it('should set named params', () => {
         expect(showEmployeeRoute.params.id).to.equal('12')
       })
 
-      it('set named params', () => {
+      it('should set named params', () => {
         expect(showEmployeeRoute.params['full-name']).to.equal('Danny-filth')
       })
     })
@@ -277,15 +297,15 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path to root path', () => {
+      it('should set path to root path', () => {
         expect(testRouter.activeRoute.path).to.equal('/admin')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
       })
     })
@@ -296,27 +316,27 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path', () => {
+      it('should set path', () => {
         expect(testRouter.activeRoute.path).to.equal('/admin/employees')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
       })
 
-      it('set nested component name', () => {
+      it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
       })
 
-      it('set nested component layout', () => {
+      it('should set nested component layout', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
       })
     })
@@ -327,39 +347,39 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path', () => {
+      it('should set path', () => {
         expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
       })
 
-      it('set nested component name', () => {
+      it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
       })
 
-      it('set nested component layout', () => {
+      it('should set nested component layout', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes.length).to.equal(1)
       })
 
-      it('set nested component name', () => {
+      it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
       })
 
-      it('set nested component layout', () => {
+      it('should set nested component layout', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].layout).to.equal('EmployeeLayout')
       })
     })
@@ -402,39 +422,39 @@ describe('Router', () => {
         testRouter = SpaRouter({ routes, pathName })
       })
 
-      it('set path', () => {
+      it('should set path', () => {
         expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('set layout', () => {
+      it('should set layout', () => {
         expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
       })
 
-      it('set nested component name', () => {
+      it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
       })
 
-      it('set nested component layout', () => {
+      it('should set nested component layout', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
       })
 
-      it('set component name', () => {
+      it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes.length).to.equal(1)
       })
 
-      it('set nested component name', () => {
+      it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
       })
 
-      it('set nested component layout', () => {
+      it('should set nested component layout', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].layout).to.equal('EmployeeLayout')
       })
     })
@@ -447,7 +467,18 @@ describe('navigateTo', () => {
       SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
     })
 
-    it('should update the active route', () => {
+    it('should set the active route to selected route', () => {
+      expect(navigateTo('/')).to.include({ name: '/', component: 'MainPage', path: '/' })
+    })
+  })
+
+  describe('when route is empty', () => {
+    beforeEach(() => {
+      pathName = ''
+      SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
+    })
+
+    it('should set the active route to home', () => {
       expect(navigateTo('/')).to.include({ name: '/', component: 'MainPage', path: '/' })
     })
   })
@@ -457,8 +488,59 @@ describe('navigateTo', () => {
       SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
     })
 
-    it('should update the active route', () => {
+    it('should set the active route to 404', () => {
       expect(navigateTo('/invalid')).to.include({ name: '404', component: '', path: '404' })
+    })
+  })
+})
+
+describe('currentRoute', () => {
+  beforeEach(() => {
+    routes = [
+      { name: '/', component: 'MainPage' },
+      {
+        name: 'current',
+        component: 'Current',
+        nestedRoutes: [
+          {
+            name: 'active/:id',
+            component: 'Active',
+            nestedRoutes: [{ name: 'route', component: 'Route', nestedRoutes: [] }]
+          }
+        ]
+      }
+    ]
+    pathName = '/current/active/route?test=true&routing=awesome'
+  })
+
+  describe('a standard route', () => {
+    beforeEach(() => {
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return true', () => {
+      expect(currentRoute(pathName)).to.be.true
+    })
+  })
+
+  describe('a route with named params', () => {
+    beforeEach(() => {
+      pathName = '/current/active/route/4343?test=true&routing=awesome'
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return true', () => {
+      expect(currentRoute(pathName)).to.be.true
+    })
+  })
+
+  describe('a non active route', () => {
+    beforeEach(() => {
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return false', () => {
+      expect(currentRoute('/other/not/active')).to.be.false
     })
   })
 })

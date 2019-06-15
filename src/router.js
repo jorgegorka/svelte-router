@@ -8,14 +8,15 @@ const nameToPath = require('./lib/utils').nameToPath
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
  **/
-const pushActiveRoute = currentRoute => {
+const pushActiveRoute = () => {
   if (typeof window !== 'undefined') {
-    window.history.pushState({ page: currentRoute.path }, '', currentRoute.path)
+    window.history.pushState({ page: currentActiveRoute }, '', currentActiveRoute)
   }
 }
 
 let userDefinedRoutes = []
 let notFoundPage = ''
+let currentActiveRoute = ''
 
 /**
  * Gets an array of routes and the browser pathname and return the active route
@@ -70,8 +71,12 @@ const findActiveRoutes = (routes, basePath, pathNames) => {
  * @param notFound
  **/
 const SpaRouter = ({ routes, pathName, notFound }) => {
-  if (typeof pathName === 'undefined' || pathName.trim().length === 0) {
+  if (typeof pathName === 'undefined') {
     pathName = document.location.pathname
+  }
+
+  if (pathName.trim().length === 0) {
+    pathName = '/'
   }
 
   if (typeof notFound === 'undefined') {
@@ -92,8 +97,9 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
       currentRoute.path = pathName
     }
 
+    currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
-    pushActiveRoute(currentRoute)
+    pushActiveRoute()
 
     return currentRoute
   }
@@ -112,6 +118,14 @@ const navigateTo = pathName => {
   return activeRoute
 }
 
+/**
+ * Returns true if pathName is current active route
+ * @param pathName
+ **/
+const currentRoute = pathName => {
+  return currentActiveRoute === pathName
+}
+
 if (typeof window !== 'undefined') {
   window.addEventListener('click', event => {
     if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
@@ -122,4 +136,4 @@ if (typeof window !== 'undefined') {
   })
 }
 
-module.exports = { SpaRouter, navigateTo }
+module.exports = { SpaRouter, navigateTo, currentRoute }

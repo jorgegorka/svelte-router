@@ -275,7 +275,7 @@ Example:
 
 `import { Navigate } from 'svelte-router-spa'`
 
-Navigate is a wrapper around the <a href=""></a> element to help you generate links quickly and easily.
+Navigate is a wrapper around the < a href="" > element to help you generate links quickly and easily.
 
 Example:
 
@@ -292,4 +292,4 @@ Example:
 
 ## Credits
 
-Svelte Router SPA has been developed by [Jorge Alvarez](https://alvareznavarro.es).
+Svelte Router SPA has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).

@@ -1,5 +1,5 @@
 <script>
-  import { navigateTo } from '../router'
+  import { navigateTo, currentRoute } from '../router'
   export let to = '/'
   export let title = ''
   export let styles = ''
@@ -10,6 +10,6 @@
   }
 </script>
 
-<a href={to} {title} on:click={navigate} class={styles}>
+<a href={to} {title} on:click={navigate} class={styles} class:is-active={currentRoute(to)}>
   <slot />
 </a>
