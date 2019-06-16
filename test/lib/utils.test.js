@@ -3,11 +3,13 @@ const getPathNames = require('../../src/lib/utils').getPathNames
 const parseQueryString = require('../../src/lib/utils').parseQueryString
 const getNamedParams = require('../../src/lib/utils').getNamedParams
 const nameToPath = require('../../src/lib/utils').nameToPath
+const anyEmptyNestedRoutes = require('../../src/lib/utils').anyEmptyNestedRoutes
 
 let pathNames = []
 let queryParams = {}
 let namedParams = []
 let routeName = ''
+let emptyRoutes
 
 describe('getPathNames', () => {
   describe('Home route', () => {
@@ -27,6 +29,20 @@ describe('getPathNames', () => {
   describe('First level route', () => {
     beforeEach(() => {
       pathNames = getPathNames('contact-us')
+    })
+
+    it('component', () => {
+      expect(pathNames.length).to.equal(1)
+    })
+
+    it('component', () => {
+      expect(pathNames).to.include('contact-us')
+    })
+  })
+
+  describe('First level route', () => {
+    beforeEach(() => {
+      pathNames = getPathNames('/contact-us/')
     })
 
     it('component', () => {
@@ -227,6 +243,31 @@ describe('nameToPath', () => {
 
     it('should return the name', () => {
       expect(routeName).to.equal('employee')
+    })
+  })
+})
+
+describe('anyEmptyNestedRoute', () => {
+  describe('when there are no empty nested routes', () => {
+    beforeEach(() => {
+      emptyRoutes = anyEmptyNestedRoutes({
+        name: 'bla',
+        nestedRoutes: [{ name: 'foo', nestedRoutes: [{ name: 'pink' }] }]
+      })
+    })
+
+    it('should return false', () => {
+      expect(emptyRoutes).to.be.false
+    })
+  })
+
+  describe('when there are empty nested routes', () => {
+    beforeEach(() => {
+      emptyRoutes = anyEmptyNestedRoutes({ name: 'bla', nestedRoutes: [{ name: 'foo', nestedRoutes: [] }] })
+    })
+
+    it('should return true', () => {
+      expect(emptyRoutes).to.be.true
     })
   })
 })

@@ -44,19 +44,18 @@ import EmployeesIndex from './views/admin/employees/index.svelte'
 const routes = [
   {
     name: '/',
-    component: PublicIndex,
-    layout: PublicLayout
+    component: PublicLayout
   },
   { name: 'login', component: Login, layout: PublicLayout },
   {
     name: 'admin',
-    component: AdminIndex,
-    layout: AdminLayout,
+    component: AdminLayout,
     nestedRoutes: [
+      { name: 'index', component: DashboardIndex },
       {
         name: 'employees',
-        component: EmployeesIndex,
-        nestedRoutes: [{ name: 'show/:id', component: EmployeesShow }]
+        component: '',
+        nestedRoutes: [{ name: 'index', component: EmployeesIndex }, { name: 'show/:id', component: EmployeesShow }]
       }
     ]
   }
@@ -100,7 +99,7 @@ You can add any number of layouts nested inside the MainLayout. For instance ass
 
 Every Route file will receive a currentRoute prop with information about the current route, params, queries, etc.
 
-public_layout.svelte
+Filename: _public_layout.svelte_
 
 ```javascript
 <script>
@@ -117,30 +116,19 @@ public_layout.svelte
 </div>
 ```
 
-admin_layout.svelte
+Filename: _admin_layout.svelte_
 
 ```javascript
 <script>
-  import { onMount, onDestroy } from "svelte";
   import { Route } from "svelte-router-spa";
   import { currentUser } from "../../stores/current_user";
 
   export let currentRoute;
-  let unsubscribe;
-  let userInfo = {};
-
-  onMount(() => {
-    unsubscribe = currentUser.subscribe(user => (userInfo = user));
-  });
-
-  onDestroy(() => {
-    unsubscribe();
-  });
 </script>
 
 <div>
   <h1>Admin Layout</h1>
-  <Route {currentRoute} {currentUser} />
+  <Route {currentRoute} {$currentUser} />
 </div>
 ```
 
@@ -236,7 +224,6 @@ Example:
 
 ```javascript
 import { currentRoute } from 'svelte-router-spa'
-
 ;<a href="/contact-us" class:is-active={currentRoute('/contact-us')}>
   Say hello
 </a>

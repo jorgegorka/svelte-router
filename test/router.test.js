@@ -10,7 +10,7 @@ let routes = []
 describe('Router', () => {
   describe('When route does not exist', () => {
     beforeEach(() => {
-      testRouter = SpaRouter({ routes, pathName })
+      testRouter = SpaRouter({ routes: [], pathName })
     })
 
     it('should set the component', () => {
@@ -52,11 +52,12 @@ describe('Router', () => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicLayout',
+          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
-        { name: 'signup', component: 'SignUp' }
+
+        { name: 'login', component: 'Login' },
+        { name: 'project/:name', component: 'ProjectList' }
       ]
     })
 
@@ -71,11 +72,15 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('PublicIndex')
+        expect(testRouter.activeRoute.component).to.equal('PublicLayout')
       })
 
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('PublicLayout')
+      it('should set path to root path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('PublicIndex')
       })
     })
 
@@ -90,30 +95,22 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('PublicIndex')
-      })
-
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('PublicLayout')
+        expect(testRouter.activeRoute.component).to.equal('PublicLayout')
       })
     })
 
     describe('When path is first level', () => {
       beforeEach(() => {
-        pathName = '/signup'
+        pathName = '/login'
         testRouter = SpaRouter({ routes, pathName })
       })
 
       it('should set path to root path', () => {
-        expect(testRouter.activeRoute.path).to.equal('/signup')
+        expect(testRouter.activeRoute.path).to.equal('/login')
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('SignUp')
-      })
-
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.be.undefined
+        expect(testRouter.activeRoute.component).to.equal('Login')
       })
     })
   })
@@ -123,11 +120,15 @@ describe('Router', () => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicIndex'
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
-        { name: 'project/:name', component: 'ProjectList' }
+        { name: 'login', component: 'Login' },
+        { name: 'project/:name', component: 'ProjectList' },
+        {
+          name: '/about-us',
+          component: 'AboutUsLayout',
+          nestedRoutes: [{ name: 'index', component: 'AboutUsPage' }]
+        }
       ]
     })
 
@@ -145,12 +146,61 @@ describe('Router', () => {
         expect(testRouter.activeRoute.component).to.equal('ProjectList')
       })
 
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.be.undefined
+      it('should set named params', () => {
+        expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
+      })
+    })
+
+    describe('When top level layout with index', () => {
+      beforeEach(() => {
+        pathName = '/about-us'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path to root path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/about-us')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AboutUsLayout')
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
+        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('AboutUsPage')
+      })
+    })
+
+    describe('When top level layout with index', () => {
+      beforeEach(() => {
+        pathName = '/about-us/'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path to root path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/about-us')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AboutUsLayout')
+      })
+
+      it('should set named params', () => {
+        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('AboutUsPage')
+      })
+    })
+
+    describe('When top level layout with index and wrong address', () => {
+      beforeEach(() => {
+        pathName = '/about-us/pepe'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set the route name to 404', () => {
+        expect(testRouter.activeRoute.name).to.equal('404')
+      })
+
+      it('should set the route path to 404', () => {
+        expect(testRouter.activeRoute.path).to.equal('404')
       })
     })
   })
@@ -160,10 +210,9 @@ describe('Router', () => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicIndex'
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
+        { name: 'login', component: 'Login' },
         { name: 'project/:name/:date', component: 'ProjectList' }
       ]
     })
@@ -182,10 +231,6 @@ describe('Router', () => {
         expect(testRouter.activeRoute.component).to.equal('ProjectList')
       })
 
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.be.undefined
-      })
-
       it('should set named params', () => {
         expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
       })
@@ -196,29 +241,28 @@ describe('Router', () => {
     })
   })
 
-  describe('When there are nested routes', () => {
+  describe('When there are namespaced routes', () => {
     beforeEach(() => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicLayout',
+          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
-        { name: 'signup', component: 'SignUp' },
+
+        { name: 'login', component: 'Login' },
         {
           name: 'admin',
-          component: 'AdminIndex',
-          layout: 'AdminLayout',
+          component: 'AdminLayout',
           nestedRoutes: [
+            { name: 'index', component: 'AdminIndex' },
             {
               name: 'employees',
-              component: 'EmployeesIndex',
               nestedRoutes: [
+                { name: 'index', component: 'EmployeesIndex' },
                 {
                   name: 'show/:id/:full-name',
-                  component: 'ShowEmployee',
-                  layout: 'EmployeeLayout'
+                  component: 'ShowEmployee'
                 }
               ]
             }
@@ -226,7 +270,6 @@ describe('Router', () => {
         }
       ]
     })
-
     describe('When path is nested with named params', () => {
       let showEmployeeRoute
       let activeRoute
@@ -246,10 +289,6 @@ describe('Router', () => {
         expect(showEmployeeRoute.component).to.equal('ShowEmployee')
       })
 
-      it('should set layout', () => {
-        expect(showEmployeeRoute.layout).to.equal('EmployeeLayout')
-      })
-
       it('should set named params', () => {
         expect(showEmployeeRoute.params.id).to.equal('12')
       })
@@ -265,24 +304,23 @@ describe('Router', () => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicLayout',
+          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
-        { name: 'signup', component: 'SignUp' },
+
+        { name: 'login', component: 'Login' },
         {
           name: 'admin',
-          component: 'AdminIndex',
-          layout: 'AdminLayout',
+          component: 'AdminLayout',
           nestedRoutes: [
+            { name: 'index', component: 'AdminIndex' },
             {
               name: 'employees',
-              component: 'EmployeesIndex',
               nestedRoutes: [
+                { name: 'index', component: 'EmployeesIndex' },
                 {
-                  name: 'show',
-                  component: 'ShowEmployee',
-                  layout: 'EmployeeLayout'
+                  name: 'show/:id/:full-name',
+                  component: 'ShowEmployee'
                 }
               ]
             }
@@ -302,11 +340,7 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
-      })
-
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
+        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
       })
     })
 
@@ -321,11 +355,7 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
-      })
-
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
+        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
       })
 
       it('should set component name', () => {
@@ -333,11 +363,11 @@ describe('Router', () => {
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
+        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('EmployeesIndex')
       })
 
-      it('should set nested component layout', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.nestedRoutes[0].component).to.be.undefined
       })
     })
 
@@ -352,11 +382,7 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
-      })
-
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
+        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
       })
 
       it('should set component name', () => {
@@ -364,11 +390,7 @@ describe('Router', () => {
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
-      })
-
-      it('should set nested component layout', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
+        expect(testRouter.activeRoute.nestedRoutes[0].component).to.be.undefined
       })
 
       it('should set component name', () => {
@@ -378,10 +400,6 @@ describe('Router', () => {
       it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
       })
-
-      it('should set nested component layout', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].layout).to.equal('EmployeeLayout')
-      })
     })
   })
 
@@ -390,15 +408,13 @@ describe('Router', () => {
       routes = [
         {
           name: '/',
-          component: 'PublicIndex',
-          layout: 'PublicLayout'
+          component: 'PublicIndex'
         },
-        { name: 'login', component: 'Login', layout: 'PublicLayout' },
+        { name: 'login', component: 'Login' },
         { name: 'signup', component: 'SignUp' },
         {
           name: 'admin',
           component: 'AdminIndex',
-          layout: 'AdminLayout',
           nestedRoutes: [
             {
               name: 'employees',
@@ -406,8 +422,7 @@ describe('Router', () => {
               nestedRoutes: [
                 {
                   name: 'show/:id',
-                  component: 'ShowEmployee',
-                  layout: 'EmployeeLayout'
+                  component: 'ShowEmployee'
                 }
               ]
             }
@@ -430,10 +445,6 @@ describe('Router', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('should set layout', () => {
-        expect(testRouter.activeRoute.layout).to.equal('AdminLayout')
-      })
-
       it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
       })
@@ -442,20 +453,12 @@ describe('Router', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
       })
 
-      it('should set nested component layout', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].layout).to.be.undefined
-      })
-
       it('should set component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes.length).to.equal(1)
       })
 
       it('should set nested component name', () => {
         expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
-      })
-
-      it('should set nested component layout', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].layout).to.equal('EmployeeLayout')
       })
     })
   })
@@ -505,7 +508,7 @@ describe('currentRoute', () => {
           {
             name: 'active/:id',
             component: 'Active',
-            nestedRoutes: [{ name: 'route', component: 'Route', nestedRoutes: [] }]
+            nestedRoutes: [{ name: 'route', component: 'Route' }]
           }
         ]
       }
@@ -525,7 +528,7 @@ describe('currentRoute', () => {
 
   describe('a route with named params', () => {
     beforeEach(() => {
-      pathName = '/current/active/route/4343?test=true&routing=awesome'
+      pathName = '/current/active/4343/route/?test=true&routing=awesome'
       SpaRouter({ routes, pathName }).activeRoute
     })
 
@@ -536,7 +539,7 @@ describe('currentRoute', () => {
 
   describe('a route without first forward slash', () => {
     beforeEach(() => {
-      pathName = 'current/active/route/4343?test=true&routing=awesome'
+      pathName = 'current/active/4343/route/?test=true&routing=awesome'
       SpaRouter({ routes, pathName }).activeRoute
     })
 

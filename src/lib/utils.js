@@ -25,6 +25,9 @@ const parseQueryString = queryParams => {
  **/
 const getPathNames = pathName => {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
+  if (pathName.slice(-1) === '/') {
+    pathName = pathName.slice(0, -1)
+  }
   if (pathName[0] === '/') {
     pathName = pathName.slice(1)
   }
@@ -55,4 +58,19 @@ const nameToPath = (name = '') => {
   return routeName.toLowerCase()
 }
 
-module.exports = { parseQueryString, getPathNames, getNamedParams, nameToPath }
+/**
+ * Returns true if object has any nested routes empty
+ * @param routeObject
+ **/
+const anyEmptyNestedRoutes = routeObject => {
+  let result = false
+  if (routeObject.nestedRoutes && routeObject.nestedRoutes.length === 0) {
+    result = true
+  } else if (routeObject.nestedRoutes) {
+    result = anyEmptyNestedRoutes(routeObject.nestedRoutes[0])
+  }
+
+  return result
+}
+
+module.exports = { parseQueryString, getPathNames, getNamedParams, nameToPath, anyEmptyNestedRoutes }

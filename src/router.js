@@ -3,6 +3,7 @@ const getPathNames = require('./lib/utils').getPathNames
 const parseQueryString = require('./lib/utils').parseQueryString
 const getNamedParams = require('./lib/utils').getNamedParams
 const nameToPath = require('./lib/utils').nameToPath
+const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
 
 let userDefinedRoutes = []
 let notFoundPage = ''
@@ -26,14 +27,18 @@ const pushActiveRoute = () => {
  **/
 const addNamedParams = (pathNames, currentRoute, routeName) => {
   const paramNames = getNamedParams(routeName)
+  const removeElement = []
   if (paramNames.length > 0) {
     pathNames.forEach((pathName, index) => {
       const paramName = paramNames[index]
       if (paramName) {
         currentRoute.params[paramName] = pathName
+        removeElement.push(index)
       }
     })
   }
+  // Remove assigned named params
+  removeElement.forEach(index => pathNames.splice(index, 1))
 }
 
 /**
@@ -52,21 +57,25 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
       if (routePath === '//') {
         routePath = '/'
       }
-      const currentRoute = {
+      let currentRoute = {
         name: routePath,
-        layout: route.layout,
         component: route.component,
+        layout: route.layout,
         params: {}
       }
+      addNamedParams(pathNames, currentRoute, route.name)
 
       if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
         currentRoute.nestedRoutes = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
-      } else {
-        if (pathNames.length > 0) {
-          addNamedParams(pathNames, currentRoute, route.name)
+      } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
+        const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'])
+        if (indexRoute.length > 0) {
+          currentRoute.nestedRoutes = indexRoute
         }
-        currentRoute.queryParams = parseQueryString()
       }
+
+      currentRoute.queryParams = parseQueryString()
+
       currentRoutes.push(currentRoute)
     }
   })
@@ -89,6 +98,10 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
     pathName = '/'
   }
 
+  if (pathName.trim().length > 1 && pathName.slice(-1) === '/') {
+    pathName = pathName.slice(0, -1)
+  }
+
   if (typeof notFound === 'undefined') {
     notFound = ''
   }
@@ -100,7 +113,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
     let currentRoute
     const currentRoutes = searchActiveRoutes(routes, '', getPathNames(pathName))
 
-    if (currentRoutes.length === 0) {
+    if (currentRoutes.length === 0 || anyEmptyNestedRoutes(currentRoutes[0])) {
       currentRoute = { name: '404', component: notFound, path: '404' }
     } else {
       currentRoute = currentRoutes[0]
@@ -131,6 +144,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
  **/
 const navigateTo = pathName => {
   const activeRoute = SpaRouter({ routes: userDefinedRoutes, pathName, notFound: notFoundPage }).activeRoute
+
   return activeRoute
 }
 
