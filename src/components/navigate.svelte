@@ -6,6 +6,7 @@
 
   const navigate = event => {
     event.preventDefault()
+    event.stopPropagation()
     navigateTo(to)
   }
 </script>
