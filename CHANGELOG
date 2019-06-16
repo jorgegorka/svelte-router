@@ -1,5 +1,10 @@
 # Svelte Router changelog
 
+
+## 1.2.0
+
+* Improvements to nested routes and layouts
+
 ## 1.1.0
 
 * New currentRoute method returns true/false if pathName is the active route.
