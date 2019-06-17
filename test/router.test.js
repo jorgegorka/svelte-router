@@ -115,6 +115,69 @@ describe('Router', () => {
     })
   })
 
+  describe('Query params', () => {
+    beforeEach(() => {
+      routes = [
+        {
+          name: '/',
+          component: 'PublicIndex'
+        },
+        { name: 'login', component: 'Login' },
+        { name: 'project/:title', component: 'ProjectList' },
+        {
+          name: '/about-us',
+          component: 'AboutUsLayout',
+          nestedRoutes: [{ name: 'index', component: 'AboutUsPage' }]
+        }
+      ]
+    })
+
+    describe('Query params to index route', () => {
+      beforeEach(() => {
+        pathName = '/login?q=sangria'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should update queryParams', () => {
+        expect(testRouter.activeRoute.queryParams.q).to.equal('sangria')
+      })
+    })
+
+    describe('Query params to one level route', () => {
+      beforeEach(() => {
+        pathName = '/login?climate=change&sea-level=rising'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should update queryParams', () => {
+        expect(testRouter.activeRoute.queryParams.climate).to.equal('change')
+      })
+
+      it('should update queryParams', () => {
+        expect(testRouter.activeRoute.queryParams['sea-level']).to.equal('rising')
+      })
+    })
+  })
+
+  describe('Query params to named routes', () => {
+    beforeEach(() => {
+      pathName = '/project/save_earth?climate=change&sea-level=rising'
+      testRouter = SpaRouter({ routes, pathName })
+    })
+
+    it('should update queryParams', () => {
+      expect(testRouter.activeRoute.namedParams.title).to.equal('save_earth')
+    })
+
+    it('should update queryParams', () => {
+      expect(testRouter.activeRoute.queryParams.climate).to.equal('change')
+    })
+
+    it('should update queryParams', () => {
+      expect(testRouter.activeRoute.queryParams['sea-level']).to.equal('rising')
+    })
+  })
+
   describe('When there are valid routes no nesting with named params', () => {
     beforeEach(() => {
       routes = [
@@ -147,7 +210,7 @@ describe('Router', () => {
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
+        expect(testRouter.activeRoute.namedParams.name).to.equal('easy-routing')
       })
     })
 
@@ -232,11 +295,11 @@ describe('Router', () => {
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.params.name).to.equal('easy-routing')
+        expect(testRouter.activeRoute.namedParams.name).to.equal('easy-routing')
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.params.date).to.equal('2019-03-26')
+        expect(testRouter.activeRoute.namedParams.date).to.equal('2019-03-26')
       })
     })
   })
@@ -290,11 +353,11 @@ describe('Router', () => {
       })
 
       it('should set named params', () => {
-        expect(showEmployeeRoute.params.id).to.equal('12')
+        expect(showEmployeeRoute.namedParams.id).to.equal('12')
       })
 
       it('should set named params', () => {
-        expect(showEmployeeRoute.params['full-name']).to.equal('Danny-filth')
+        expect(showEmployeeRoute.namedParams['full-name']).to.equal('Danny-filth')
       })
     })
   })

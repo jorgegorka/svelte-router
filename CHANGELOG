@@ -1,5 +1,8 @@
 # Svelte Router changelog
 
+## 1.2.1
+
+* Fix queryParams not generated in some type of routes.
 
 ## 1.2.0
 

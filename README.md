@@ -2,7 +2,13 @@
 
 ## What is Svelte Router?
 
-Svelte Router adds routing to your Svelte apps. It's specially designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
+Svelte Router adds routing to your Svelte apps.
+
+It keeps your routes organized in a single place.
+
+It's specially designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
+
+## Features
 
 - Define your routes in a single interface
 - Layouts global, per page or nested.
@@ -254,6 +260,8 @@ The layout and/or the component that matches the active route will be rendered i
 This component is only needed if you create a layout. It will take care of rendering the content for the child components or child layouts recursively. You can have as many nested layouts as you need.
 
 The info about the current route will be received as a prop so you need to define _currentRoute_ and export it.
+
+CurrentRoute has two props: An object with the named params named **namedParams** and an object with the query params named **queryParams**. Route is smart enough to expose the named params in the route component where they will be rendered.
 
 Example:
 

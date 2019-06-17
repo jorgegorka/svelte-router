@@ -4,6 +4,7 @@ const parseQueryString = require('../../src/lib/utils').parseQueryString
 const getNamedParams = require('../../src/lib/utils').getNamedParams
 const nameToPath = require('../../src/lib/utils').nameToPath
 const anyEmptyNestedRoutes = require('../../src/lib/utils').anyEmptyNestedRoutes
+const extractQueryParams = require('../../src/lib/utils').extractQueryParams
 
 let pathNames = []
 let queryParams = {}
@@ -124,9 +125,19 @@ describe('parseQueryString', () => {
     })
   })
 
+  describe('When is empty', () => {
+    beforeEach(() => {
+      queryParams = parseQueryString('/empty/route')
+    })
+
+    it('should return an empty object', () => {
+      expect(queryParams).to.deep.equal({})
+    })
+  })
+
   describe('When there is one param', () => {
     beforeEach(() => {
-      queryParams = parseQueryString('?name=value')
+      queryParams = parseQueryString('/route/with/params?name=value')
     })
 
     it('should return an object', () => {
@@ -136,12 +147,22 @@ describe('parseQueryString', () => {
 
   describe('When there are more than one param', () => {
     beforeEach(() => {
-      queryParams = parseQueryString('name=value&name2=2019-10-10')
+      queryParams = parseQueryString('/route/with/params?name=value&name2=2019-10-10')
     })
 
     it('should return an object', () => {
       expect(queryParams).to.deep.equal({ name: 'value', name2: '2019-10-10' })
     })
+  })
+})
+
+describe('When only query params are present', () => {
+  beforeEach(() => {
+    queryParams = parseQueryString('?name=value&name2=2019-10-10')
+  })
+
+  it('should return an object', () => {
+    expect(queryParams).to.deep.equal({ name: 'value', name2: '2019-10-10' })
   })
 })
 
@@ -268,6 +289,36 @@ describe('anyEmptyNestedRoute', () => {
 
     it('should return true', () => {
       expect(emptyRoutes).to.be.true
+    })
+  })
+})
+
+describe('extractQueryParams', () => {
+  describe('when there are query params', () => {
+    beforeEach(() => {
+      emptyRoutes = extractQueryParams('/route/with/params/?name=rock&other=value')
+    })
+
+    it('should return the route part', () => {
+      expect(emptyRoutes[0]).to.equal('/route/with/params')
+    })
+
+    it('should return the query params as an object', () => {
+      expect(emptyRoutes[1]).to.deep.equal({ name: 'rock', other: 'value' })
+    })
+  })
+
+  describe('when there are no query params', () => {
+    beforeEach(() => {
+      emptyRoutes = extractQueryParams('/route')
+    })
+
+    it('should return the route part', () => {
+      expect(emptyRoutes[0]).to.equal('/route')
+    })
+
+    it('should return the query params as an object', () => {
+      expect(emptyRoutes[1]).to.deep.equal({})
     })
   })
 })

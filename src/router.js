@@ -1,6 +1,6 @@
 const activeRoute = require('./store').activeRoute
 const getPathNames = require('./lib/utils').getPathNames
-const parseQueryString = require('./lib/utils').parseQueryString
+const extractQueryParams = require('./lib/utils').extractQueryParams
 const getNamedParams = require('./lib/utils').getNamedParams
 const nameToPath = require('./lib/utils').nameToPath
 const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
@@ -8,6 +8,7 @@ const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
 let userDefinedRoutes = []
 let notFoundPage = ''
 let currentActiveRoute = ''
+let queryParams = {}
 
 /**
  * Updates the browser pathname and history with the active route.
@@ -32,7 +33,7 @@ const addNamedParams = (pathNames, currentRoute, routeName) => {
     pathNames.forEach((pathName, index) => {
       const paramName = paramNames[index]
       if (paramName) {
-        currentRoute.params[paramName] = pathName
+        currentRoute.namedParams[paramName] = pathName
         removeElement.push(index)
       }
     })
@@ -61,7 +62,7 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
         name: routePath,
         component: route.component,
         layout: route.layout,
-        params: {}
+        namedParams: {}
       }
       addNamedParams(pathNames, currentRoute, route.name)
 
@@ -74,7 +75,7 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
         }
       }
 
-      currentRoute.queryParams = parseQueryString()
+      currentRoute.queryParams = queryParams
 
       currentRoutes.push(currentRoute)
     }
@@ -93,6 +94,8 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
   if (typeof pathName === 'undefined') {
     pathName = document.location.pathname
   }
+
+  ;[pathName, queryParams] = extractQueryParams(pathName)
 
   if (pathName.trim().length === 0) {
     pathName = '/'
@@ -153,7 +156,13 @@ const navigateTo = pathName => {
  * @param pathName
  **/
 const currentRoute = pathName => {
-  return currentActiveRoute === pathName
+  let routePart
+  let queryPart
+  ;[routePart, queryPart] = extractQueryParams(pathName)
+
+  console.log(currentActiveRoute, routePart)
+
+  return currentActiveRoute === routePart
 }
 
 if (typeof window !== 'undefined') {
