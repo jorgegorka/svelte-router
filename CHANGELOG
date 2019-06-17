@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.0
+
+* [Breaking Change] MainLayout has been renamed to Router. Please replace all references to MainLayout with Router.
+
 ## 1.2.1
 
 * Fix queryParams not generated in some type of routes.

@@ -2,7 +2,7 @@ const SpaRouter = require('./router').SpaRouter
 const navigateTo = require('./router').navigateTo
 const currentRoute = require('./router').currentRoute
 const Route = require('./components/route.svelte')
-const MainLayout = require('./components/main_layout.svelte')
+const Router = require('./components/router.svelte')
 const Navigate = require('./components/navigate.svelte')
 
 module.exports = {
@@ -10,6 +10,6 @@ module.exports = {
   navigateTo,
   currentRoute,
   Route,
-  MainLayout,
+  Router,
   Navigate
 }

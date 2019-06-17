@@ -15,6 +15,12 @@ It's specially designed for Single Page Applications (SPA). If you need Server S
 - Nested routes
 - Named params
 
+Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and all child routes.
+
+You can use all that information (availabe in the currentRoute prop) to help you implement your business logic and secure the app.
+
+## Install
+
 To install Svelte Router on your svelte app:
 
 with npm
@@ -91,17 +97,17 @@ const app = new App({
 export default app
 ```
 
-Edit App.svelte and add the main layout.
+Edit App.svelte and add the main router.
 
 ```javascript
 <script>
-  import { MainLayout } from 'svelte-router-spa'
+  import { Router } from 'svelte-router-spa'
 </script>
 
-<MainLayout />
+<Router />
 ```
 
-You can add any number of layouts nested inside the MainLayout. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
+You can add any number of layouts nested inside Router. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
 
 Every Route file will receive a currentRoute prop with information about the current route, params, queries, etc.
 
@@ -235,9 +241,9 @@ import { currentRoute } from 'svelte-router-spa'
 </a>
 ```
 
-### MainLayout
+### Router
 
-`import { MainLayout } from 'svelte-router-spa'`
+`import { Router } from 'svelte-router-spa'`
 
 This is the main component that needs to be included before any other content as it holds information about which route should be rendered.
 
@@ -245,13 +251,13 @@ The best approach (although not required) is to have an App.svelte file like thi
 
 ```javascript
 <script>
-  import { MainLayout } from 'svelte-router-spa'
+  import { Router } from 'svelte-router-spa'
 </script>
 
-<MainLayout />
+<Router />
 ```
 
-The layout and/or the component that matches the active route will be rendered inside _MainLayout_.
+The layout and/or the component that matches the active route will be rendered inside _Router_.
 
 ## Route
 
