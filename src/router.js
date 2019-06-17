@@ -1,6 +1,5 @@
+const UrlParser = require('url-params-parser').UrlParser
 const activeRoute = require('./store').activeRoute
-const getPathNames = require('./lib/utils').getPathNames
-const extractQueryParams = require('./lib/utils').extractQueryParams
 const getNamedParams = require('./lib/utils').getNamedParams
 const nameToPath = require('./lib/utils').nameToPath
 const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
@@ -8,7 +7,7 @@ const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
 let userDefinedRoutes = []
 let notFoundPage = ''
 let currentActiveRoute = ''
-let queryParams = {}
+let urlParser = {}
 
 /**
  * Updates the browser pathname and history with the active route.
@@ -21,67 +20,52 @@ const pushActiveRoute = () => {
 }
 
 /**
- * Add named params to currentRoute as an object with the param name and the value.
- * @param pathNames
- * @param currentRoute
- * @param routeName
- **/
-const addNamedParams = (pathNames, currentRoute, routeName) => {
-  const paramNames = getNamedParams(routeName)
-  const removeElement = []
-  if (paramNames.length > 0) {
-    pathNames.forEach((pathName, index) => {
-      const paramName = paramNames[index]
-      if (paramName) {
-        currentRoute.namedParams[paramName] = pathName
-        removeElement.push(index)
-      }
-    })
-  }
-  // Remove assigned named params
-  removeElement.forEach(index => pathNames.splice(index, 1))
-}
-
-/**
  * Gets an array of routes and the browser pathname and return the active route
  * @param routes
  * @param basePath
  * @param pathNames
  **/
 const searchActiveRoutes = (routes, basePath, pathNames) => {
-  const currentRoutes = []
+  let currentRoute = {}
   const currentPathName = pathNames.shift().toLowerCase()
 
   routes.forEach(route => {
     if (currentPathName === nameToPath(route.name)) {
+      let namedPath = `${basePath}/${route.name}`
       let routePath = `${basePath}/${nameToPath(route.name)}`
       if (routePath === '//') {
         routePath = '/'
       }
-      let currentRoute = {
+
+      const namedParams = getNamedParams(route.name)
+      if (namedParams && namedParams.length > 0) {
+        namedParams.forEach(() => {
+          if (pathNames.length > 0) {
+            routePath += `/${pathNames.shift()}`
+          }
+        })
+      }
+
+      currentRoute = {
         name: routePath,
         component: route.component,
         layout: route.layout,
-        namedParams: {}
+        queryParams: urlParser.queryParams,
+        namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
       }
-      addNamedParams(pathNames, currentRoute, route.name)
 
       if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
-        currentRoute.nestedRoutes = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
+        currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
       } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
         const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'])
-        if (indexRoute.length > 0) {
-          currentRoute.nestedRoutes = indexRoute
+        if (indexRoute && Object.keys(indexRoute).length > 0) {
+          currentRoute.childRoute = indexRoute
         }
       }
-
-      currentRoute.queryParams = queryParams
-
-      currentRoutes.push(currentRoute)
     }
   })
 
-  return currentRoutes
+  return currentRoute
 }
 
 /**
@@ -92,18 +76,14 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
  **/
 const SpaRouter = ({ routes, pathName, notFound }) => {
   if (typeof pathName === 'undefined') {
-    pathName = document.location.pathname
-  }
-
-  ;[pathName, queryParams] = extractQueryParams(pathName)
-
-  if (pathName.trim().length === 0) {
-    pathName = '/'
+    pathName = document.location.href
   }
 
   if (pathName.trim().length > 1 && pathName.slice(-1) === '/') {
     pathName = pathName.slice(0, -1)
   }
+
+  urlParser = UrlParser(pathName)
 
   if (typeof notFound === 'undefined') {
     notFound = ''
@@ -113,14 +93,12 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
   notFoundPage = notFound
 
   const findActiveRoute = () => {
-    let currentRoute
-    const currentRoutes = searchActiveRoutes(routes, '', getPathNames(pathName))
+    let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
 
-    if (currentRoutes.length === 0 || anyEmptyNestedRoutes(currentRoutes[0])) {
+    if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
       currentRoute = { name: '404', component: notFound, path: '404' }
     } else {
-      currentRoute = currentRoutes[0]
-      currentRoute.path = pathName
+      currentRoute.path = urlParser.pathname
     }
 
     return currentRoute
@@ -146,7 +124,11 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
  * @param pathName
  **/
 const navigateTo = pathName => {
-  const activeRoute = SpaRouter({ routes: userDefinedRoutes, pathName, notFound: notFoundPage }).activeRoute
+  const activeRoute = SpaRouter({
+    routes: userDefinedRoutes,
+    pathName: 'http://fake.com/' + pathName,
+    notFound: notFoundPage
+  }).activeRoute
 
   return activeRoute
 }
@@ -155,14 +137,10 @@ const navigateTo = pathName => {
  * Returns true if pathName is current active route
  * @param pathName
  **/
-const currentRoute = pathName => {
-  let routePart
-  let queryPart
-  ;[routePart, queryPart] = extractQueryParams(pathName)
+const currentRoute = queryPath => {
+  const pathName = UrlParser(`http://fake.com${queryPath}`).pathname
 
-  console.log(currentActiveRoute, routePart)
-
-  return currentActiveRoute === routePart
+  return currentActiveRoute === pathName
 }
 
 if (typeof window !== 'undefined') {

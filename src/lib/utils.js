@@ -1,57 +1,7 @@
 /**
- * Returns the query params of a url into an object
- * @param queryParams
- **/
-const parseQueryString = (queryParams = '') => {
-  let searchParams = []
-
-  if (typeof document !== 'undefined') {
-    searchParams = new URLSearchParams(document.location.search)
-  } else {
-    if (queryParams.indexOf('?') !== -1) {
-      queryParams = queryParams.substring(queryParams.indexOf('?'), queryParams.length)
-    } else {
-      return {}
-    }
-  }
-
-  searchParams = new URLSearchParams(queryParams)
-
-  const result = {}
-
-  searchParams.forEach((value, key) => {
-    result[key] = value
-  })
-
-  return result
-}
-
-/**
- * Splits a param into path and query params
- * @param queryParams
- **/
-const extractQueryParams = pathName => {
-  let pathRoute = ''
-  let queryParams = {}
-
-  if (pathName.indexOf('?') !== -1) {
-    pathRoute = pathName.substring(pathName.indexOf('?'), -1)
-    const querySearch = pathName.substring(pathName.indexOf('?'), pathName.length)
-    queryParams = parseQueryString(querySearch)
-  } else {
-    pathRoute = pathName
-  }
-
-  if (pathRoute.trim().length > 1 && pathRoute.slice(-1) === '/') {
-    pathRoute = pathRoute.slice(0, -1)
-  }
-
-  return [pathRoute, queryParams]
-}
-
-/**
  * Split a pathname based on /
  * @param pathName
+ * Private method
  **/
 const getPathNames = pathName => {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
@@ -94,20 +44,22 @@ const nameToPath = (name = '') => {
  **/
 const anyEmptyNestedRoutes = routeObject => {
   let result = false
-  if (routeObject.nestedRoutes && routeObject.nestedRoutes.length === 0) {
+  if (Object.keys(routeObject).length === 0) {
+    return true
+  }
+
+  if (routeObject.childRoute && Object.keys(routeObject.childRoute).length === 0) {
     result = true
-  } else if (routeObject.nestedRoutes) {
-    result = anyEmptyNestedRoutes(routeObject.nestedRoutes[0])
+  } else if (routeObject.childRoute) {
+    result = anyEmptyNestedRoutes(routeObject.childRoute)
   }
 
   return result
 }
 
 module.exports = {
-  parseQueryString,
   getPathNames,
   getNamedParams,
   nameToPath,
-  anyEmptyNestedRoutes,
-  extractQueryParams
+  anyEmptyNestedRoutes
 }

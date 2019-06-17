@@ -1,6 +1,6 @@
 {
   "name": "svelte-router-spa",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "A router component for Svelte and your Single Page Applications.",
   "main": "src/index.js",
   "svelte": "src/index.js",

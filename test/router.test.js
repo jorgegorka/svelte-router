@@ -4,7 +4,7 @@ const navigateTo = require('../src/router').navigateTo
 const currentRoute = require('../src/router').currentRoute
 
 let testRouter = null
-let pathName = '/'
+let pathName = 'http://web.app/'
 let routes = []
 
 describe('Router', () => {
@@ -30,7 +30,7 @@ describe('Router', () => {
     beforeEach(() => {
       testRouter = SpaRouter({
         routes,
-        pathName: '/this/route/does/not/exist'
+        pathName: 'http://web.app/this/route/does/not/exist'
       })
     })
 
@@ -63,7 +63,7 @@ describe('Router', () => {
 
     describe('When root path', () => {
       beforeEach(() => {
-        pathName = '/'
+        pathName = 'http://web.app/'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -80,28 +80,13 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('PublicIndex')
-      })
-    })
-
-    describe('When empty root path', () => {
-      beforeEach(() => {
-        pathName = ''
-        testRouter = SpaRouter({ routes, pathName })
-      })
-
-      it('should set path to root path', () => {
-        expect(testRouter.activeRoute.path).to.equal('/')
-      })
-
-      it('should set component name', () => {
-        expect(testRouter.activeRoute.component).to.equal('PublicLayout')
+        expect(testRouter.activeRoute.childRoute.component).to.equal('PublicIndex')
       })
     })
 
     describe('When path is first level', () => {
       beforeEach(() => {
-        pathName = '/login'
+        pathName = 'https://fake.web/login'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -134,7 +119,7 @@ describe('Router', () => {
 
     describe('Query params to index route', () => {
       beforeEach(() => {
-        pathName = '/login?q=sangria'
+        pathName = 'http://web.app/login?q=sangria'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -145,7 +130,7 @@ describe('Router', () => {
 
     describe('Query params to one level route', () => {
       beforeEach(() => {
-        pathName = '/login?climate=change&sea-level=rising'
+        pathName = 'http://web.app/login?climate=change&sea-level=rising'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -161,7 +146,7 @@ describe('Router', () => {
 
   describe('Query params to named routes', () => {
     beforeEach(() => {
-      pathName = '/project/save_earth?climate=change&sea-level=rising'
+      pathName = 'http://web.app/project/save_earth?climate=change&sea-level=rising'
       testRouter = SpaRouter({ routes, pathName })
     })
 
@@ -197,7 +182,7 @@ describe('Router', () => {
 
     describe('When path is first level', () => {
       beforeEach(() => {
-        pathName = '/project/easy-routing'
+        pathName = 'http://web.app/project/easy-routing'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -216,7 +201,7 @@ describe('Router', () => {
 
     describe('When top level layout with index', () => {
       beforeEach(() => {
-        pathName = '/about-us'
+        pathName = 'http://web.app/about-us'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -229,13 +214,13 @@ describe('Router', () => {
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('AboutUsPage')
+        expect(testRouter.activeRoute.childRoute.component).to.equal('AboutUsPage')
       })
     })
 
     describe('When top level layout with index', () => {
       beforeEach(() => {
-        pathName = '/about-us/'
+        pathName = 'http://web.app/about-us/'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -248,13 +233,13 @@ describe('Router', () => {
       })
 
       it('should set named params', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('AboutUsPage')
+        expect(testRouter.activeRoute.childRoute.component).to.equal('AboutUsPage')
       })
     })
 
     describe('When top level layout with index and wrong address', () => {
       beforeEach(() => {
-        pathName = '/about-us/pepe'
+        pathName = 'http://web.app/about-us/pepe'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -282,7 +267,7 @@ describe('Router', () => {
 
     describe('When path is first level', () => {
       beforeEach(() => {
-        pathName = '/project/easy-routing/2019-03-26'
+        pathName = 'http://web.app/project/easy-routing/2019-03-26'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -337,11 +322,11 @@ describe('Router', () => {
       let showEmployeeRoute
       let activeRoute
       beforeEach(() => {
-        pathName = '/admin/employees/show/12/Danny-filth'
+        pathName = 'http://web.app/admin/employees/show/12/Danny-filth'
         testRouter = SpaRouter({ routes, pathName })
         activeRoute = testRouter.activeRoute
-        const employeeRoute = activeRoute.nestedRoutes[0]
-        showEmployeeRoute = employeeRoute.nestedRoutes[0]
+        const employeeRoute = activeRoute.childRoute
+        showEmployeeRoute = employeeRoute.childRoute
       })
 
       it('should set path to root path', () => {
@@ -394,7 +379,7 @@ describe('Router', () => {
 
     describe('Admin route', () => {
       beforeEach(() => {
-        pathName = '/admin'
+        pathName = 'http://web.app/admin'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -409,7 +394,7 @@ describe('Router', () => {
 
     describe('Employees route', () => {
       beforeEach(() => {
-        pathName = '/admin/employees'
+        pathName = 'http://web.app/admin/employees'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -422,21 +407,21 @@ describe('Router', () => {
       })
 
       it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
+        expect(testRouter.activeRoute.childRoute).to.be
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('EmployeesIndex')
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.be.undefined
+        expect(testRouter.activeRoute.childRoute.component).to.be.undefined
       })
     })
 
     describe('Employee show route', () => {
       beforeEach(() => {
-        pathName = '/admin/employees/show'
+        pathName = 'http://web.app/admin/employees/show'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -448,20 +433,12 @@ describe('Router', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminLayout')
       })
 
-      it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.be.undefined
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.be.undefined
-      })
-
-      it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes.length).to.equal(1)
-      })
-
-      it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
   })
@@ -496,7 +473,7 @@ describe('Router', () => {
 
     describe('Employee show route', () => {
       beforeEach(() => {
-        pathName = '/admin/employees/show'
+        pathName = 'http://web.app/admin/employees/show'
         testRouter = SpaRouter({ routes, pathName })
       })
 
@@ -508,26 +485,18 @@ describe('Router', () => {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes.length).to.equal(1)
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].component).to.equal('EmployeesIndex')
-      })
-
-      it('should set component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes.length).to.equal(1)
-      })
-
-      it('should set nested component name', () => {
-        expect(testRouter.activeRoute.nestedRoutes[0].nestedRoutes[0].component).to.equal('ShowEmployee')
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
   })
 })
 
-describe('navigateTo', () => {
+xdescribe('navigateTo', () => {
   describe('when route is valid', () => {
     beforeEach(() => {
       SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
@@ -576,7 +545,7 @@ describe('currentRoute', () => {
         ]
       }
     ]
-    pathName = '/current/active/route?test=true&routing=awesome'
+    pathName = 'http://web.app/current/active?test=true&routing=awesome'
   })
 
   describe('a standard route', () => {
@@ -585,29 +554,49 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute(pathName)).to.be.true
+      expect(currentRoute('/current')).to.be.false
+    })
+  })
+
+  describe('a route with a named param', () => {
+    beforeEach(() => {
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return true', () => {
+      expect(currentRoute('/current/active')).to.be.true
+    })
+  })
+
+  describe('a route with a named param and a value', () => {
+    beforeEach(() => {
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should return true', () => {
+      expect(currentRoute('/current/active/333')).to.be.false
     })
   })
 
   describe('a route with named params', () => {
     beforeEach(() => {
-      pathName = '/current/active/4343/route/?test=true&routing=awesome'
+      pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
       SpaRouter({ routes, pathName }).activeRoute
     })
 
     it('should return true', () => {
-      expect(currentRoute(pathName)).to.be.true
+      expect(currentRoute('/current/active/4343/route/')).to.be.true
     })
   })
 
-  describe('a route without first forward slash', () => {
+  describe('a route with search queries', () => {
     beforeEach(() => {
-      pathName = 'current/active/4343/route/?test=true&routing=awesome'
+      pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
       SpaRouter({ routes, pathName }).activeRoute
     })
 
     it('should return true', () => {
-      expect(currentRoute(pathName)).to.be.true
+      expect(currentRoute('/current/active/4343/route/?test=true&routing=awesome')).to.be.true
     })
   })
 
