@@ -15,6 +15,12 @@ It's specially designed for Single Page Applications (SPA). If you need Server S
 - Nested routes
 - Named params
 
+Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and all child routes.
+
+You can use all that information (availabe in the currentRoute prop) to help you implement your business logic and secure the app.
+
+## Install
+
 To install Svelte Router on your svelte app:
 
 with npm
