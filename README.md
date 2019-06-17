@@ -2,7 +2,7 @@
 
 ![version](https://img.shields.io/npm/v/svelte-router-spa.svg)
 ![license](https://img.shields.io/github/license/jorgegorka/svelte-router.svg)
-![Code climate]https://img.shields.io/codeclimate/maintainability/jorgegorka/svelte-router.svg
+![Code climate](https://img.shields.io/codeclimate/maintainability/jorgegorka/svelte-router.svg)
 
 ## What is Svelte Router?
 
