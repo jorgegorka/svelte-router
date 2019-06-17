@@ -57,7 +57,7 @@ const routes = [
     name: 'admin',
     component: AdminLayout,
     nestedRoutes: [
-      { name: 'index', component: DashboardIndex },
+      { name: 'index', component: AdminIndex },
       {
         name: 'employees',
         component: '',
@@ -101,7 +101,7 @@ Edit App.svelte and add the main layout.
 <MainLayout />
 ```
 
-You can add any number of layouts nested inside the MainLayout. For instance assuming that I want two layous one for public pages and the other for private admin pages I would create theses two files:
+You can add any number of layouts nested inside the MainLayout. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
 
 Every Route file will receive a currentRoute prop with information about the current route, params, queries, etc.
 
@@ -156,7 +156,7 @@ It exposes a single property called _activeRoute_ that will return the current a
 
 Routes can contain as many nested routes as needed.
 
-It can also contain as many layouts as needed and they will be nested.
+It can also contain as many layouts as needed. Layouts can be nested into other layouts.
 
 In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout.
 
@@ -241,7 +241,7 @@ import { currentRoute } from 'svelte-router-spa'
 
 This is the main component that needs to be included before any other content as it holds information about which route should be rendered.
 
-The best approach is to have an App.svelte file like this:
+The best approach (although not required) is to have an App.svelte file like this:
 
 ```javascript
 <script>
@@ -261,7 +261,7 @@ This component is only needed if you create a layout. It will take care of rende
 
 The info about the current route will be received as a prop so you need to define _currentRoute_ and export it.
 
-CurrentRoute has two props: An object with the named params named **namedParams** and an object with the query params named **queryParams**. Route is smart enough to expose the named params in the route component where they will be rendered.
+CurrentRoute has two props: An object with the named params called **namedParams** and an object with the query params called **queryParams**. Route is smart enough to expose the named params in the route component where they will be rendered.
 
 Example:
 
@@ -277,6 +277,7 @@ Example:
   <TopHeader />
   <section class="section">
     <Route {currentRoute} />
+    <p>Current params are: {currentRoute.namedParams} and {currentRoute.queryParams)
   </section>
   <FooterContent />
 </div>
