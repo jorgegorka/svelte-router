@@ -124,6 +124,10 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
  * @param pathName
  **/
 const navigateTo = pathName => {
+  if (pathName.trim().length > 1 && pathName[0] === '/') {
+    pathName = pathName.slice(1)
+  }
+
   const activeRoute = SpaRouter({
     routes: userDefinedRoutes,
     pathName: 'http://fake.com/' + pathName,

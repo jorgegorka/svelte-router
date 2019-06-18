@@ -347,6 +347,51 @@ describe('Router', () => {
     })
   })
 
+  describe('When there are nested routes with index page', () => {
+    beforeEach(() => {
+      routes = [
+        {
+          name: 'admin',
+          component: 'AdminLayout',
+          nestedRoutes: [
+            { name: 'index', component: 'DashboardIndex' },
+            {
+              name: 'employees',
+              component: 'EmployeeLayout',
+              nestedRoutes: [
+                { name: 'index', component: 'EmployeesIndex' },
+                { name: 'show/:id', component: 'EmployeesShow' }
+              ]
+            }
+          ]
+        }
+      ]
+    })
+
+    describe('Employee index route', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/employees'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path to root path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+      })
+
+      it('should set root component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeeLayout')
+      })
+
+      it('should set nested index component name', () => {
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('EmployeesIndex')
+      })
+    })
+  })
+
   describe('When there are nested routes', () => {
     beforeEach(() => {
       routes = [
@@ -496,33 +541,19 @@ describe('Router', () => {
   })
 })
 
-xdescribe('navigateTo', () => {
-  describe('when route is valid', () => {
-    beforeEach(() => {
-      SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
-    })
+describe('navigateTo', () => {
+  beforeEach(() => {
+    pathName = 'https://fake.com/'
+    SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
+  })
 
+  describe('when route is valid', () => {
     it('should set the active route to selected route', () => {
       expect(navigateTo('/')).to.include({ name: '/', component: 'MainPage', path: '/' })
     })
   })
 
-  describe('when route is empty', () => {
-    beforeEach(() => {
-      pathName = ''
-      SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
-    })
-
-    it('should set the active route to home', () => {
-      expect(navigateTo('/')).to.include({ name: '/', component: 'MainPage', path: '/' })
-    })
-  })
-
   describe('when route is not valid', () => {
-    beforeEach(() => {
-      SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
-    })
-
     it('should set the active route to 404', () => {
       expect(navigateTo('/invalid')).to.include({ name: '404', component: '', path: '404' })
     })
