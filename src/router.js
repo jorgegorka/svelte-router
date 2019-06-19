@@ -141,7 +141,7 @@ const navigateTo = pathName => {
  * Returns true if pathName is current active route
  * @param pathName
  **/
-const currentRoute = queryPath => {
+const routeIsActive = queryPath => {
   const pathName = UrlParser(`http://fake.com${queryPath}`).pathname
 
   return currentActiveRoute === pathName
@@ -157,4 +157,4 @@ if (typeof window !== 'undefined') {
   })
 }
 
-module.exports = { SpaRouter, navigateTo, currentRoute }
+module.exports = { SpaRouter, navigateTo, routeIsActive }

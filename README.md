@@ -19,7 +19,7 @@ It's specially designed for Single Page Applications (SPA). If you need Server S
 - Nested routes
 - Named params
 
-Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and all child routes.
+Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and child route.
 
 You can use all that information (availabe in the currentRoute prop) to help you implement your business logic and secure the app.
 
@@ -137,16 +137,21 @@ Filename: _admin_layout.svelte_
 ```javascript
 <script>
   import { Route } from "svelte-router-spa";
-  import { currentUser } from "../../stores/current_user";
 
   export let currentRoute;
 </script>
 
 <div>
   <h1>Admin Layout</h1>
-  <Route {currentRoute} {$currentUser} />
+  <Route {currentRoute} />
 </div>
 ```
+
+The route page will take care of rendering the appropriate component inside the layout. It will also pass an prop called _currentRoute_ to the component with information about the route, nested and query params.
+
+**Tip:** You can have any number of layouts and you can nest them into each other as much as you want. Just remember to add a _Route_ component where the content should be rendered inside the layout.
+
+**Tip:** The _Route_ component will pass a prop to the rendered component named _currentRoute_ with information about the current route, params, queries, etc.
 
 ## API
 
@@ -162,7 +167,7 @@ This object receives three params: routes, pathName and notFound.
 
 **notFound** A svelte component that will be rendered if the route can not be found.
 
-It exposes a single property called _activeRoute_ that will return the current active route and some additional information (see below.)
+It exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
 
 Routes can contain as many nested routes as needed.
 
@@ -203,10 +208,8 @@ The routes that this file will generate are:
 /admin
 /admin/employees
 /admin/employees/show
-/admin/employees/show/23432
+/admin/employees/show/{id}
 ```
-
-**activeRoute** It returns an object with the current route, any named params and all query params sent in the url.
 
 ### navigateTo
 
@@ -228,19 +231,20 @@ if (loginSuccess) {
 
 ### currentRoute
 
-`import { currentRoute } from 'svelte-router-app'`
+`import { routeIsActive } from 'svelte-router-app'`
 
 Returns a boolean if the path is the current active route.
 
 This is useful, for instance to set an _active_ class on a menu.
 
-The Navigate component does this automatically and adds an _is-active_ class if the generated route is the active one.
+The Navigate component does this automatically and adds an _active_ class if the generated route is the active one.
 
 Example:
 
 ```javascript
-import { currentRoute } from 'svelte-router-spa'
-;<a href="/contact-us" class:is-active={currentRoute('/contact-us')}>
+import { routeIsActive } from 'svelte-router-spa'
+
+;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
   Say hello
 </a>
 ```

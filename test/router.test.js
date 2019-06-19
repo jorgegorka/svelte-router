@@ -1,7 +1,7 @@
 const expect = require('chai').expect
 const SpaRouter = require('../src/router').SpaRouter
 const navigateTo = require('../src/router').navigateTo
-const currentRoute = require('../src/router').currentRoute
+const routeIsActive = require('../src/router').routeIsActive
 
 let testRouter = null
 let pathName = 'http://web.app/'
@@ -560,7 +560,7 @@ describe('navigateTo', () => {
   })
 })
 
-describe('currentRoute', () => {
+describe('routeIsActive', () => {
   beforeEach(() => {
     routes = [
       { name: '/', component: 'MainPage' },
@@ -585,7 +585,7 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute('/current')).to.be.false
+      expect(routeIsActive('/current')).to.be.false
     })
   })
 
@@ -595,7 +595,7 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute('/current/active')).to.be.true
+      expect(routeIsActive('/current/active')).to.be.true
     })
   })
 
@@ -605,7 +605,7 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute('/current/active/333')).to.be.false
+      expect(routeIsActive('/current/active/333')).to.be.false
     })
   })
 
@@ -616,7 +616,7 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute('/current/active/4343/route/')).to.be.true
+      expect(routeIsActive('/current/active/4343/route/')).to.be.true
     })
   })
 
@@ -627,7 +627,7 @@ describe('currentRoute', () => {
     })
 
     it('should return true', () => {
-      expect(currentRoute('/current/active/4343/route/?test=true&routing=awesome')).to.be.true
+      expect(routeIsActive('/current/active/4343/route/?test=true&routing=awesome')).to.be.true
     })
   })
 
@@ -637,7 +637,7 @@ describe('currentRoute', () => {
     })
 
     it('should return false', () => {
-      expect(currentRoute('/other/not/active')).to.be.false
+      expect(routeIsActive('/other/not/active')).to.be.false
     })
   })
 })
