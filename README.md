@@ -211,44 +211,6 @@ The routes that this file will generate are:
 /admin/employees/show/{id}
 ```
 
-### navigateTo
-
-`import { navigateTo } from 'svelte-router-app'`
-
-navigateTo allows you to programatically navigate to a route from inside your app code.
-
-navigateTo receives a path name as a param and will try to navigate to that route.
-
-Example:
-
-```javascript
-if (loginSuccess) {
-  navigateTo('admin')
-} else {
-  alert('Incorrect credentials')
-}
-```
-
-### currentRoute
-
-`import { routeIsActive } from 'svelte-router-app'`
-
-Returns a boolean if the path is the current active route.
-
-This is useful, for instance to set an _active_ class on a menu.
-
-The Navigate component does this automatically and adds an _active_ class if the generated route is the active one.
-
-Example:
-
-```javascript
-import { routeIsActive } from 'svelte-router-spa'
-
-;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
-  Say hello
-</a>
-```
-
 ### Router
 
 `import { Router } from 'svelte-router-spa'`
@@ -275,7 +237,9 @@ This component is only needed if you create a layout. It will take care of rende
 
 The info about the current route will be received as a prop so you need to define _currentRoute_ and export it.
 
-CurrentRoute has two props: An object with the named params called **namedParams** and an object with the query params called **queryParams**. Route is smart enough to expose the named params in the route component where they will be rendered.
+currentRoute has all the information about the current route and the child routes
+
+Route is smart enough to expose the named params in the route component where they will be rendered.
 
 Example:
 
@@ -297,13 +261,50 @@ Example:
 </div>
 ```
 
+## currentRoute
+
+This prop is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
+
+**Example:**
+
+```javascript
+const routes = [
+  {
+    name: '/public',
+    component: PublicLayout,
+    nestedRoutes: [
+      {
+        name: 'about-us',
+        component: 'AboutUsLayout',
+        nestedRoutes: [{ name: 'company', component: CompanyPage }, { name: 'people', component: PeoplePage }]
+      }
+    ]
+  }
+]
+```
+
+That will generate the following routes:
+
+```javascript
+/public
+/public/about-us
+/public/about-us/company
+/public/about-us/people/:name
+```
+
+If the user visits /public/about-us/people/jack the following components will be rendered:
+
+<Router> -> <PublicLayout>(Route) -> AboutUsLayout(Route) -> PeoplePage
+
+Both layouts public and about us need a _Route_ component that indicates where to render the nested content. This _Route_ component will pass along the currentRoute prop with all the information related to nested and query params.
+
 ## Navigate
 
 `import { Navigate } from 'svelte-router-spa'`
 
 Navigate is a wrapper around the < a href="" > element to help you generate links quickly and easily.
 
-It adds an _is-active_ class if the generated route is the active one.
+It adds an _active_ class if the generated route is the active one.
 
 Example:
 
@@ -314,8 +315,45 @@ Example:
 
 <div class="app">
   <h1>My content</h1>
-  <p>Now I want to generate a <Navigate to="admin/employees">Link</Navigate>
+  <p>Now I want to generate a <Navigate to="admin/employees">Link name</Navigate>
 </div>
+```
+
+### navigateTo
+
+`import { navigateTo } from 'svelte-router-app'`
+
+navigateTo allows you to programatically navigate to a route from inside your app code.
+
+navigateTo receives a path name as a param and will try to navigate to that route.
+
+Example:
+
+```javascript
+if (loginSuccess) {
+  navigateTo('admin')
+} else {
+  navigateTo('login')
+}
+```
+
+### routeIsActive
+
+`import { routeIsActive } from 'svelte-router-app'`
+
+Returns a boolean if the path is the current active route.
+
+This is useful, for instance to set an _active_ class on a menu.
+
+The Navigate component does this automatically and adds an _active_ class if the generated route is the active one.
+
+Example:
+
+```javascript
+import { routeIsActive } from 'svelte-router-spa'
+;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
+  Say hello
+</a>
 ```
 
 ## Credits

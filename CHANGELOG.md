@@ -3,7 +3,7 @@
 ## 2.0.0
 
 - [Breaking Change] MainLayout has been renamed to Router. Please replace all references to MainLayout with Router.
-- [Breaking Change] Replace nestedRoutes array from currentRoute with childRoute object.
+- [Breaking Change] Replace nestedRoutes array in currentRoute with childRoute object.
 - [Breaking Change] Renamed currentRoute method as routeIsActive.
 
 - Refactor and cleanup code.
