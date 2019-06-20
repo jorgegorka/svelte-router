@@ -3,9 +3,9 @@ const getPathNames = require('../../src/lib/utils').getPathNames
 const getNamedParams = require('../../src/lib/utils').getNamedParams
 const nameToPath = require('../../src/lib/utils').nameToPath
 const anyEmptyNestedRoutes = require('../../src/lib/utils').anyEmptyNestedRoutes
+const compareRoutes = require('../../src/lib/utils').compareRoutes
 
 let pathNames = []
-let queryParams = {}
 let namedParams = []
 let routeName = ''
 let emptyRoutes
@@ -173,9 +173,29 @@ describe('nameToPath', () => {
     })
   })
 
-  describe('When param has named params with it', () => {
+  describe('When param has a named param', () => {
     beforeEach(() => {
       routeName = nameToPath('employee/:id')
+    })
+
+    it('should return the name', () => {
+      expect(routeName).to.equal('employee')
+    })
+  })
+
+  describe('When param has many named params with it', () => {
+    beforeEach(() => {
+      routeName = nameToPath('employee/show/:id/:name')
+    })
+
+    it('should return the name', () => {
+      expect(routeName).to.equal('employee/show')
+    })
+  })
+
+  describe('When param has many named params ', () => {
+    beforeEach(() => {
+      routeName = nameToPath('employee/:name/show/:id')
     })
 
     it('should return the name', () => {
@@ -245,6 +265,133 @@ describe('anyEmptyNestedRoute', () => {
 
     it('should return true', () => {
       expect(emptyRoutes).to.be.true
+    })
+  })
+})
+
+describe('compareRoutes', () => {
+  let pathName = []
+  describe('when there are no nested routes', () => {
+    describe('when route is one level', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: 'admin' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
+    })
+
+    describe('when route is one level', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('/admin', pathName, { name: 'admin' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
+    })
+  })
+
+  describe('when there are nested routes', () => {
+    describe('when route is one level with /', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: '/admin' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
+    })
+
+    describe('when route is two levels', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: 'admin/teams' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin/teams')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['show', 'report'])
+      })
+    })
+
+    describe('when route is many levels deep', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: 'admin/teams/show/report' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin/teams/show/report')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal([])
+      })
+    })
+
+    describe('when route is many levels deep but some levels unrelated', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: 'admin/invoices/show/report' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
+    })
+
+    describe('when route is many levels deep but some levels unrelated', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin/employees', pathName, { name: 'admin/invoices/show/report' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin/employees')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
+    })
+
+    describe('when route is many levels deep but unrelated', () => {
+      beforeEach(() => {
+        pathName = ['teams', 'show', 'report']
+        routes = compareRoutes('admin', pathName, { name: 'other/employees/show/report' })
+      })
+
+      it('should return the base route', () => {
+        expect(routes).to.equal('admin')
+      })
+
+      it('should return the route name', () => {
+        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+      })
     })
   })
 })

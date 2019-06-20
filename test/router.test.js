@@ -539,6 +539,144 @@ describe('Router', () => {
       })
     })
   })
+
+  describe('When there are nested routes with no layout', () => {
+    beforeEach(() => {
+      routes = [
+        {
+          name: '/',
+          component: 'PublicIndex'
+        },
+        { name: 'login', component: 'Login' },
+        { name: 'signup', component: 'SignUp' },
+        {
+          name: 'admin',
+          component: 'AdminIndex',
+          nestedRoutes: [
+            {
+              name: 'employees',
+              component: 'EmployeesIndex'
+            },
+            {
+              name: 'employees/show/:id',
+              component: 'ShowEmployee'
+            },
+            {
+              name: 'teams',
+              component: 'TeamsIndex'
+            },
+            {
+              name: 'teams/active',
+              component: 'ActiveTeams'
+            },
+            {
+              name: 'teams/show/:name',
+              component: 'ShowTeams'
+            }
+          ]
+        }
+      ]
+    })
+
+    describe('Employee index route', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/employees'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+      })
+    })
+
+    describe('Employee show route', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/employees/show'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowEmployee')
+      })
+    })
+
+    describe('Teams index route', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/teams')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('TeamsIndex')
+      })
+    })
+
+    describe('Teams active', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams/active'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/teams/active')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('ActiveTeams')
+      })
+    })
+
+    describe('Teams show', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams/show/leader-team'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', () => {
+        expect(testRouter.activeRoute.path).to.equal('/admin/teams/show/leader-team')
+      })
+
+      it('should set component name', () => {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', () => {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowTeams')
+      })
+
+      it('should set the named param', () => {
+        expect(testRouter.activeRoute.childRoute.namedParams.name).to.equal('leader-team')
+      })
+    })
+  })
 })
 
 describe('navigateTo', () => {

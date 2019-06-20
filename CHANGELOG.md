@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.1
+
+- Improve recognition of routes not nested.
+
 ## 2.0.0
 
 - [Breaking Change] MainLayout has been renamed to Router. Please replace all references to MainLayout with Router.

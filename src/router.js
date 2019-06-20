@@ -3,6 +3,7 @@ const activeRoute = require('./store').activeRoute
 const getNamedParams = require('./lib/utils').getNamedParams
 const nameToPath = require('./lib/utils').nameToPath
 const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
+const compareRoutes = require('./lib/utils').compareRoutes
 
 let userDefinedRoutes = []
 let notFoundPage = ''
@@ -27,10 +28,11 @@ const pushActiveRoute = () => {
  **/
 const searchActiveRoutes = (routes, basePath, pathNames) => {
   let currentRoute = {}
-  const currentPathName = pathNames.shift().toLowerCase()
+  let basePathName = pathNames.shift().toLowerCase()
 
   routes.forEach(route => {
-    if (currentPathName === nameToPath(route.name)) {
+    basePathName = compareRoutes(basePathName, pathNames, route)
+    if (basePathName === nameToPath(route.name)) {
       let namedPath = `${basePath}/${route.name}`
       let routePath = `${basePath}/${nameToPath(route.name)}`
       if (routePath === '//') {
@@ -46,12 +48,14 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
         })
       }
 
-      currentRoute = {
-        name: routePath,
-        component: route.component,
-        layout: route.layout,
-        queryParams: urlParser.queryParams,
-        namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+      if (currentRoute.name !== routePath) {
+        currentRoute = {
+          name: routePath,
+          component: route.component,
+          layout: route.layout,
+          queryParams: urlParser.queryParams,
+          namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+        }
       }
 
       if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
@@ -61,6 +65,7 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
         if (indexRoute && Object.keys(indexRoute).length > 0) {
           currentRoute.childRoute = indexRoute
         }
+      } else if (route.nestedRoutes && route.nestedRoutes.length === 0 && pathNames.length > 0) {
       }
     }
   })
