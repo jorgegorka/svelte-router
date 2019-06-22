@@ -18,7 +18,7 @@
     "mocha": "^6.1.4"
   },
   "dependencies": {
-    "svelte": "^3.5.1",
+    "svelte": "3.5.1",
     "url-params-parser": "^1.0.1"
   },
   "repository": {
