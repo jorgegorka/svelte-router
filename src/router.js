@@ -147,9 +147,19 @@ const navigateTo = pathName => {
  * @param pathName
  **/
 const routeIsActive = queryPath => {
-  const pathName = UrlParser(`http://fake.com${queryPath}`).pathname
+  if (queryPath[0] !== '/') {
+    queryPath = '/' + queryPath
+  }
+  let pathName = UrlParser(`http://fake.com${queryPath}`).pathname
+  if (pathName.slice(-1) === '/') {
+    pathName = pathName.slice(0, -1)
+  }
+  let activeRoute = currentActiveRoute
+  if (activeRoute.slice(-1) === '/') {
+    activeRoute = activeRoute.slice(0, -1)
+  }
 
-  return currentActiveRoute === pathName
+  return activeRoute === pathName
 }
 
 if (typeof window !== 'undefined') {

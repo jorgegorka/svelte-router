@@ -717,12 +717,12 @@ describe('routeIsActive', () => {
     pathName = 'http://web.app/current/active?test=true&routing=awesome'
   })
 
-  describe('a standard route', () => {
+  describe('a standard route not active', () => {
     beforeEach(() => {
       SpaRouter({ routes, pathName }).activeRoute
     })
 
-    it('should return true', () => {
+    it('should return false', () => {
       expect(routeIsActive('/current')).to.be.false
     })
   })
@@ -742,7 +742,7 @@ describe('routeIsActive', () => {
       SpaRouter({ routes, pathName }).activeRoute
     })
 
-    it('should return true', () => {
+    it('should return false', () => {
       expect(routeIsActive('/current/active/333')).to.be.false
     })
   })
@@ -776,6 +776,124 @@ describe('routeIsActive', () => {
 
     it('should return false', () => {
       expect(routeIsActive('/other/not/active')).to.be.false
+    })
+  })
+
+  describe('Routes in same level', () => {
+    beforeEach(() => {
+      routes = [
+        {
+          name: '/',
+          component: 'PublicIndex'
+        },
+        { name: 'login', component: 'Login' },
+        { name: 'signup', component: 'SignUp' },
+        {
+          name: 'admin',
+          component: 'AdminIndex',
+          nestedRoutes: [
+            {
+              name: 'employees',
+              component: 'EmployeesIndex'
+            },
+            {
+              name: 'employees/show/:id',
+              component: 'ShowEmployee'
+            },
+            {
+              name: 'teams',
+              component: 'TeamsIndex'
+            },
+            {
+              name: 'teams/active',
+              component: 'ActiveTeams'
+            },
+            {
+              name: 'teams/show/:name',
+              component: 'ShowTeams'
+            }
+          ]
+        }
+      ]
+    })
+
+    describe('a standard route', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/login'
+        SpaRouter({ routes, pathName }).activeRoute
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('/login')).to.be.true
+      })
+
+      it('should return false if not matches active route', () => {
+        expect(routeIsActive('/wrong')).to.be.false
+      })
+    })
+
+    describe('a standard route not active', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/employees'
+        SpaRouter({ routes, pathName }).activeRoute
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('/admin/employees')).to.be.true
+      })
+
+      it('should return false if not matches active route', () => {
+        expect(routeIsActive('/admin/projects')).to.be.false
+      })
+    })
+
+    describe('a standard route not active', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams/active'
+        SpaRouter({ routes, pathName }).activeRoute
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('/admin/teams/active')).to.be.true
+      })
+
+      it('should return false if not matches active route', () => {
+        expect(routeIsActive('/admin/teams/projects')).to.be.false
+      })
+    })
+
+    describe('a standard route not active', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams/show/accountants'
+        SpaRouter({ routes, pathName }).activeRoute
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('/admin/teams/show/accountants')).to.be.true
+      })
+
+      it('should return false if not matches active route', () => {
+        expect(routeIsActive('/admin/teams/wrong/accountants')).to.be.false
+      })
+    })
+
+    describe('a standard route not active', () => {
+      beforeEach(() => {
+        pathName = 'http://web.app/admin/teams/show/accountants'
+        SpaRouter({ routes, pathName }).activeRoute
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('admin/teams/show/accountants')).to.be.true
+      })
+
+      it('should return true if matches active route', () => {
+        expect(routeIsActive('admin/teams/show/accountants/')).to.be.true
+      })
+
+      it('should return false if not matches active route', () => {
+        expect(routeIsActive('/admin/teams/show/accountants/')).to.be.true
+      })
     })
   })
 })
