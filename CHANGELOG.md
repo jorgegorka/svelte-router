@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.4
+
+- Unlock Svelte
+
 ## 2.0.3
 
 - Lock Svelte to 3.5.1
