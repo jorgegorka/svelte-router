@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.6
+
+- Add Svelte as a peer dependency.
+
 ## 2.0.5
 
 - Upgrade eslint and svelte
