@@ -119,7 +119,7 @@ Filename: _public_layout.svelte_
 
 ```javascript
 <script>
-  import { Route } from '../../lib/router.svelte'
+  import { Route } from 'svelte-router-spa'
   import TopHeader from './top_header.svelte'
   export let currentRoute
 </script>
