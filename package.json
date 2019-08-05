@@ -13,10 +13,10 @@
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
   "devDependencies": {
-    "svelte": "^3.6.7",
     "chai": "^4.2.0",
-    "eslint": "^6.0.1",
-    "mocha": "^6.1.4"
+    "eslint": "^6.1.0",
+    "mocha": "^6.2.0",
+    "svelte": "^3.7.0"
   },
   "dependencies": {
     "url-params-parser": "^1.0.1"
