@@ -88,7 +88,10 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
     pathName = pathName.slice(0, -1)
   }
 
-  urlParser = UrlParser(pathName)
+  urlParser = UrlParser(
+    document.location.href,
+    pathName
+  )
 
   if (typeof notFound === 'undefined') {
     notFound = ''
