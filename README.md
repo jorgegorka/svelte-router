@@ -90,7 +90,7 @@ import NotFound from './views/not_found.svelte'
 
 SpaRouter({
   routes,
-  pathName: document.location.pathname,
+  pathName: document.location.href,
   notFound: NotFound
 }).getActiveRoute
 
