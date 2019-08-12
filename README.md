@@ -147,7 +147,7 @@ Filename: _admin_layout.svelte_
 </div>
 ```
 
-The route page will take care of rendering the appropriate component inside the layout. It will also pass an prop called _currentRoute_ to the component with information about the route, nested and query params.
+The route page will take care of rendering the appropriate component inside the layout. It will also pass a prop called _currentRoute_ to the component with information about the route, nested and query params.
 
 **Tip:** You can have any number of layouts and you can nest them into each other as much as you want. Just remember to add a _Route_ component where the content should be rendered inside the layout.
 
