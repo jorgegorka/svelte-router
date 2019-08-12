@@ -71,7 +71,10 @@ const routes = [
       {
         name: 'employees',
         component: '',
-        nestedRoutes: [{ name: 'index', component: EmployeesIndex }, { name: 'show/:id', component: EmployeesShow }]
+        nestedRoutes: [
+          { name: 'index', component: EmployeesIndex }, 
+          { name: 'show/:id', component: EmployeesShow }
+        ]
       }
     ]
   }
@@ -193,7 +196,9 @@ const routes = [
       {
         name: 'employees',
         component: EmployeesIndex,
-        nestedRoutes: [{ name: 'show/:id', component: EmployeesShow }]
+        nestedRoutes: [
+          { name: 'show/:id', component: EmployeesShow }
+        ]
       }
     ]
   }
@@ -276,7 +281,10 @@ const routes = [
       {
         name: 'about-us',
         component: 'AboutUsLayout',
-        nestedRoutes: [{ name: 'company', component: CompanyPage }, { name: 'people', component: PeoplePage }]
+        nestedRoutes: [
+          { name: 'company', component: CompanyPage }, 
+          { name: 'people', component: PeoplePage }
+        ]
       }
     ]
   }
@@ -345,13 +353,14 @@ Returns a boolean if the path is the current active route.
 
 This is useful, for instance to set an _active_ class on a menu.
 
-The Navigate component does this automatically and adds an _active_ class if the generated route is the active one.
+The [Navigate](https://github.com/jorgegorka/svelte-router/blob/master/README.md#navigate) component does this automatically and adds an _active_ class if the generated route is the active one.
 
 Example:
 
 ```javascript
 import { routeIsActive } from 'svelte-router-spa'
-;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
+
+<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
   Say hello
 </a>
 ```
