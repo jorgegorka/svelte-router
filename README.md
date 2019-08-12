@@ -163,7 +163,7 @@ This object receives three params: routes, pathName and notFound.
 
 **routes** An array of routes.
 
-**pathName** The path name to evaluate. For instance '/admin/employees?show-all=false'. It defaults to _document.location.pathname_
+**pathName** The path name to evaluate. For instance 'https://www.mysite.com/admin/employees?show-all=false'. It defaults to _document.location.href
 
 **notFound** A svelte component that will be rendered if the route can not be found.
 
