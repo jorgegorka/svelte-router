@@ -16,7 +16,7 @@
     "chai": "^4.2.0",
     "eslint": "^6.1.0",
     "mocha": "^6.2.0",
-    "svelte": "^3.7.0"
+    "svelte": "^3.8.0"
   },
   "dependencies": {
     "url-params-parser": "^1.0.1"
