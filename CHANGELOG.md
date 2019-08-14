@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.9
+
+- Add onpopstate handler.
+
 ## 2.0.8
 
 - Fix docs to request a full url in pathName

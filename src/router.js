@@ -170,6 +170,10 @@ if (typeof window !== 'undefined') {
       navigateTo(event.target.pathname)
     }
   })
+
+  window.onpopstate = function(_event) {
+    navigateTo(window.location.pathname)
+  }
 }
 
 module.exports = { SpaRouter, navigateTo, routeIsActive }
