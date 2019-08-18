@@ -314,7 +314,10 @@ Inside the PeoplePage component you can get all the information about the curren
 <h1>Your name is: {currentRoute.namedParams.name}</h1>
 ```
 
-This will render: <h1>Your name is: Jack</h1>
+This will render: 
+```html
+<h1>Your name is: Jack</h1>
+```
 
 ## Navigate
 
