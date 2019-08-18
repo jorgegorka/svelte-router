@@ -302,9 +302,11 @@ That will generate the following routes:
 
 If the user visits /public/about-us/people/jack the following components will be rendered:
 
-<Router> -> <PublicLayout>(Route) -> AboutUsLayout(Route) -> PeoplePage
+```
+Router -> PublicLayout(Route) -> AboutUsLayout(Route) -> PeoplePage
+```
 
-Inside the PeoplePage component you can get all the information about the current route like this:
+Inside PeoplePage you can get all the information about the current route like this:
 
 ```javascript
 <script>
