@@ -16,7 +16,7 @@ let urlParser = {}
  **/
 const pushActiveRoute = () => {
   if (typeof window !== 'undefined') {
-    window.history.pushState({ page: currentActiveRoute }, '', currentActiveRoute)
+    window.history.pushState({ page: window.location.pathname }, '', window.location.pathname)
   }
 }
 

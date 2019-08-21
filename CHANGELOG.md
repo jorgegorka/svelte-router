@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.10
+
+- Do not remove query params from visible route.
+
 ## 2.0.9
 
 - Add onpopstate handler.
