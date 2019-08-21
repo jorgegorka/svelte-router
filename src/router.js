@@ -1,9 +1,6 @@
-const UrlParser = require('url-params-parser').UrlParser
-const activeRoute = require('./store').activeRoute
-const getNamedParams = require('./lib/utils').getNamedParams
-const nameToPath = require('./lib/utils').nameToPath
-const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
-const compareRoutes = require('./lib/utils').compareRoutes
+const { UrlParser } = require('url-params-parser')
+const { activeRoute } = require('./store')
+const { anyEmptyNestedRoutes, compareRoutes, getNamedParams, nameToPath, pathWithSearch } = require('./lib/utils')
 
 let userDefinedRoutes = []
 let notFoundPage = ''
@@ -14,14 +11,10 @@ let urlParser = {}
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
  **/
-const pushActiveRoute = () => {
+const pushActiveRoute = currentRoute => {
   if (typeof window !== 'undefined') {
-    console.log(window.location.pathname + window.location.search)
-    window.history.pushState(
-      { page: window.location.pathname + window.location.search },
-      '',
-      window.location.pathname + window.location.search
-    )
+    const pathAndSearch = pathWithSearch(currentRoute)
+    window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
   }
 }
 
@@ -119,7 +112,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
 
     currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
-    pushActiveRoute()
+    pushActiveRoute(currentRoute)
 
     return currentRoute
   }
@@ -177,7 +170,6 @@ if (typeof window !== 'undefined') {
   })
 
   window.onpopstate = function(event) {
-    console.log(event, window.location)
     navigateTo(window.location.pathname + window.location.search)
   }
 }

@@ -104,10 +104,27 @@ const nameToPath = (name = '') => {
   return routeName.toLowerCase()
 }
 
+/**
+ * Return the path name including query params
+ * @param name
+ **/
+function pathWithSearch(currentRoute) {
+  let queryParams = []
+  if (currentRoute.queryParams) {
+    for (let [key, value] of Object.entries(currentRoute.queryParams)) {
+      queryParams.push(`${key}=${value}`)
+    }
+    return `${currentRoute.path}?${queryParams.join('&')}`
+  } else {
+    return currentRoute.path
+  }
+}
+
 module.exports = {
   anyEmptyNestedRoutes,
   compareRoutes,
   getNamedParams,
   getPathNames,
-  nameToPath
+  nameToPath,
+  pathWithSearch
 }
