@@ -16,7 +16,11 @@ let urlParser = {}
  **/
 const pushActiveRoute = () => {
   if (typeof window !== 'undefined') {
-    window.history.pushState({ page: window.location.pathname }, '', window.location.pathname)
+    window.history.pushState(
+      { page: window.location.pathname + window.location.search },
+      '',
+      window.location.pathname + window.location.search
+    )
   }
 }
 
@@ -167,12 +171,12 @@ if (typeof window !== 'undefined') {
     if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
       event.preventDefault()
       event.stopPropagation()
-      navigateTo(event.target.pathname)
+      navigateTo(event.target.pathname + event.target.search)
     }
   })
 
   window.onpopstate = function(_event) {
-    navigateTo(window.location.pathname)
+    navigateTo(window.location.pathname + window.location.search)
   }
 }
 
