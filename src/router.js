@@ -16,6 +16,7 @@ let urlParser = {}
  **/
 const pushActiveRoute = () => {
   if (typeof window !== 'undefined') {
+    console.log(window.location.pathname + window.location.search)
     window.history.pushState(
       { page: window.location.pathname + window.location.search },
       '',
@@ -175,7 +176,8 @@ if (typeof window !== 'undefined') {
     }
   })
 
-  window.onpopstate = function(_event) {
+  window.onpopstate = function(event) {
+    console.log(event, window.location)
     navigateTo(window.location.pathname + window.location.search)
   }
 }
