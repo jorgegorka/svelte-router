@@ -302,9 +302,24 @@ That will generate the following routes:
 
 If the user visits /public/about-us/people/jack the following components will be rendered:
 
-<Router> -> <PublicLayout>(Route) -> AboutUsLayout(Route) -> PeoplePage
+```
+Router -> PublicLayout(Route) -> AboutUsLayout(Route) -> PeoplePage
+```
 
-Both layouts public and about us need a _Route_ component that indicates where to render the nested content. This _Route_ component will pass along the currentRoute prop with all the information related to nested and query params.
+Inside PeoplePage you can get all the information about the current route like this:
+
+```javascript
+<script>
+  export let currentRoute
+</script>
+
+<h1>Your name is: {currentRoute.namedParams.name}</h1>
+```
+
+This will render: 
+```html
+<h1>Your name is: Jack</h1>
+```
 
 ## Navigate
 
