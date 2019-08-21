@@ -114,6 +114,8 @@ function pathWithSearch(currentRoute) {
     for (let [key, value] of Object.entries(currentRoute.queryParams)) {
       queryParams.push(`${key}=${value}`)
     }
+  }
+  if (queryParams.length > 0) {
     return `${currentRoute.path}?${queryParams.join('&')}`
   } else {
     return currentRoute.path

@@ -427,4 +427,15 @@ describe('pathWithSearch', function() {
       expect(pathWithSearch(currentRoute)).to.equal('/admin/employee/new?date=2019-11-21&employeeId=1234324&ping=false')
     })
   })
+
+  describe('when query params are empty', function() {
+    beforeEach(function() {
+      currentRoute.path = '/admin/employee/new'
+      currentRoute.queryParams = {}
+    })
+
+    it('should return the base route', function() {
+      expect(pathWithSearch(currentRoute)).to.equal('/admin/employee/new')
+    })
+  })
 })

@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.0.15
+
+- Remove ? when not needed.
+
 ## 2.0.14
 
 - Get pathname and params from currentRoute
