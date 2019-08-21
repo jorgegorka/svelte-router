@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.1.0
+
+- Fix bug in nested routes with named params.
+
 ## 2.0.9
 
 - Add onpopstate handler.

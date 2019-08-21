@@ -1,9 +1,6 @@
-const UrlParser = require('url-params-parser').UrlParser
-const activeRoute = require('./store').activeRoute
-const getNamedParams = require('./lib/utils').getNamedParams
-const nameToPath = require('./lib/utils').nameToPath
-const anyEmptyNestedRoutes = require('./lib/utils').anyEmptyNestedRoutes
-const compareRoutes = require('./lib/utils').compareRoutes
+const { UrlParser } = require('url-params-parser')
+const { activeRoute } = require('./store')
+const { addAbsoluteRoutes, anyEmptyNestedRoutes, compareRoutes, nameToPath, getNamedParams } = require('./lib/utils')
 
 let userDefinedRoutes = []
 let notFoundPage = ''
@@ -27,48 +24,50 @@ const pushActiveRoute = () => {
  * @param pathNames
  **/
 const searchActiveRoutes = (routes, basePath, pathNames) => {
-  let currentRoute = {}
-  let basePathName = pathNames.shift().toLowerCase()
+  console.log(pathNames)
+  // let currentRoute = {}
+  // let basePathName = pathNames.shift().toLowerCase()
 
-  routes.forEach(route => {
-    basePathName = compareRoutes(basePathName, pathNames, route)
-    if (basePathName === nameToPath(route.name)) {
-      let namedPath = `${basePath}/${route.name}`
-      let routePath = `${basePath}/${nameToPath(route.name)}`
-      if (routePath === '//') {
-        routePath = '/'
-      }
+  // routes.forEach(route => {
+  //   basePathName = compareRoutes(basePathName, pathNames, route)
+  //   console.log(basePath)
+  //   if (basePathName === nameToPath(route.name)) {
+  //     let namedPath = `${basePath}/${route.name}`
+  //     let routePath = `${basePath}/${nameToPath(route.name)}`
+  //     if (routePath === '//') {
+  //       routePath = '/'
+  //     }
 
-      const namedParams = getNamedParams(route.name)
-      if (namedParams && namedParams.length > 0) {
-        namedParams.forEach(() => {
-          if (pathNames.length > 0) {
-            routePath += `/${pathNames.shift()}`
-          }
-        })
-      }
+  //     const namedParams = getNamedParams(route.name)
+  //     if (namedParams && namedParams.length > 0) {
+  //       namedParams.forEach(() => {
+  //         if (pathNames.length > 0) {
+  //           routePath += `/${pathNames.shift()}`
+  //         }
+  //       })
+  //     }
 
-      if (currentRoute.name !== routePath) {
-        currentRoute = {
-          name: routePath,
-          component: route.component,
-          layout: route.layout,
-          queryParams: urlParser.queryParams,
-          namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
-        }
-      }
+  //     if (currentRoute.name !== routePath) {
+  //       currentRoute = {
+  //         name: routePath,
+  //         component: route.component,
+  //         layout: route.layout,
+  //         queryParams: urlParser.queryParams,
+  //         namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+  //       }
+  //     }
 
-      if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
-        currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
-      } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
-        const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'])
-        if (indexRoute && Object.keys(indexRoute).length > 0) {
-          currentRoute.childRoute = indexRoute
-        }
-      } else if (route.nestedRoutes && route.nestedRoutes.length === 0 && pathNames.length > 0) {
-      }
-    }
-  })
+  //     if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
+  //       currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames)
+  //     } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
+  //       const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'])
+  //       if (indexRoute && Object.keys(indexRoute).length > 0) {
+  //         currentRoute.childRoute = indexRoute
+  //       }
+  //     } else if (route.nestedRoutes && route.nestedRoutes.length === 0 && pathNames.length > 0) {
+  //     }
+  //   }
+  // })
 
   return currentRoute
 }
@@ -94,11 +93,11 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
     notFound = ''
   }
 
-  userDefinedRoutes = routes
+  userDefinedRoutes = Array.from(routes)
   notFoundPage = notFound
 
   const findActiveRoute = () => {
-    let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
+    let currentRoute = searchActiveRoutes(addAbsoluteRoutes(routes), '', urlParser.pathNames)
 
     if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
       currentRoute = { name: '404', component: notFound, path: '404' }

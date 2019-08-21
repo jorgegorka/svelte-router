@@ -1,3 +1,26 @@
+const { UrlParser } = require('url-params-parser')
+
+/**
+ * Returns an array with all routes flattened and a full route path
+ * @param routeObject
+ * @param basePath
+ **/
+
+function addAbsoluteRoutes(routes, basePath = '') {
+  let fullRoutes = []
+  routes.forEach(function(route) {
+    const routePath = `${basePath}/${stripFirstSlash(route.name)}`
+    if (route.nestedRoutes && route.nestedRoutes.length > 0) {
+      fullRoutes.push({ ...route, fullPath: routePath })
+      fullRoutes = [...fullRoutes, ...addAbsoluteRoutes(route.nestedRoutes, routePath)]
+    } else {
+      fullRoutes.push({ ...route, fullPath: routePath })
+    }
+  })
+
+  return fullRoutes
+}
+
 /**
  * Returns true if object has any nested routes empty
  * @param routeObject
@@ -18,41 +41,54 @@ const anyEmptyNestedRoutes = routeObject => {
 }
 
 /**
- * Updates the base route path when route.name has a nested inside like /admin/teams
- * @param basePath string
- * @param pathNames array
- * @param route object
+ * Returns true if routes are comparable
+ * @param basePath array
+ * @param routePath array
  **/
-const compareRoutes = (basePath, pathNames, route) => {
-  if (basePath === '/' || basePath.trim().length === 0) return basePath
-  let basePathResult = basePath
-  let routeName = route.name
-  if (routeName[0] === '/') {
-    routeName = routeName.slice(1)
-  }
-  if (basePathResult[0] === '/') {
-    basePathResult = basePathResult.slice(1)
-  }
+function areComparable(basePath, routePath) {
+  const numActualRouteNames = countEndPlaceholders([...basePath])
 
-  if (!route.childRoute) {
-    let routeNames = routeName.split(':')[0]
-    if (routeNames.slice(-1) === '/') {
-      routeNames = routeNames.slice(0, -1)
-    }
-    routeNames = routeNames.split('/')
-    routeNames.shift()
-    routeNames.forEach(() => {
-      const currentPathName = pathNames[0]
-      if (currentPathName && route.name.includes(`${basePathResult}/${currentPathName}`)) {
-        basePathResult += `/${pathNames.shift()}`
+  if (numActualRouteNames === basePath.length) {
+    return routePath.length === numActualRouteNames
+  } else {
+    return routePath.length >= numActualRouteNames
+  }
+}
+
+/**
+ * Returns true if routes are identical
+ * @param basePath array
+ * @param routePath array
+ **/
+const compareRoutes = (basePath, routePath) => {
+  console.log('comparable ', areComparable(basePath, routePath), basePath, routePath)
+  if (areComparable(basePath, routePath)) {
+    return basePath.every(function(element, index) {
+      if (isPlaceholder(element)) {
+        return true
       } else {
-        return basePathResult
+        return element === routePath[index]
       }
     })
-    return basePathResult
   } else {
-    return basePath
+    return false
   }
+}
+
+/**
+ * Returns the number of elements an array not counting placeholders at the end
+ * @param route array
+ * Private method - Mutates route
+ **/
+function countEndPlaceholders(route) {
+  if (isPlaceholder(route[route.length - 1])) {
+    route.pop()
+    countEndPlaceholders(route)
+  } else {
+    return route.length
+  }
+
+  return route.length
 }
 
 /**
@@ -73,7 +109,7 @@ const getNamedParams = (pathName = '') => {
  * @param pathName
  * Private method
  **/
-const getPathNames = pathName => {
+function getPathNames(pathName) {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
   if (pathName.slice(-1) === '/') {
     pathName = pathName.slice(0, -1)
@@ -86,7 +122,16 @@ const getPathNames = pathName => {
 }
 
 /**
- * Return the first part of a pathname until the first named param
+ * Returns true if element is a placeholder
+ * @param name
+ * Private method
+ **/
+function isPlaceholder(element) {
+  return element[0] === ':'
+}
+
+/**
+ * Returns the first part of a pathname until the first named param
  * @param name
  **/
 const nameToPath = (name = '') => {
@@ -104,10 +149,48 @@ const nameToPath = (name = '') => {
   return routeName.toLowerCase()
 }
 
+/**
+ * removes the first slash from a route if any.
+ * @param route
+ * Private method
+ **/
+function stripFirstSlash(route) {
+  if (route === '/' || route.trim().length === 0) return ''
+
+  if (route[0] === '/') {
+    route = route.slice(1)
+  }
+
+  return route
+}
+
+/**
+ * find and return route given a path name. Returns false otherwise
+ * @param routes // Array of absolute routes
+ * @param pathNames // Array with all path names
+ **/
+function routeExists(routes, pathNames) {
+  const result = routes
+    .sort(function(a, b) {
+      const lengthA = UrlParser('http://fake.com' + a.fullPath).pathNames.length
+      const lengthB = UrlParser('http://fake.com' + b.fullPath).pathNames.lentgh
+      return lengthB - lengthA
+    })
+    .find(route => {
+      const urlParser = UrlParser('http://fake.com' + route.fullPath)
+      console.log('compare ', urlParser.pathNames, pathNames, compareRoutes(urlParser.pathNames, pathNames))
+      return compareRoutes(urlParser.pathNames, pathNames)
+    })
+
+  return result ? result : false
+}
+
 module.exports = {
+  addAbsoluteRoutes,
   anyEmptyNestedRoutes,
   compareRoutes,
   getNamedParams,
   getPathNames,
-  nameToPath
+  nameToPath,
+  routeExists
 }
