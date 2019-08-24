@@ -154,6 +154,20 @@ describe('getNamedParams', function() {
       expect(namedParams).to.deep.equal(['name', 'date', 'id'])
     })
   })
+
+  describe('When there are params in the middle of the path', function() {
+    beforeEach(function() {
+      namedParams = getNamedParams('/project/show/:name/list')
+    })
+
+    it('should return one param', function() {
+      expect(namedParams.length).to.equal(1)
+    })
+
+    it('should return the param name', function() {
+      expect(namedParams).to.deep.equal(['name'])
+    })
+  })
 })
 
 describe('nameToPath', function() {

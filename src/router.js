@@ -30,6 +30,7 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
 
   routes.forEach(route => {
     basePathName = compareRoutes(basePathName, pathNames, route)
+
     if (basePathName === nameToPath(route.name)) {
       let namedPath = `${basePath}/${route.name}`
       let routePath = `${basePath}/${nameToPath(route.name)}`

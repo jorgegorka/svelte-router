@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.1.0
+
+- Ensure nested routes with named params work.
+
 ## 2.0.15
 
 - Remove ? when not needed.

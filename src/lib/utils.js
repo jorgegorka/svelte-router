@@ -56,16 +56,19 @@ const compareRoutes = (basePath, pathNames, route) => {
 }
 
 /**
- * Return the named params (placeholders) of a pathname
+ * Return all the consecutive named param (placeholders) of a pathname
  * @param pathname
  **/
 const getNamedParams = (pathName = '') => {
   if (pathName.trim().length === '') return []
 
-  const names = pathName.split(':')
-  names.shift()
-
-  return names.map(name => (name.slice(-1) === '/' ? name.slice(0, -1) : name))
+  const namedUrlParams = getPathNames(pathName)
+  return namedUrlParams.reduce((validParams, param, index) => {
+    if (param[0] === ':') {
+      validParams.push(param.slice(1))
+    }
+    return validParams
+  }, [])
 }
 
 /**

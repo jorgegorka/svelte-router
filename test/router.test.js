@@ -540,6 +540,126 @@ describe('Router', function() {
     })
   })
 
+  describe('When there are nested routes with named params in the middle of the route', function() {
+    beforeEach(function() {
+      routes = [
+        {
+          name: '/',
+          component: 'PublicIndex'
+        },
+        { name: 'login', component: 'Login' },
+        { name: 'signup', component: 'SignUp' },
+        {
+          name: 'admin',
+          component: 'AdminIndex',
+          nestedRoutes: [
+            {
+              name: 'employees',
+              component: 'EmployeesIndex',
+              nestedRoutes: [
+                {
+                  name: 'show/:id',
+                  component: 'ShowEmployeeLayout',
+                  nestedRoutes: [
+                    {
+                      name: 'index',
+                      component: 'ShowEmployee'
+                    },
+                    {
+                      name: 'calendar',
+                      component: 'CalendarEmployee'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })
+
+    describe('Employee show route with named param', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show/123'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+      })
+    })
+
+    describe('Employee show route with named param and extra route info', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show/123/calendar'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
+      })
+    })
+
+    describe('Employee show route with named param', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+      })
+    })
+  })
+
   describe('When there are nested routes with no layout', function() {
     beforeEach(function() {
       routes = [
