@@ -197,7 +197,10 @@ const routes = [
         name: 'employees',
         component: EmployeesIndex,
         nestedRoutes: [
-          { name: 'show/:id', component: EmployeesShow }
+          { name: 'show/:id', component: EmployeesShowLayout, nestedRoutes: [
+            { name: 'index', component: EmployeesShow },
+            { name: 'list', component: EmployeesShowList }
+          ]}
         ]
       }
     ]
@@ -205,7 +208,7 @@ const routes = [
 ]
 ```
 
-The routes that this file will generate are:
+The routes that this file will parse successfully are:
 
 ```
 /
@@ -214,6 +217,7 @@ The routes that this file will generate are:
 /admin/employees
 /admin/employees/show
 /admin/employees/show/{id}
+/admin/employees/show/{id}/list
 ```
 
 ### Router
@@ -291,7 +295,7 @@ const routes = [
 ]
 ```
 
-That will generate the following routes:
+That configuration will parse correctly the following routes:
 
 ```javascript
 /public
