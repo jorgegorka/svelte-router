@@ -50,7 +50,6 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
 
       if (currentRoute.name !== routePath) {
         const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
-        console.log(parsedParams)
         routeNamedParams = { ...routeNamedParams, ...parsedParams }
         currentRoute = {
           name: routePath,
