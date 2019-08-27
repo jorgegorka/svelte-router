@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.2.0
+
+- Add named params to all child routes not just specific ones.
+
 ## 2.1.0
 
 - Ensure nested routes with named params work.

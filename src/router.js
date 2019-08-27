@@ -6,6 +6,7 @@ let userDefinedRoutes = []
 let notFoundPage = ''
 let currentActiveRoute = ''
 let urlParser = {}
+let routeNamedParams = {}
 
 /**
  * Updates the browser pathname and history with the active route.
@@ -48,12 +49,15 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
       }
 
       if (currentRoute.name !== routePath) {
+        const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+        console.log(parsedParams)
+        routeNamedParams = { ...routeNamedParams, ...parsedParams }
         currentRoute = {
           name: routePath,
           component: route.component,
           layout: route.layout,
           queryParams: urlParser.queryParams,
-          namedParams: UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+          namedParams: routeNamedParams
         }
       }
 
@@ -97,6 +101,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
   notFoundPage = notFound
 
   const findActiveRoute = () => {
+    routeNamedParams = {}
     let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
 
     if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
@@ -162,15 +167,16 @@ const routeIsActive = queryPath => {
 }
 
 if (typeof window !== 'undefined') {
-  window.addEventListener('click', event => {
-    if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
-      event.preventDefault()
-      event.stopPropagation()
-      navigateTo(event.target.pathname + event.target.search)
-    }
-  })
+  // window.addEventListener('click', event => {
+  //   if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
+  //     event.preventDefault()
+  //     // event.stopPropagation()
+  //     console.log('event click !!!!')
+  //     navigateTo(event.target.pathname + event.target.search)
+  //   }
+  // })
 
-  window.onpopstate = function(event) {
+  window.onpopstate = function(_event) {
     navigateTo(window.location.pathname + window.location.search)
   }
 }

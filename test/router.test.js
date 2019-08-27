@@ -566,7 +566,7 @@ describe('Router', function() {
                       component: 'ShowEmployee'
                     },
                     {
-                      name: 'calendar',
+                      name: 'calendar/:month',
                       component: 'CalendarEmployee'
                     }
                   ]
@@ -629,6 +629,33 @@ describe('Router', function() {
 
       it('should set nested component name', function() {
         expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
+      })
+    })
+
+    describe('Employee show route with named param and extra route info', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show/123/calendar/july'
+        testRouter = SpaRouter({ routes, pathName })
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar/july')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
+      })
+
+      it('should set first nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
+      })
+
+      it('should set second nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ month: 'july' })
       })
     })
 
