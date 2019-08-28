@@ -342,7 +342,7 @@ Example:
 
 <div class="app">
   <h1>My content</h1>
-  <p>Now I want to generate a <Navigate to="admin/employees">Link name</Navigate>
+  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate>
 </div>
 ```
 
