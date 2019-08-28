@@ -160,7 +160,7 @@ The route page will take care of rendering the appropriate component inside the 
 
 ### SpaRouter
 
-`import { SpaRouter } from 'svelte-router-app'`
+`import { SpaRouter } from 'svelte-router-spa'`
 
 This object receives three params: routes, pathName and notFound.
 
@@ -348,7 +348,7 @@ Example:
 
 ### navigateTo
 
-`import { navigateTo } from 'svelte-router-app'`
+`import { navigateTo } from 'svelte-router-spa'`
 
 navigateTo allows you to programatically navigate to a route from inside your app code.
 
@@ -366,7 +366,7 @@ if (loginSuccess) {
 
 ### routeIsActive
 
-`import { routeIsActive } from 'svelte-router-app'`
+`import { routeIsActive } from 'svelte-router-spa'`
 
 Returns a boolean if the path is the current active route.
 
