@@ -157,7 +157,7 @@ The route page will take care of rendering the appropriate component inside the 
 
 ### SpaRouter
 
-`import { SpaRouter } from 'svelte-router-app'`
+`import { SpaRouter } from 'svelte-router-spa'`
 
 This object receives three params: routes, pathName and notFound.
 
@@ -338,13 +338,13 @@ Example:
 
 <div class="app">
   <h1>My content</h1>
-  <p>Now I want to generate a <Navigate to="admin/employees">Link name</Navigate>
+  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate>
 </div>
 ```
 
 ### navigateTo
 
-`import { navigateTo } from 'svelte-router-app'`
+`import { navigateTo } from 'svelte-router-spa'`
 
 navigateTo allows you to programatically navigate to a route from inside your app code.
 
