@@ -166,14 +166,14 @@ const routeIsActive = queryPath => {
 }
 
 if (typeof window !== 'undefined') {
-  // window.addEventListener('click', event => {
-  //   if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
-  //     event.preventDefault()
-  //     // event.stopPropagation()
-  //     console.log('event click !!!!')
-  //     navigateTo(event.target.pathname + event.target.search)
-  //   }
-  // })
+  // Avoid full page reload on local routes
+  window.addEventListener('click', event => {
+    if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
+      event.preventDefault()
+      // event.stopPropagation()
+      navigateTo(event.target.pathname + event.target.search)
+    }
+  })
 
   window.onpopstate = function(_event) {
     navigateTo(window.location.pathname + window.location.search)

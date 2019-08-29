@@ -4,7 +4,7 @@
   export let title = ''
   export let styles = ''
 
-  const navigate = event => {
+  function navigate(event) {
     event.preventDefault()
     event.stopPropagation()
     navigateTo(to)

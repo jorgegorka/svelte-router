@@ -2,11 +2,11 @@ const writable = require('svelte/store').writable
 
 const router = writable({})
 
-const set = route => {
+function set(route) {
   router.set(route)
 }
 
-const remove = () => {
+function remove() {
   router.set({})
 }
 

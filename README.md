@@ -71,10 +71,7 @@ const routes = [
       {
         name: 'employees',
         component: '',
-        nestedRoutes: [
-          { name: 'index', component: EmployeesIndex }, 
-          { name: 'show/:id', component: EmployeesShow }
-        ]
+        nestedRoutes: [{ name: 'index', component: EmployeesIndex }, { name: 'show/:id', component: EmployeesShow }]
       }
     ]
   }
@@ -197,10 +194,11 @@ const routes = [
         name: 'employees',
         component: EmployeesIndex,
         nestedRoutes: [
-          { name: 'show/:id', component: EmployeesShowLayout, nestedRoutes: [
-            { name: 'index', component: EmployeesShow },
-            { name: 'list', component: EmployeesShowList }
-          ]}
+          {
+            name: 'show/:id',
+            component: EmployeesShowLayout,
+            nestedRoutes: [{ name: 'index', component: EmployeesShow }, { name: 'list', component: EmployeesShowList }]
+          }
         ]
       }
     ]
@@ -285,10 +283,7 @@ const routes = [
       {
         name: 'about-us',
         component: 'AboutUsLayout',
-        nestedRoutes: [
-          { name: 'company', component: CompanyPage }, 
-          { name: 'people', component: PeoplePage }
-        ]
+        nestedRoutes: [{ name: 'company', component: CompanyPage }, { name: 'people', component: PeoplePage }]
       }
     ]
   }
@@ -320,7 +315,8 @@ Inside PeoplePage you can get all the information about the current route like t
 <h1>Your name is: {currentRoute.namedParams.name}</h1>
 ```
 
-This will render: 
+This will render:
+
 ```html
 <h1>Your name is: Jack</h1>
 ```
@@ -366,7 +362,7 @@ if (loginSuccess) {
 
 ### routeIsActive
 
-`import { routeIsActive } from 'svelte-router-app'`
+`import { routeIsActive } from 'svelte-router-spa'`
 
 Returns a boolean if the path is the current active route.
 

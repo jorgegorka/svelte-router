@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.2.2
+
+- Avoid full page reload when using a tags.
+
 ## 2.2.1
 
 - Remove console log.
