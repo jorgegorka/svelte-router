@@ -122,12 +122,13 @@ Filename: _public_layout.svelte_
   import { Route } from 'svelte-router-spa'
   import TopHeader from './top_header.svelte'
   export let currentRoute
+  const params = {}
 </script>
 
 <div class="app">
   <TopHeader />
   <section class="section">
-    <Route {currentRoute} />
+    <Route {currentRoute}  {params} />
   </section>
 </div>
 ```
@@ -143,7 +144,7 @@ Filename: _admin_layout.svelte_
 
 <div>
   <h1>Admin Layout</h1>
-  <Route {currentRoute} />
+  <Route {currentRoute} {params} />
 </div>
 ```
 
@@ -244,7 +245,7 @@ This component is only needed if you create a layout. It will take care of rende
 
 The info about the current route will be received as a property so you need to define _currentRoute_ and export it.
 
-It will also accept an optional property, an object called named _params_ where you can send any aditional params to the rendered component. This is usefull if you add any logic in your template, to check user's permission for instance, and want to send extra info to the rendered component.
+It will also accept an object called named _params_ where you can send any aditional params to the rendered component. This is usefull if you add any logic in your template, to check user's permission for instance, and want to send extra info to the rendered component.
 
 currentRoute has all the information about the current route and the child routes.
 
@@ -378,7 +379,6 @@ Example:
 
 ```javascript
 import { routeIsActive } from 'svelte-router-spa'
-
 ;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
   Say hello
 </a>
