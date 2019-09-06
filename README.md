@@ -381,3 +381,7 @@ import { routeIsActive } from 'svelte-router-spa'
 ## Credits
 
 Svelte Router SPA has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).
+
+### Contributors
+
+[Mark Kopenga](https://github.com/mjarkk)

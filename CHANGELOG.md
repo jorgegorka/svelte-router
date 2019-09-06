@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.3.1
+
+- Remove outdated config info.
+
 ## 2.3.0
 
 - Add params to Route.
