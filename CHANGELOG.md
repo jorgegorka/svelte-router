@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 2.3.0
+
+- Add params to Route.
+
 ## 2.2.2
 
 - Avoid full page reload when using a tags.

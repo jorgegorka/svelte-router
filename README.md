@@ -21,7 +21,7 @@ It's specially designed for Single Page Applications (SPA). If you need Server S
 
 Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and child route.
 
-You can use all that information (availabe in the currentRoute prop) to help you implement your business logic and secure the app.
+You can use all that information (availabe in the currentRoute property) to help you implement your business logic and secure the app.
 
 ## Install
 
@@ -113,7 +113,7 @@ Edit App.svelte and add the main router.
 
 You can add any number of layouts nested inside Router. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
 
-Every Route file will receive a currentRoute prop with information about the current route, params, queries, etc.
+Every Route file will receive a currentRoute property with information about the current route, params, queries, etc.
 
 Filename: _public_layout.svelte_
 
@@ -147,11 +147,11 @@ Filename: _admin_layout.svelte_
 </div>
 ```
 
-The route page will take care of rendering the appropriate component inside the layout. It will also pass a prop called _currentRoute_ to the component with information about the route, nested and query params.
+The route page will take care of rendering the appropriate component inside the layout. It will also pass a property called _currentRoute_ to the component with information about the route, nested and query params.
 
 **Tip:** You can have any number of layouts and you can nest them into each other as much as you want. Just remember to add a _Route_ component where the content should be rendered inside the layout.
 
-**Tip:** The _Route_ component will pass a prop to the rendered component named _currentRoute_ with information about the current route, params, queries, etc.
+**Tip:** The _Route_ component will pass a property to the rendered component named _currentRoute_ with information about the current route, params, queries, etc.
 
 ## API
 
@@ -242,9 +242,11 @@ The layout and/or the component that matches the active route will be rendered i
 
 This component is only needed if you create a layout. It will take care of rendering the content for the child components or child layouts recursively. You can have as many nested layouts as you need.
 
-The info about the current route will be received as a prop so you need to define _currentRoute_ and export it.
+The info about the current route will be received as a property so you need to define _currentRoute_ and export it.
 
-currentRoute has all the information about the current route and the child routes
+It will also accept an optional property, an object called named _params_ where you can send any aditional params to the rendered component. This is usefull if you add any logic in your template, to check user's permission for instance, and want to send extra info to the rendered component.
+
+currentRoute has all the information about the current route and the child routes.
 
 Route is smart enough to expose the named params in the route component where they will be rendered.
 
@@ -256,13 +258,15 @@ Example:
   import TopHeader from './top_header.svelte'
   import FooterContent from './footer_content.svelte'
   export let currentRoute
+
+  const params = { validCheck: true }
 </script>
 
 <div class="app">
   <TopHeader />
   <section class="section">
-    <Route {currentRoute} />
-    <p>Current params are: {currentRoute.namedParams} and {currentRoute.queryParams)
+    <Route {currentRoute} {params} />
+    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams)
   </section>
   <FooterContent />
 </div>
@@ -270,7 +274,7 @@ Example:
 
 ## currentRoute
 
-This prop is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
+This property is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
 
 **Example:**
 
@@ -375,7 +379,7 @@ Example:
 ```javascript
 import { routeIsActive } from 'svelte-router-spa'
 
-<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
+;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
   Say hello
 </a>
 ```
