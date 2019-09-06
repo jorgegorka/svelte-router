@@ -41,12 +41,6 @@ yarn add svelte-router-spa
 
 ## Usage
 
-Start your development server in SPA mode. Edit your package.json and change:
-
-```javascript
-"start:dev": "sirv public -s --dev"
-```
-
 Add a routes.js file with your routes info. Example:
 
 ```javascript
