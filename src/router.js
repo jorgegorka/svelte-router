@@ -99,7 +99,11 @@ function SpaRouter({ routes, pathName }) {
     let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
 
     if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
-      window.location.pathname = '/404.html'
+      if (typeof window !== 'undefined') {
+        window.location.pathname = '/404.html'
+      } else {
+        currentRoute = { name: '404', component: '', path: '404' }
+      }
     } else {
       currentRoute.path = urlParser.pathname
     }
