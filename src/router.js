@@ -12,7 +12,7 @@ let routeNamedParams = {}
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
  **/
-const pushActiveRoute = currentRoute => {
+function pushActiveRoute(currentRoute) {
   if (typeof window !== 'undefined') {
     const pathAndSearch = pathWithSearch(currentRoute)
     window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
@@ -25,11 +25,11 @@ const pushActiveRoute = currentRoute => {
  * @param basePath
  * @param pathNames
  **/
-const searchActiveRoutes = (routes, basePath, pathNames) => {
+function searchActiveRoutes(routes, basePath, pathNames) {
   let currentRoute = {}
   let basePathName = pathNames.shift().toLowerCase()
 
-  routes.forEach(route => {
+  routes.forEach(function(route) {
     basePathName = compareRoutes(basePathName, pathNames, route)
 
     if (basePathName === nameToPath(route.name)) {
@@ -81,7 +81,7 @@ const searchActiveRoutes = (routes, basePath, pathNames) => {
  * @param pathName
  * @param notFound
  **/
-const SpaRouter = ({ routes, pathName, notFound }) => {
+function SpaRouter({ routes, pathName }) {
   if (typeof pathName === 'undefined') {
     pathName = document.location.href
   }
@@ -92,19 +92,14 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
 
   urlParser = UrlParser(pathName)
 
-  if (typeof notFound === 'undefined') {
-    notFound = ''
-  }
-
   userDefinedRoutes = routes
-  notFoundPage = notFound
 
-  const findActiveRoute = () => {
+  function findActiveRoute() {
     routeNamedParams = {}
     let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
 
     if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
-      currentRoute = { name: '404', component: notFound, path: '404' }
+      window.location.pathname = '/404.html'
     } else {
       currentRoute.path = urlParser.pathname
     }
@@ -112,7 +107,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
     return currentRoute
   }
 
-  const generate = () => {
+  function generate() {
     const currentRoute = findActiveRoute()
 
     currentActiveRoute = currentRoute.path
@@ -131,7 +126,7 @@ const SpaRouter = ({ routes, pathName, notFound }) => {
  * Updates the current active route and updates the browser pathname
  * @param pathName
  **/
-const navigateTo = pathName => {
+function navigateTo(pathName) {
   if (pathName.trim().length > 1 && pathName[0] === '/') {
     pathName = pathName.slice(1)
   }
@@ -149,7 +144,7 @@ const navigateTo = pathName => {
  * Returns true if pathName is current active route
  * @param pathName
  **/
-const routeIsActive = queryPath => {
+function routeIsActive(queryPath) {
   if (queryPath[0] !== '/') {
     queryPath = '/' + queryPath
   }

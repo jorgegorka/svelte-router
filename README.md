@@ -80,12 +80,10 @@ Import the routes into main.js
 import App from './App.svelte'
 import { SpaRouter } from 'svelte-router-spa'
 import { routes } from './routes'
-import NotFound from './views/not_found.svelte'
 
 SpaRouter({
   routes,
-  pathName: document.location.href,
-  notFound: NotFound
+  pathName: document.location.href
 }).getActiveRoute
 
 const app = new App({
@@ -378,9 +376,13 @@ import { routeIsActive } from 'svelte-router-spa'
 </a>
 ```
 
+## Not Found 404
+
+Svelte Router redirects to a 404.html page if a route is not found. You need to host and upload that page to your site. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages so chances are you already have one.
+
 ## Credits
 
-Svelte Router SPA has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).
+Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).
 
 ### Contributors
 
