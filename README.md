@@ -158,8 +158,6 @@ This object receives three params: routes, pathName and notFound.
 
 **pathName** The path name to evaluate. For instance 'https://www.mysite.com/admin/employees?show-all=false'. It defaults to _document.location.href_
 
-**notFound** A svelte component that will be rendered if the route can not be found.
-
 It exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
 
 Routes can contain as many nested routes as needed.
