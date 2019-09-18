@@ -17,19 +17,32 @@ function forceRedirect(destinationUrl) {
     if (destinationUrl.includes('http')) {
       window.location = destinationUrl
     } else {
+      if (gaPageviews) {
+        gaTracking(destinationUrl)
+      }
       window.location.pathname = destinationUrl
     }
   }
 
   return destinationUrl
 }
+
+function gaTracking(newPage) {
+  if (typeof ga !== 'undefined') {
+    ga('set', 'page', newPage)
+    ga('send', 'pageview')
+  }
+}
 /**
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
  **/
-function pushActiveRoute(currentRoute) {
+function pushActiveRoute(currentRoute, gaPageviews) {
   if (typeof window !== 'undefined') {
     const pathAndSearch = pathWithSearch(currentRoute)
+    if (gaPageviews) {
+      gaTracking(pathAndSearch)
+    }
     window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
   }
 }
@@ -111,7 +124,7 @@ function searchActiveRoutes(routes, basePath, pathNames) {
  * @param pathName
  * @param notFound
  **/
-function SpaRouter({ routes, pathName }) {
+function SpaRouter({ routes, pathName, gaPageviews = false }) {
   if (typeof pathName === 'undefined') {
     pathName = document.location.href
   }
@@ -146,7 +159,7 @@ function SpaRouter({ routes, pathName }) {
 
     currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
-    pushActiveRoute(currentRoute)
+    pushActiveRoute(currentRoute, gaPageviews)
 
     return currentRoute
   }

@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 3.2.1
+
+- Track pageviews in google analytics.
+
 ## 3.2.0
 
 - Route guards

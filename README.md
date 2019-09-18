@@ -1,10 +1,10 @@
-# Svelte Router
+# Svelte Router SPA
 
 ![version](https://img.shields.io/npm/v/svelte-router-spa.svg)
 ![license](https://img.shields.io/github/license/jorgegorka/svelte-router.svg)
 ![Code climate](https://img.shields.io/codeclimate/maintainability/jorgegorka/svelte-router.svg)
 
-## What is Svelte Router?
+## What is Svelte Router
 
 Svelte Router adds routing to your Svelte apps.
 
@@ -66,7 +66,7 @@ const routes = [
   {
     name: 'admin',
     component: AdminLayout,
-    onlyIf: { guard: userIsAdmin, failure: '/login'} ,
+    onlyIf: { guard: userIsAdmin, failure: '/login' },
     nestedRoutes: [
       { name: 'index', component: AdminIndex },
       {
@@ -184,20 +184,6 @@ function userIsAdmin() {
 
 **onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _failure_.
 
-## API
-
-### SpaRouter
-
-`import { SpaRouter } from 'svelte-router-spa'`
-
-This object receives three params: routes, pathName and notFound.
-
-**routes** An array of routes.
-
-**pathName** The path name to evaluate. For instance 'https://www.mysite.com/admin/employees?show-all=false'. It defaults to _document.location.href_
-
-It exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
-
 Routes can contain as many nested routes as needed.
 
 It can also contain as many layouts as needed. Layouts can be nested into other layouts.
@@ -246,6 +232,22 @@ The routes that this file will parse successfully are:
 /admin/employees/show/{id}
 /admin/employees/show/{id}/list
 ```
+
+## API
+
+### SpaRouter
+
+`import { SpaRouter } from 'svelte-router-spa'`
+
+SpaRouter receives an object as a param. It receives three params: routes, pathName and options.
+
+**routes (required)** An array of routes.
+
+**pathName (required)** The path name to evaluate. For instance '<https://www.mysite.com/admin/employees?show-all=false'.> It defaults to _document.location.href_
+
+**gaPageviews** A boolean indicating if we want to track routes as page views into Google Analytics. Defaults to false.
+
+SpaRouter exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
 
 ### Router
 
@@ -412,9 +414,23 @@ import { routeIsActive } from 'svelte-router-spa'
 </a>
 ```
 
-## Not Found 404
+## Not Found - 404
 
 Svelte Router redirects to a 404.html page if a route is not found. You need to host and upload that page to your site. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages so chances are you already have one.
+
+## Google Analytics
+
+If you want to track route changes as pageviews in Google Analytics just add
+
+```:javascript
+SpaRouter({
+  routes,
+  pathName: document.location.href,
+  gaPageviews: true
+}).getActiveRoute
+```
+
+Check the documentation for SpaRouter for more info on the params supported.
 
 ## Credits
 
