@@ -53,6 +53,10 @@ import AdminLayout from './views/admin/layout.svelte'
 import AdminIndex from './views/admin/index.svelte'
 import EmployeesIndex from './views/admin/employees/index.svelte'
 
+function userIsAdmin() {
+  //check if user is admin and return true or false
+}
+
 const routes = [
   {
     name: '/',
@@ -62,6 +66,7 @@ const routes = [
   {
     name: 'admin',
     component: AdminLayout,
+    onlyIf: { guard: userIsAdmin, failure: '/login} ,
     nestedRoutes: [
       { name: 'index', component: AdminIndex },
       {
