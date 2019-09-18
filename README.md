@@ -41,6 +41,8 @@ yarn add svelte-router-spa
 
 ## Usage
 
+Instead of having your routes spread inside your code Svelte Router SPA lets you define them inside a file where you can easily identify all available routes.
+
 Add a routes.js file with your routes info. Example:
 
 ```javascript
@@ -103,9 +105,9 @@ Edit App.svelte and add the main router.
 <Router />
 ```
 
-You can add any number of layouts nested inside Router. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
-
 Every Route file will receive a currentRoute property with information about the current route, params, queries, etc.
+
+You can add any number of layouts nested inside Router. For instance assuming that I want two layouts one for public pages and the other for private admin pages I would create these two files:
 
 Filename: _public_layout.svelte_
 
@@ -145,6 +147,37 @@ The route page will take care of rendering the appropriate component inside the 
 **Tip:** You can have any number of layouts and you can nest them into each other as much as you want. Just remember to add a _Route_ component where the content should be rendered inside the layout.
 
 **Tip:** The _Route_ component will pass a property to the rendered component named _currentRoute_ with information about the current route, params, queries, etc.
+
+### Anatomy of a route
+
+Each route is an object with the following elements:
+
+```:javascript
+{ name: 'about-us', component: About, layout: PublicLayout, redirectTo: 'https://tailwindcss.com' }
+```
+
+**name (required)**: The name that will be used in the url
+
+**component (required if no layout is present)**: A component that will be rendered when this route is active. If the route has nestedRoutes the component should be a Layout.
+
+**layout (required if no component is present)**: A component that acts as a layout (a container for other child components).
+
+_Either a component or a layout should be specified. Both can not be empty._
+
+**nestedRoutes**: An array of routes.
+
+**redirectTo**: An external url or an internal pathname.
+
+```:javascript
+
+function userIsAdmin() {
+  // do your checks here and return true or false
+}
+
+{ name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, failure: '/login} }
+```
+
+**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _failure_.
 
 ## API
 
@@ -201,7 +234,7 @@ const routes = [
 
 The routes that this file will parse successfully are:
 
-```
+```:javascript
 /
 /login
 /admin

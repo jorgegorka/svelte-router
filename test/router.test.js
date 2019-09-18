@@ -7,6 +7,14 @@ let testRouter = null
 let pathName = 'http://web.app/'
 let routes = []
 
+function thisIsFalse() {
+  return false
+}
+
+function thisIsTrue() {
+  return true
+}
+
 describe('Router', function() {
   describe('When route does not exist', function() {
     beforeEach(function() {
@@ -1041,6 +1049,58 @@ describe('routeIsActive', function() {
       it('should return false if not matches active route', function() {
         expect(routeIsActive('/admin/teams/show/accountants/')).to.be.true
       })
+    })
+  })
+})
+
+describe('onlyIf', function() {
+  describe('when guard is true', function() {
+    beforeEach(function() {
+      routes = [
+        {
+          name: '/admin',
+          component: 'AdminLayout',
+          nestedRoutes: [
+            { name: 'index', component: 'AdminIndex' },
+            { name: 'private', component: 'PrivateComponent' }
+          ],
+          onlyIf: { guard: thisIsTrue, failure: '/login' }
+        },
+
+        { name: 'login', component: 'Login' }
+      ]
+
+      pathName = 'http://web.app/admin'
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should render admin', function() {
+      expect(routeIsActive('/admin')).to.be.true
+    })
+  })
+
+  describe('when guard is false', function() {
+    beforeEach(function() {
+      routes = [
+        {
+          name: '/admin',
+          component: 'AdminLayout',
+          nestedRoutes: [
+            { name: 'index', component: 'AdminIndex' },
+            { name: 'private', component: 'PrivateComponent' }
+          ],
+          onlyIf: { guard: thisIsFalse, failure: '/login' }
+        },
+
+        { name: 'login', component: 'Login' }
+      ]
+
+      pathName = 'http://web.app/admin'
+      SpaRouter({ routes, pathName }).activeRoute
+    })
+
+    it('should not render admin', function() {
+      expect(routeIsActive('/admin')).to.be.false
     })
   })
 })

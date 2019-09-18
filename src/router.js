@@ -9,6 +9,21 @@ let urlParser = {}
 let routeNamedParams = {}
 
 /**
+ * Redirect current route to another
+ * @param destinationUrl
+ **/
+function forceRedirect(destinationUrl) {
+  if (typeof window !== 'undefined') {
+    if (destinationUrl.includes('http')) {
+      window.location = destinationUrl
+    } else {
+      window.location.pathname = destinationUrl
+    }
+  }
+
+  return destinationUrl
+}
+/**
  * Updates the browser pathname and history with the active route.
  * @param currentRoute
  **/
@@ -39,9 +54,24 @@ function searchActiveRoutes(routes, basePath, pathNames) {
         routePath = '/'
       }
 
+      if (route.redirectTo && route.redirectTo.length > 0) {
+        return forceRedirect(route.redirectTo)
+      }
+
+      if (route.onlyIf && route.onlyIf.guard) {
+        if (!route.onlyIf.guard()) {
+          let destinationUrl = '/'
+          if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
+            destinationUrl = route.onlyIf.failure
+          }
+
+          return forceRedirect(destinationUrl)
+        }
+      }
+
       const namedParams = getNamedParams(route.name)
       if (namedParams && namedParams.length > 0) {
-        namedParams.forEach(() => {
+        namedParams.forEach(function() {
           if (pathNames.length > 0) {
             routePath += `/${pathNames.shift()}`
           }
@@ -100,7 +130,7 @@ function SpaRouter({ routes, pathName }) {
 
     if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
       if (typeof window !== 'undefined') {
-        window.location.pathname = '/404.html'
+        forceRedirect('/404.html')
       } else {
         currentRoute = { name: '404', component: '', path: '404' }
       }

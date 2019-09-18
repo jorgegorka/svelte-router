@@ -1,5 +1,13 @@
 # Svelte Router changelog
 
+## 3.2.0
+
+- Route guards
+
+## 3.1.0
+
+- Route redirection
+
 ## 3.0.0
 
 - Improve handling of not found routes. No more custom not found logic use standard 404.html pages available in most of the hosting providers.
