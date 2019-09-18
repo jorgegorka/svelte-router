@@ -66,7 +66,7 @@ const routes = [
   {
     name: 'admin',
     component: AdminLayout,
-    onlyIf: { guard: userIsAdmin, failure: '/login} ,
+    onlyIf: { guard: userIsAdmin, failure: '/login'} ,
     nestedRoutes: [
       { name: 'index', component: AdminIndex },
       {
