@@ -1,5 +1,13 @@
 # Svelte Router changelog
 
+## 4.0.0
+
+- [Breaking change] SpaRouter params have changed. Please check the docs.
+
+## 3.2.2
+
+- Reorder SpaRouter object initial params
+
 ## 3.2.1
 
 - Track pageviews in google analytics.

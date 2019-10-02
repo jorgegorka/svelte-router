@@ -18,7 +18,7 @@ function thisIsTrue() {
 describe('Router', function() {
   describe('When route does not exist', function() {
     beforeEach(function() {
-      testRouter = SpaRouter({ routes: [], pathName })
+      testRouter = SpaRouter([], pathName)
     })
 
     it('should set the component', function() {
@@ -36,10 +36,7 @@ describe('Router', function() {
 
   describe('When route does not exist and there is a pathname', function() {
     beforeEach(function() {
-      testRouter = SpaRouter({
-        routes,
-        pathName: 'http://web.app/this/route/does/not/exist'
-      })
+      testRouter = SpaRouter(routes, 'http://web.app/this/route/does/not/exist')
     })
 
     it('should set thecomponent', function() {
@@ -72,7 +69,7 @@ describe('Router', function() {
     describe('When root path', function() {
       beforeEach(function() {
         pathName = 'http://web.app/'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -95,7 +92,7 @@ describe('Router', function() {
     describe('When path is first level', function() {
       beforeEach(function() {
         pathName = 'https://fake.web/login'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -128,7 +125,7 @@ describe('Router', function() {
     describe('Query params to index route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/login?q=sangria'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should update queryParams', function() {
@@ -139,7 +136,7 @@ describe('Router', function() {
     describe('Query params to one level route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/login?climate=change&sea-level=rising'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should update queryParams', function() {
@@ -155,7 +152,7 @@ describe('Router', function() {
   describe('Query params to named routes', function() {
     beforeEach(function() {
       pathName = 'http://web.app/project/save_earth?climate=change&sea-level=rising'
-      testRouter = SpaRouter({ routes, pathName })
+      testRouter = SpaRouter(routes, pathName)
     })
 
     it('should update queryParams', function() {
@@ -191,7 +188,7 @@ describe('Router', function() {
     describe('When path is first level', function() {
       beforeEach(function() {
         pathName = 'http://web.app/project/easy-routing'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -210,7 +207,7 @@ describe('Router', function() {
     describe('When top level layout with index', function() {
       beforeEach(function() {
         pathName = 'http://web.app/about-us'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -229,7 +226,7 @@ describe('Router', function() {
     describe('When top level layout with index', function() {
       beforeEach(function() {
         pathName = 'http://web.app/about-us/'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -248,7 +245,7 @@ describe('Router', function() {
     describe('When top level layout with index and wrong address', function() {
       beforeEach(function() {
         pathName = 'http://web.app/about-us/pepe'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set the route name to 404', function() {
@@ -276,7 +273,7 @@ describe('Router', function() {
     describe('When path is first level', function() {
       beforeEach(function() {
         pathName = 'http://web.app/project/easy-routing/2019-03-26'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -331,7 +328,7 @@ describe('Router', function() {
       let activeRoute
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/12/Danny-filth'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
         activeRoute = testRouter.activeRoute
         const employeeRoute = activeRoute.childRoute
         showEmployeeRoute = employeeRoute.childRoute
@@ -379,7 +376,7 @@ describe('Router', function() {
     describe('Employee index route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -433,7 +430,7 @@ describe('Router', function() {
     describe('Admin route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path to root path', function() {
@@ -448,7 +445,7 @@ describe('Router', function() {
     describe('Employees route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -475,7 +472,7 @@ describe('Router', function() {
     describe('Employee show route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -527,7 +524,7 @@ describe('Router', function() {
     describe('Employee show route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -589,7 +586,7 @@ describe('Router', function() {
     describe('Employee show route with named param', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/123'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -616,7 +613,7 @@ describe('Router', function() {
     describe('Employee show route with named param and extra route info', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/123/calendar'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -647,7 +644,7 @@ describe('Router', function() {
     describe('Employee show route with named param and extra route info', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/123/calendar/july'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -670,7 +667,7 @@ describe('Router', function() {
     describe('Employee show route with named param', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -736,7 +733,7 @@ describe('Router', function() {
     describe('Employee index route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -755,7 +752,7 @@ describe('Router', function() {
     describe('Employee show route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -774,7 +771,7 @@ describe('Router', function() {
     describe('Teams index route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -793,7 +790,7 @@ describe('Router', function() {
     describe('Teams active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/active'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -812,7 +809,7 @@ describe('Router', function() {
     describe('Teams show', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/leader-team'
-        testRouter = SpaRouter({ routes, pathName })
+        testRouter = SpaRouter(routes, pathName)
       })
 
       it('should set path', function() {
@@ -837,7 +834,7 @@ describe('Router', function() {
 describe('navigateTo', function() {
   beforeEach(function() {
     pathName = 'https://fake.com/'
-    SpaRouter({ routes: [{ name: '/', component: 'MainPage' }], pathName }).activeRoute
+    SpaRouter([{ name: '/', component: 'MainPage' }], pathName).activeRoute
   })
 
   describe('when route is valid', function() {
@@ -874,7 +871,7 @@ describe('routeIsActive', function() {
 
   describe('a standard route not active', function() {
     beforeEach(function() {
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return false', function() {
@@ -884,7 +881,7 @@ describe('routeIsActive', function() {
 
   describe('a route with a named param', function() {
     beforeEach(function() {
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return true', function() {
@@ -894,7 +891,7 @@ describe('routeIsActive', function() {
 
   describe('a route with a named param and a value', function() {
     beforeEach(function() {
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return false', function() {
@@ -905,7 +902,7 @@ describe('routeIsActive', function() {
   describe('a route with named params', function() {
     beforeEach(function() {
       pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return true', function() {
@@ -916,7 +913,7 @@ describe('routeIsActive', function() {
   describe('a route with search queries', function() {
     beforeEach(function() {
       pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return true', function() {
@@ -926,7 +923,7 @@ describe('routeIsActive', function() {
 
   describe('a non active route', function() {
     beforeEach(function() {
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName).activeRoute
     })
 
     it('should return false', function() {
@@ -975,7 +972,7 @@ describe('routeIsActive', function() {
     describe('a standard route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/login'
-        SpaRouter({ routes, pathName }).activeRoute
+        SpaRouter(routes, pathName).activeRoute
       })
 
       it('should return true if matches active route', function() {
@@ -990,7 +987,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        SpaRouter({ routes, pathName }).activeRoute
+        SpaRouter(routes, pathName).activeRoute
       })
 
       it('should return true if matches active route', function() {
@@ -1005,7 +1002,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/active'
-        SpaRouter({ routes, pathName }).activeRoute
+        SpaRouter(routes, pathName).activeRoute
       })
 
       it('should return true if matches active route', function() {
@@ -1020,7 +1017,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/accountants'
-        SpaRouter({ routes, pathName }).activeRoute
+        SpaRouter(routes, pathName).activeRoute
       })
 
       it('should return true if matches active route', function() {
@@ -1035,7 +1032,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/accountants'
-        SpaRouter({ routes, pathName }).activeRoute
+        SpaRouter(routes, pathName).activeRoute
       })
 
       it('should return true if matches active route', function() {
@@ -1071,7 +1068,7 @@ describe('onlyIf', function() {
       ]
 
       pathName = 'http://web.app/admin'
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName)
     })
 
     it('should render admin', function() {
@@ -1096,7 +1093,7 @@ describe('onlyIf', function() {
       ]
 
       pathName = 'http://web.app/admin'
-      SpaRouter({ routes, pathName }).activeRoute
+      SpaRouter(routes, pathName)
     })
 
     it('should not render admin', function() {

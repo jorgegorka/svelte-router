@@ -88,10 +88,10 @@ import App from './App.svelte'
 import { SpaRouter } from 'svelte-router-spa'
 import { routes } from './routes'
 
-SpaRouter({
+SpaRouter(
   routes,
   pathName: document.location.href
-}).getActiveRoute
+).getActiveRoute
 
 const app = new App({
   target: document.body
@@ -239,13 +239,27 @@ The routes that this file will parse successfully are:
 
 `import { SpaRouter } from 'svelte-router-spa'`
 
-SpaRouter receives an object as a param. It receives three params: routes, pathName and options.
+SpaRouter accepts three params. First two params are required. Third param is an optional object with configuration settings.
 
 **routes (required)** An array of routes.
 
-**pathName (required)** The path name to evaluate. For instance '<https://www.mysite.com/admin/employees?show-all=false'.> It defaults to _document.location.href_
+**currentUrl (required)** The current url to evaluate. For instance '<https://www.mysite.com/admin/employees?show-all=false'>
 
-**gaPageviews** A boolean indicating if we want to track routes as page views into Google Analytics. Defaults to false.
+**settings (optional) ** An object with extra configuration options.
+
+** Configuration options available: **
+
+**gaPageviews ** A boolean indicating if we want to track routes as page views into Google Analytics. Defaults to false.
+
+```javascript
+import { SpaRouter } from 'svelte-router-spa'
+
+SpaRouter(
+  routes,
+  pathName: document.location.href,
+  { gaPageviews: true }
+).getActiveRoute
+```
 
 SpaRouter exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
 
@@ -423,11 +437,11 @@ Svelte Router redirects to a 404.html page if a route is not found. You need to 
 If you want to track route changes as pageviews in Google Analytics just add
 
 ```:javascript
-SpaRouter({
+SpaRouter(
   routes,
-  pathName: document.location.href,
-  gaPageviews: true
-}).getActiveRoute
+  pathName: document.location.href },
+  { gaPageviews: true }
+).getActiveRoute
 ```
 
 Check the documentation for SpaRouter for more info on the params supported.
