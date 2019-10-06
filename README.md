@@ -10,7 +10,7 @@ Svelte Router adds routing to your Svelte apps.
 
 It keeps your routes organized in a single place.
 
-It's specially designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
+It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
 
 ## Features
 
