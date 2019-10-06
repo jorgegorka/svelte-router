@@ -91,7 +91,7 @@ import { routes } from './routes'
 SpaRouter(
   routes,
   pathName: document.location.href
-).getActiveRoute
+).currentRoute
 
 const app = new App({
   target: document.body
@@ -258,7 +258,7 @@ SpaRouter(
   routes,
   pathName: document.location.href,
   { gaPageviews: true }
-).getActiveRoute
+).currentRoute
 ```
 
 SpaRouter exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
@@ -441,7 +441,7 @@ SpaRouter(
   routes,
   pathName: document.location.href },
   { gaPageviews: true }
-).getActiveRoute
+).currentRoute
 ```
 
 Check the documentation for SpaRouter for more info on the params supported.
