@@ -66,7 +66,7 @@ const routes = [
   {
     name: 'admin',
     component: AdminLayout,
-    onlyIf: { guard: userIsAdmin, failure: '/login' },
+    onlyIf: { guard: userIsAdmin, redirect: '/login' },
     nestedRoutes: [
       { name: 'index', component: AdminIndex },
       {
@@ -179,10 +179,10 @@ function userIsAdmin() {
   // do your checks here and return true or false
 }
 
-{ name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, failure: '/login} }
+{ name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, redirect: '/login} }
 ```
 
-**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _failure_.
+**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _redirect_.
 
 Routes can contain as many nested routes as needed.
 

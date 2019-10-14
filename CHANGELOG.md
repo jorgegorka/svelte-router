@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 4.0.1
+
+- Correct naming of redirect param used in guards.
+
 ## 4.0.0
 
 - [Breaking change] SpaRouter params have changed. Please check the docs.

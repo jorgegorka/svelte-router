@@ -1061,7 +1061,7 @@ describe('onlyIf', function() {
             { name: 'index', component: 'AdminIndex' },
             { name: 'private', component: 'PrivateComponent' }
           ],
-          onlyIf: { guard: thisIsTrue, failure: '/login' }
+          onlyIf: { guard: thisIsTrue, redirect: '/login' }
         },
 
         { name: 'login', component: 'Login' }
@@ -1086,7 +1086,7 @@ describe('onlyIf', function() {
             { name: 'index', component: 'AdminIndex' },
             { name: 'private', component: 'PrivateComponent' }
           ],
-          onlyIf: { guard: thisIsFalse, failure: '/login' }
+          onlyIf: { guard: thisIsFalse, redirect: '/login' }
         },
 
         { name: 'login', component: 'Login' }

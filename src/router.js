@@ -121,7 +121,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
           if (!route.onlyIf.guard()) {
             let destinationUrl = '/'
             if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
-              destinationUrl = route.onlyIf.failure
+              destinationUrl = route.onlyIf.redirect
             }
 
             return forceRedirect(destinationUrl)
