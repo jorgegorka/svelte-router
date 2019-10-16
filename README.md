@@ -20,6 +20,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 - Named params.
 - Guards to protect urls. Public and private urls.
 - Track pageviews in Google Analytics (optional).
+- Use standard `<a href="/about-us">About</a>` elements to navigate between pages (or use [`<Navigate />`](#navigate) for bonus features).
 
 Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and child route.
 
@@ -93,6 +94,10 @@ Import the routes into your main component (probably App.svelte)
 
 <Router {routes} />
 ```
+
+That's all
+
+### Layouts and route info
 
 Every Route file will receive a currentRoute property with information about the current route, params, queries, etc.
 
