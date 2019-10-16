@@ -90,7 +90,7 @@ import { routes } from './routes'
 
 SpaRouter(
   routes,
-  pathName: document.location.href
+  document.location.href
 ).currentRoute
 
 const app = new App({
