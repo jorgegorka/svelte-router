@@ -256,7 +256,7 @@ import { SpaRouter } from 'svelte-router-spa'
 
 SpaRouter(
   routes,
-  pathName: document.location.href,
+  document.location.href,
   { gaPageviews: true }
 ).currentRoute
 ```
