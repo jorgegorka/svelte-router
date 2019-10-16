@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.0.0
+
+- [Breaking change] Simplify configuration. SpaRouter and editing main.js no more needed. Add your routes directly to the Router component.
+
 ## 4.0.1
 
 - Correct naming of redirect param used in guards.

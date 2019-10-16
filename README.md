@@ -4,11 +4,11 @@
 ![license](https://img.shields.io/github/license/jorgegorka/svelte-router.svg)
 ![Code climate](https://img.shields.io/codeclimate/maintainability/jorgegorka/svelte-router.svg)
 
-## What is Svelte Router
+## What is Svelte Router SPA
 
-Svelte Router adds routing to your Svelte apps.
+Svelte Router adds routing to your Svelte apps. It keeps your routes organized in a single place.
 
-It keeps your routes organized in a single place.
+With Svelte Router SPA you have all the features you need to create modern web applications with minimal configuration.
 
 It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
 
@@ -16,8 +16,10 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 
 - Define your routes in a single interface
 - Layouts global, per page or nested.
-- Nested routes
-- Named params
+- Nested routes.
+- Named params.
+- Guards to protect urls. Public and private urls.
+- Track pageviews in Google Analytics (optional).
 
 Svelte Router is smart enought to inject the corresponding params to each Route component. Every Route component has information about their named params, query params and child route.
 
@@ -81,33 +83,15 @@ const routes = [
 export { routes }
 ```
 
-Import the routes into main.js
-
-```javascript
-import App from './App.svelte'
-import { SpaRouter } from 'svelte-router-spa'
-import { routes } from './routes'
-
-SpaRouter(
-  routes,
-  document.location.href
-).currentRoute
-
-const app = new App({
-  target: document.body
-})
-
-export default app
-```
-
-Edit App.svelte and add the main router.
+Import the routes into your main component (probably App.svelte)
 
 ```javascript
 <script>
   import { Router } from 'svelte-router-spa'
+  import { routes } from './routes'
 </script>
 
-<Router />
+<Router {routes} />
 ```
 
 Every Route file will receive a currentRoute property with information about the current route, params, queries, etc.
@@ -235,51 +219,28 @@ The routes that this file will parse successfully are:
 
 ## API
 
-### SpaRouter
-
-`import { SpaRouter } from 'svelte-router-spa'`
-
-SpaRouter accepts three params. First two params are required. Third param is an optional object with configuration settings.
-
-**routes (required)** An array of routes.
-
-**currentUrl (required)** The current url to evaluate. For instance '<https://www.mysite.com/admin/employees?show-all=false'>
-
-**settings (optional) ** An object with extra configuration options.
-
-** Configuration options available: **
-
-**gaPageviews ** A boolean indicating if we want to track routes as page views into Google Analytics. Defaults to false.
-
-```javascript
-import { SpaRouter } from 'svelte-router-spa'
-
-SpaRouter(
-  routes,
-  document.location.href,
-  { gaPageviews: true }
-).currentRoute
-```
-
-SpaRouter exposes a single property called _currentRoute_ that will return the current active route and some additional information (see below.)
-
 ### Router
 
 `import { Router } from 'svelte-router-spa'`
 
-This is the main component that needs to be included before any other content as it holds information about which route should be rendered.
+This is the main component that needs to be included before any other content as it holds information about your routes and which route should be rendered.
 
-The best approach (although not required) is to have an App.svelte file like this:
+The simplest approach (although not required) is to have an App.svelte file like this:
 
 ```javascript
 <script>
   import { Router } from 'svelte-router-spa'
+  import { routes } from './routes'
+
+  let options = { gaPageviews: true}
 </script>
 
-<Router />
+<Router {routes} {options} />
 ```
 
 The layout and/or the component that matches the active route will be rendered inside _Router_.
+
+The only option availabe now is _gaPageviews_ that will record route changes as pageviews in Google Analytics. It's disabled by default.
 
 ## Route
 
@@ -437,14 +398,8 @@ Svelte Router redirects to a 404.html page if a route is not found. You need to 
 If you want to track route changes as pageviews in Google Analytics just add
 
 ```:javascript
-SpaRouter(
-  routes,
-  pathName: document.location.href },
-  { gaPageviews: true }
-).currentRoute
+<Router {routes} options={{gaPageviews: true}} />
 ```
-
-Check the documentation for SpaRouter for more info on the params supported.
 
 ## Credits
 
@@ -453,3 +408,5 @@ Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.e
 ### Contributors
 
 [Mark Kopenga](https://github.com/mjarkk)
+
+I would like to thank all the people that create issues and comment on Github. Your feedback is the best way of improving.

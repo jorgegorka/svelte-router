@@ -1,6 +1,16 @@
 <script>
+  import { onMount } from 'svelte'
+
+  import { SpaRouter } from '../router'
   import Route from './route.svelte'
   import { activeRoute } from '../store'
+
+  export let routes = []
+  export let options = {}
+
+  onMount(function() {
+    SpaRouter(routes, document.location.href, options).activeRoute
+  })
 </script>
 
 <Route currentRoute={$activeRoute} />
