@@ -340,7 +340,7 @@ This will render:
 
 `import { Navigate } from 'svelte-router-spa'`
 
-Navigate is a wrapper around the < a href="" > element to help you generate links quickly and easily.
+Navigate is a wrapper around the < a href="" > element to help you generate links quick and easily.
 
 It adds an _active_ class if the generated route is the active one.
 
