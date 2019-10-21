@@ -147,7 +147,7 @@ The route page will take care of rendering the appropriate component inside the 
 Each route is an object with the following elements:
 
 ```:javascript
-{ name: 'about-us', component: About, layout: PublicLayout, redirectTo: 'https://tailwindcss.com' }
+{ name: 'about-us', component: About, layout: PublicLayout, redirectTo: 'https://www.alvareznavarro.es' }
 ```
 
 **name (required)**: The name that will be used in the url
@@ -160,7 +160,7 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **nestedRoutes**: An array of routes.
 
-**redirectTo**: An external url or an internal pathname.
+**redirectTo**: A url or pathname (https://yourwebsite.com) or (/my-product). 
 
 ```:javascript
 
