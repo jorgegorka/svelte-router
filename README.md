@@ -177,7 +177,7 @@ Routes can contain as many nested routes as needed.
 
 It can also contain as many layouts as needed. Layouts can be nested into other layouts.
 
-In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout.
+In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout and employees will also use the employees layout, rendered inside the admin layout. 
 
 Example of routes:
 
