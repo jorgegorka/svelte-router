@@ -187,7 +187,7 @@ function navigateTo(pathName) {
  * Returns true if pathName is current active route
  * @param pathName
  **/
-function routeIsActive(queryPath) {
+function routeIsActive(queryPath, includePath = false) {
   if (queryPath[0] !== '/') {
     queryPath = '/' + queryPath
   }
@@ -200,7 +200,11 @@ function routeIsActive(queryPath) {
     activeRoute = activeRoute.slice(0, -1)
   }
 
-  return activeRoute === pathName
+  if (includePath) {
+    return activeRoute.includes(pathName)
+  } else {
+    return activeRoute === pathName
+  }
 }
 
 if (typeof window !== 'undefined') {

@@ -1047,6 +1047,45 @@ describe('routeIsActive', function() {
         expect(routeIsActive('/admin/teams/show/accountants/')).to.be.true
       })
     })
+
+    describe('with include active', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/teams/show/accountants'
+        SpaRouter(routes, pathName).activeRoute
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('/admin', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('admin', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('/teams', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('teams', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('/teams/show', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('teams/show', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('/show/accountants', true)).to.be.true
+      })
+
+      it('should return true if matches active route', function() {
+        expect(routeIsActive('show/accountants', true)).to.be.true
+      })
+    })
   })
 })
 

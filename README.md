@@ -57,7 +57,7 @@ import AdminIndex from './views/admin/index.svelte'
 import EmployeesIndex from './views/admin/employees/index.svelte'
 
 function userIsAdmin() {
-  //check if user is admin and return true or false
+  //check if user is admin and returns true or false
 }
 
 const routes = [
@@ -146,7 +146,7 @@ The route page will take care of rendering the appropriate component inside the 
 
 Each route is an object with the following elements:
 
-```:javascript
+```javascript
 { name: 'about-us', component: About, layout: PublicLayout, redirectTo: 'https://www.alvareznavarro.es' }
 ```
 
@@ -160,12 +160,12 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **nestedRoutes**: An array of routes.
 
-**redirectTo**: A url or pathname (https://yourwebsite.com) or (/my-product). 
+**redirectTo**: A url or pathname (https://yourwebsite.com) or (/my-product).
 
-```:javascript
+```javascript
 
 function userIsAdmin() {
-  // do your checks here and return true or false
+  // do your checks here and returns true or false
 }
 
 { name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, redirect: '/login} }
@@ -177,7 +177,7 @@ Routes can contain as many nested routes as needed.
 
 It can also contain as many layouts as needed. Layouts can be nested into other layouts.
 
-In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout and employees will also use the employees layout, rendered inside the admin layout. 
+In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout and employees will also use the employees layout, rendered inside the admin layout.
 
 Example of routes:
 
@@ -212,7 +212,7 @@ const routes = [
 
 The routes that this file will parse successfully are:
 
-```:javascript
+```
 /
 /login
 /admin
@@ -379,20 +379,40 @@ if (loginSuccess) {
 
 `import { routeIsActive } from 'svelte-router-spa'`
 
-Returns a boolean if the path is the current active route.
+Returns a boolean indicating if the path is the current active route.
 
 This is useful, for instance to set an _active_ class on a menu.
 
-The [Navigate](https://github.com/jorgegorka/svelte-router/blob/master/README.md#navigate) component does this automatically and adds an _active_ class if the generated route is the active one.
+#### Params
+
+- **pathName** (required): A string with the path that you want to check.
+- **includePath** (optional | default is _false_): A boolean indicating if pathName should match exactly the current route or if it should be included.
+
+The [Navigate](https://github.com/jorgegorka/svelte-router/blob/master/README.md#navigate) component does this automatically and adds an _active_ class if the generated route is the active one. Navigate sets _includePath_ to false
 
 Example:
 
 ```javascript
-import { routeIsActive } from 'svelte-router-spa'
-;<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
+<script>
+  import { routeIsActive } from 'svelte-router-spa'
+</script>
+
+<a href="/contact-us" class:active={routeIsActive('/contact-us')}>
   Say hello
 </a>
+
+// If current route is /admin/companies/show/my-company
+
+routeIsActive('admin') // returns false
+routeIsActive('show/my-company') // returns false
+routeIsActive('admin/companies/show/my-company') // returns true
+routeIsActive('admin', true) // returns true
+routeIsActive('show/my-company', true) // returns true
+routeIsActive('my-company', true) // returns true
+routeIsActive('other-company', true) // returns false
 ```
+
+If _includePath_ is true and the current route is `/admin/companies/show/my-company`
 
 ## Not Found - 404
 
@@ -402,7 +422,7 @@ Svelte Router redirects to a 404.html page if a route is not found. You need to 
 
 If you want to track route changes as pageviews in Google Analytics just add
 
-```:javascript
+```javascript
 <Router {routes} options={{gaPageviews: true}} />
 ```
 

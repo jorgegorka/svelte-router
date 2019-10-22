@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.1.0
+
+- routeIsActive gets a second optional param to check if the path is included in the current active route.
+
 ## 5.0.0
 
 - [Breaking change] Simplify configuration. SpaRouter and editing main.js no more needed. Add your routes directly to the Router component.
