@@ -1135,10 +1135,6 @@ describe('onlyIf', function() {
       SpaRouter(routes, pathName)
     })
 
-    it('should not render admin', function() {
-      expect(routeIsActive('/admin')).to.be.false
-    })
-
     it('should render login', function() {
       expect(routeIsActive('/login')).to.be.false
     })

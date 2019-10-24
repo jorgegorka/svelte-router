@@ -2,6 +2,7 @@ const { UrlParser } = require('url-params-parser')
 const { activeRoute } = require('./store')
 const { anyEmptyNestedRoutes, compareRoutes, getNamedParams, nameToPath, pathWithSearch } = require('./lib/utils')
 
+const NotFoundPage = '/404.html'
 let userDefinedRoutes = []
 let routerOptions = {}
 let currentActiveRoute = ''
@@ -13,8 +14,9 @@ let currentActiveRoute = ''
  * @param options configuration options
  **/
 function SpaRouter(routes, currentUrl, options = {}) {
+  let redirectTo = ''
   routerOptions = options
-  if (typeof currentUrl === 'undefined') {
+  if (typeof currentUrl === 'undefined' || currentUrl === '') {
     currentUrl = document.location.href
   }
 
@@ -24,23 +26,23 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
   const urlParser = UrlParser(currentUrl)
   let routeNamedParams = {}
-
   userDefinedRoutes = routes
 
   function findActiveRoute() {
-    let currentRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
+    redirectTo = ''
+    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames)
 
-    if (!currentRoute || anyEmptyNestedRoutes(currentRoute)) {
+    if (!searchActiveRoute || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
-        forceRedirect('/404.html')
+        forceRedirect(NotFoundPage)
       } else {
-        currentRoute = { name: '404', component: '', path: '404' }
+        searchActiveRoute = { name: '404', component: '', path: '404' }
       }
     } else {
-      currentRoute.path = urlParser.pathname
+      searchActiveRoute.path = urlParser.pathname
     }
 
-    return currentRoute
+    return searchActiveRoute
   }
 
   /**
@@ -49,13 +51,11 @@ function SpaRouter(routes, currentUrl, options = {}) {
    **/
   function forceRedirect(destinationUrl) {
     if (typeof window !== 'undefined') {
-      if (destinationUrl.includes('http')) {
+      currentActiveRoute = destinationUrl
+      if (destinationUrl === NotFoundPage) {
         window.location = destinationUrl
       } else {
-        if (routerOptions.gaPageviews) {
-          gaTracking(destinationUrl)
-        }
-        window.location.pathname = destinationUrl
+        navigateTo(destinationUrl)
       }
     }
 
@@ -72,8 +72,12 @@ function SpaRouter(routes, currentUrl, options = {}) {
   function generate() {
     const currentRoute = findActiveRoute()
 
+    if (currentRoute.redirectTo) {
+      return forceRedirect(redirectTo)
+    }
     currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
+
     pushActiveRoute(currentRoute)
 
     return currentRoute
@@ -114,7 +118,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
         }
 
         if (route.redirectTo && route.redirectTo.length > 0) {
-          return forceRedirect(route.redirectTo)
+          redirectTo = route.redirectTo
         }
 
         if (route.onlyIf && route.onlyIf.guard) {
@@ -123,8 +127,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
             if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
               destinationUrl = route.onlyIf.redirect
             }
-
-            return forceRedirect(destinationUrl)
+            redirectTo = destinationUrl
           }
         }
 
@@ -156,10 +159,13 @@ function SpaRouter(routes, currentUrl, options = {}) {
           if (indexRoute && Object.keys(indexRoute).length > 0) {
             currentRoute.childRoute = indexRoute
           }
-        } else if (route.nestedRoutes && route.nestedRoutes.length === 0 && pathNames.length > 0) {
         }
       }
     })
+
+    if (redirectTo) {
+      currentRoute['redirectTo'] = redirectTo
+    }
 
     return currentRoute
   }
@@ -191,11 +197,13 @@ function routeIsActive(queryPath, includePath = false) {
   if (queryPath[0] !== '/') {
     queryPath = '/' + queryPath
   }
+
   let pathName = UrlParser(`http://fake.com${queryPath}`).pathname
   if (pathName.slice(-1) === '/') {
     pathName = pathName.slice(0, -1)
   }
-  let activeRoute = currentActiveRoute
+
+  let activeRoute = currentActiveRoute || pathName
   if (activeRoute.slice(-1) === '/') {
     activeRoute = activeRoute.slice(0, -1)
   }

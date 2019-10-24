@@ -2,7 +2,7 @@
  * Returns true if object has any nested routes empty
  * @param routeObject
  **/
-const anyEmptyNestedRoutes = routeObject => {
+function anyEmptyNestedRoutes(routeObject) {
   let result = false
   if (Object.keys(routeObject).length === 0) {
     return true
@@ -23,7 +23,7 @@ const anyEmptyNestedRoutes = routeObject => {
  * @param pathNames array
  * @param route object
  **/
-const compareRoutes = (basePath, pathNames, route) => {
+function compareRoutes(basePath, pathNames, route) {
   if (basePath === '/' || basePath.trim().length === 0) return basePath
   let basePathResult = basePath
   let routeName = route.name
@@ -59,7 +59,7 @@ const compareRoutes = (basePath, pathNames, route) => {
  * Return all the consecutive named param (placeholders) of a pathname
  * @param pathname
  **/
-const getNamedParams = (pathName = '') => {
+function getNamedParams(pathName = '') {
   if (pathName.trim().length === '') return []
 
   const namedUrlParams = getPathNames(pathName)
@@ -76,7 +76,7 @@ const getNamedParams = (pathName = '') => {
  * @param pathName
  * Private method
  **/
-const getPathNames = pathName => {
+function getPathNames(pathName) {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
   if (pathName.slice(-1) === '/') {
     pathName = pathName.slice(0, -1)
@@ -92,7 +92,7 @@ const getPathNames = pathName => {
  * Return the first part of a pathname until the first named param
  * @param name
  **/
-const nameToPath = (name = '') => {
+function nameToPath(name = '') {
   let routeName
   if (name === '/' || name.trim().length === 0) return name
   if (name[0] === '/') {

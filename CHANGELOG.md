@@ -1,5 +1,28 @@
 # Svelte Router changelog
 
+## 5.1.1
+
+- Fix an error when a route has a redirectTo that leads to a guarded route that also redirects.
+
+```javascript
+const adminRoutes = [
+  {
+    name: "/admin",
+    layout: AdminLayout,
+    nestedRoutes: [
+      { name: "index", redirectTo: "admin/dashboard" },
+      {
+        name: "dashboard",
+        component: DashboardIndex,
+        onlyIf: {
+          guard: isLoggedIn,
+          redirect: "/login"
+        }
+      },
+  }
+}
+```
+
 ## 5.1.0
 
 - routeIsActive gets a second optional param to check if the path is included in the current active route.
