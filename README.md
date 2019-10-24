@@ -162,6 +162,8 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **redirectTo**: A url or pathname (https://yourwebsite.com) or (/my-product).
 
+**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _redirect_.
+
 ```javascript
 
 function userIsAdmin() {
@@ -170,8 +172,6 @@ function userIsAdmin() {
 
 { name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, redirect: '/login} }
 ```
-
-**onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _redirect_.
 
 Routes can contain as many nested routes as needed.
 
