@@ -14,9 +14,9 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^6.6.0",
+    "eslint": "^6.8.0",
     "mocha": "^6.2.2",
-    "svelte": "^3.13.0"
+    "svelte": "^3.16.7"
   },
   "dependencies": {
     "url-params-parser": "^1.0.1"

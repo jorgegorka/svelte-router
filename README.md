@@ -430,8 +430,8 @@ If you want to track route changes as pageviews in Google Analytics just add
 
 Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).
 
+I would like to thank all the people that create issues and comment on Github. Your feedback is the best way of improving.
+
 ### Contributors
 
 [Mark Kopenga](https://github.com/mjarkk)
-
-I would like to thank all the people that create issues and comment on Github. Your feedback is the best way of improving.
