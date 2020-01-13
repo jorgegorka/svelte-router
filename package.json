@@ -19,7 +19,7 @@
     "svelte": "^3.16.7"
   },
   "dependencies": {
-    "url-params-parser": "^1.0.1"
+    "url-params-parser": "^1.0.2"
   },
   "peerDependencies": {
     "svelte": "^3.6.7"
