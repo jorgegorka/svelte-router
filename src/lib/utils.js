@@ -18,41 +18,32 @@ function anyEmptyNestedRoutes(routeObject) {
 }
 
 /**
- * Updates the base route path when route.name has a nested inside like /admin/teams
- * @param basePath string
- * @param pathNames array
+ * Returns the name of the route based on the language parameter
  * @param route object
+ * @param language string
  **/
-function compareRoutes(basePath, pathNames, route) {
-  if (basePath === '/' || basePath.trim().length === 0) return basePath
-  let basePathResult = basePath
-  let routeName = route.name
-  if (routeName[0] === '/') {
-    routeName = routeName.slice(1)
-  }
-  if (basePathResult[0] === '/') {
-    basePathResult = basePathResult.slice(1)
+
+function findLocalisedRoute(pathName, route, language) {
+  let exists = false
+
+  if (language) {
+    return { exists: route.lang && route.lang[language] && route.lang[language].includes(pathName), language }
   }
 
-  if (!route.childRoute) {
-    let routeNames = routeName.split(':')[0]
-    if (routeNames.slice(-1) === '/') {
-      routeNames = routeNames.slice(0, -1)
-    }
-    routeNames = routeNames.split('/')
-    routeNames.shift()
-    routeNames.forEach(() => {
-      const currentPathName = pathNames[0]
-      if (currentPathName && route.name.includes(`${basePathResult}/${currentPathName}`)) {
-        basePathResult += `/${pathNames.shift()}`
-      } else {
-        return basePathResult
+  if (route.lang && typeof route.lang === 'object') {
+    for (const [key, value] of Object.entries(route.lang)) {
+      if (value.includes(pathName)) {
+        exists = true
+        language = key
       }
-    })
-    return basePathResult
-  } else {
-    return basePath
+    }
   }
+
+  if (!exists) {
+    exists = route.name.includes(pathName)
+  }
+
+  return { exists, language }
 }
 
 /**
@@ -63,7 +54,7 @@ function getNamedParams(pathName = '') {
   if (pathName.trim().length === '') return []
 
   const namedUrlParams = getPathNames(pathName)
-  return namedUrlParams.reduce((validParams, param, index) => {
+  return namedUrlParams.reduce((validParams, param, _index) => {
     if (param[0] === ':') {
       validParams.push(param.slice(1))
     }
@@ -78,31 +69,22 @@ function getNamedParams(pathName = '') {
  **/
 function getPathNames(pathName) {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
-  if (pathName.slice(-1) === '/') {
-    pathName = pathName.slice(0, -1)
-  }
-  if (pathName[0] === '/') {
-    pathName = pathName.slice(1)
-  }
+
+  pathName = removeSlash(pathName, 'both')
 
   return pathName.split('/')
 }
 
 /**
- * Return the first part of a pathname until the first named param
+ * Return the first part of a pathname until the first named param is found
  * @param name
  **/
 function nameToPath(name = '') {
   let routeName
   if (name === '/' || name.trim().length === 0) return name
-  if (name[0] === '/') {
-    name = name.slice(1)
-  }
-
+  name = removeSlash(name, 'lead')
   routeName = name.split(':')[0]
-  if (routeName.slice(-1) === '/') {
-    routeName = routeName.slice(0, -1)
-  }
+  routeName = removeSlash(routeName, 'trail')
 
   return routeName.toLowerCase()
 }
@@ -125,11 +107,95 @@ function pathWithSearch(currentRoute) {
   }
 }
 
+/**
+ * Returns a string with trailing or leading slash character removed
+ * @param pathName string
+ * @param position string - lead, trail, both
+ **/
+
+function removeSlash(pathName, position = 'lead') {
+  if (pathName.trim().length < 1) {
+    return ''
+  }
+
+  if (position === 'trail' || position === 'both') {
+    if (pathName.slice(-1) === '/') {
+      pathName = pathName.slice(0, -1)
+    }
+  }
+
+  if (position === 'lead' || position === 'both') {
+    if (pathName[0] === '/') {
+      pathName = pathName.slice(1)
+    }
+  }
+
+  return pathName
+}
+
+/**
+ * Returns the name of the route based on the language parameter
+ * @param route object
+ * @param language string
+ **/
+
+function routeNameLocalised(route, language = 'default') {
+  if (language === 'default' || !route.lang || !route.lang[language]) {
+    return route.name
+  } else {
+    return route.lang[language]
+  }
+}
+
+/**
+ * Updates the base route path.
+ * Route objects can have nested routes (childRoutes) or just a long name like "admin/employees/show/:id"
+ *
+ * @param basePath string
+ * @param pathNames array
+ * @param route object
+ * @param language string
+ **/
+
+function updateRoutePath(basePath, pathNames, route, language) {
+  if (basePath === '/' || basePath.trim().length === 0) return { result: basePath, language: null }
+  let basePathResult = basePath
+  let routeName = route.name
+  let currentLanguage = language
+
+  routeName = removeSlash(routeName)
+
+  basePathResult = removeSlash(basePathResult)
+
+  if (!route.childRoute) {
+    let localisedRoute = findLocalisedRoute(basePathResult, route, currentLanguage)
+    let routeNames = routeName.split(':')[0]
+    routeNames = removeSlash(routeNames, 'trail')
+    routeNames = routeNames.split('/')
+    routeNames.shift()
+    routeNames.forEach(() => {
+      const currentPathName = pathNames[0]
+      localisedRoute = findLocalisedRoute(`${basePathResult}/${currentPathName}`, route, currentLanguage)
+      if (currentPathName && localisedRoute.exists) {
+        basePathResult += `/${pathNames.shift()}`
+      } else {
+        return { result: basePathResult, language: localisedRoute.language }
+      }
+    })
+    return { result: basePathResult, language: localisedRoute.language }
+  } else {
+    return { result: basePath, language: currentLanguage }
+  }
+}
+
 module.exports = {
   anyEmptyNestedRoutes,
-  compareRoutes,
+  findLocalisedRoute,
   getNamedParams,
   getPathNames,
   nameToPath,
-  pathWithSearch
+  pathWithSearch,
+  removeSlash,
+  routeNameLocalised,
+  updateRoutePath
 }

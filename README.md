@@ -75,7 +75,10 @@ const routes = [
       {
         name: 'employees',
         component: '',
-        nestedRoutes: [{ name: 'index', component: EmployeesIndex }, { name: 'show/:id', component: EmployeesShow }]
+        nestedRoutes: [
+          { name: 'index', component: EmployeesIndex },
+          { name: 'show/:id', component: EmployeesShow }
+        ]
       }
     ]
   }
@@ -201,7 +204,10 @@ const routes = [
           {
             name: 'show/:id',
             component: EmployeesShowLayout,
-            nestedRoutes: [{ name: 'index', component: EmployeesShow }, { name: 'list', component: EmployeesShowList }]
+            nestedRoutes: [
+              { name: 'index', component: EmployeesShow },
+              { name: 'list', component: EmployeesShowList }
+            ]
           }
         ]
       }
@@ -285,7 +291,16 @@ Example:
 
 ## currentRoute
 
-This property is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
+This object is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
+
+These are the properties available in this object:
+
+- name
+- component
+- layout
+- queryParams
+- namedParams
+- childRoute
 
 **Example:**
 
@@ -298,7 +313,10 @@ const routes = [
       {
         name: 'about-us',
         component: 'AboutUsLayout',
-        nestedRoutes: [{ name: 'company', component: CompanyPage }, { name: 'people', component: PeoplePage }]
+        nestedRoutes: [
+          { name: 'company', component: CompanyPage },
+          { name: 'people', component: PeoplePage }
+        ]
       }
     ]
   }

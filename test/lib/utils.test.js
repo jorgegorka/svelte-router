@@ -2,11 +2,14 @@ const expect = require('chai').expect
 
 const {
   anyEmptyNestedRoutes,
-  compareRoutes,
+  findLocalisedRoute,
   getNamedParams,
   getPathNames,
   nameToPath,
-  pathWithSearch
+  pathWithSearch,
+  removeSlash,
+  routeNameLocalised,
+  updateRoutePath
 } = require('../../src/lib/utils')
 
 let pathNames = []
@@ -116,6 +119,82 @@ describe('getPathNames', function() {
   })
 })
 
+describe('findLocalisedRoute', function() {
+  let result
+
+  describe('when route does not exist', function() {
+    const pathName = 'admin'
+    const route = { name: 'index' }
+    const language = null
+
+    beforeEach(function() {
+      result = findLocalisedRoute(pathName, route, language)
+    })
+
+    it('should not exist', function() {
+      expect(result.exists).to.be.false
+    })
+
+    it('should not set a default language', function() {
+      expect(result.language).to.be.null
+    })
+  })
+
+  describe('when route does exist', function() {
+    let pathName = 'band/show'
+    let route = { name: 'band/show' }
+    let language = null
+
+    beforeEach(function() {
+      result = findLocalisedRoute(pathName, route, language)
+    })
+
+    describe('when language is not set', function() {
+      it('should exist', function() {
+        expect(result.exists).to.be.true
+      })
+
+      it('should not exist', function() {
+        expect(result.language).to.be.null
+      })
+
+      describe('but a route name exists', function() {
+        beforeEach(function() {
+          pathName = 'grupo/mostrar'
+          language = null
+          route = { name: 'band/show', lang: { es: 'grupo/mostrar' } }
+          result = findLocalisedRoute(pathName, route, language)
+        })
+
+        it('should exist', function() {
+          expect(result.exists).to.be.true
+        })
+
+        it('should not exist', function() {
+          expect(result.language).to.equal('es')
+        })
+      })
+    })
+
+    describe('when language is set', function() {
+      beforeEach(function() {
+        pathName = 'band/show'
+        language = 'es'
+        route = { name: 'band/show', lang: { es: 'grupo/mostrar' } }
+        result = findLocalisedRoute(pathName, route, language)
+      })
+
+      it('should exist', function() {
+        expect(result.exists).to.be.false
+      })
+
+      it('should not exist', function() {
+        expect(result.language).to.equal(language)
+      })
+    })
+  })
+})
+
 describe('getNamedParams', function() {
   describe('When there are no named params', function() {
     beforeEach(function() {
@@ -176,7 +255,7 @@ describe('nameToPath', function() {
       routeName = nameToPath()
     })
 
-    it('component', function() {
+    it('should be empty', function() {
       expect(routeName).to.equal('')
     })
   })
@@ -186,7 +265,7 @@ describe('nameToPath', function() {
       routeName = nameToPath('/')
     })
 
-    it('component', function() {
+    it('should return the root path', function() {
       expect(routeName).to.equal('/')
     })
   })
@@ -206,7 +285,7 @@ describe('nameToPath', function() {
       routeName = nameToPath('employee/show/:id/:name')
     })
 
-    it('should return the name', function() {
+    it('should return the path up to the first named param', function() {
       expect(routeName).to.equal('employee/show')
     })
   })
@@ -216,7 +295,7 @@ describe('nameToPath', function() {
       routeName = nameToPath('employee/:name/show/:id')
     })
 
-    it('should return the name', function() {
+    it('should return the path up to the first named param', function() {
       expect(routeName).to.equal('employee')
     })
   })
@@ -226,7 +305,7 @@ describe('nameToPath', function() {
       routeName = nameToPath('projects')
     })
 
-    it('should return the name', function() {
+    it('should return the path name', function() {
       expect(routeName).to.equal('projects')
     })
   })
@@ -236,18 +315,8 @@ describe('nameToPath', function() {
       routeName = nameToPath('proJECTS')
     })
 
-    it('should return the name', function() {
+    it('should return the path name downcased', function() {
       expect(routeName).to.equal('projects')
-    })
-  })
-
-  describe('When param has named params with it', function() {
-    beforeEach(function() {
-      routeName = nameToPath('employee/:id')
-    })
-
-    it('should return the name', function() {
-      expect(routeName).to.equal('employee')
     })
   })
 })
@@ -287,128 +356,134 @@ describe('anyEmptyNestedRoute', function() {
   })
 })
 
-describe('compareRoutes', function() {
+describe('updateRoutePath', function() {
   let pathName = []
+  let currentLanguage = null
   describe('when there are no nested routes', function() {
     describe('when route is one level', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: 'admin' })
+        routes = updateRoutePath('admin', pathName, { name: 'admin' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+        expect(routes.result).to.equal('admin')
       })
     })
 
-    describe('when route is one level', function() {
+    describe('when route is one level base path has a trailing slash', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('/admin', pathName, { name: 'admin' })
+        routes = updateRoutePath('/admin', pathName, { name: 'admin' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+        expect(routes.result).to.equal('admin')
       })
     })
   })
 
   describe('when there are nested routes', function() {
-    describe('when route is one level with /', function() {
+    describe('when route is one level with trailing slash', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: '/admin' })
+        routes = updateRoutePath('admin', pathName, { name: '/admin' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+        expect(routes.result).to.equal('admin')
       })
     })
 
     describe('when route is two levels', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: 'admin/teams' })
+        routes = updateRoutePath('admin', pathName, { name: 'admin/teams' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin/teams')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['show', 'report'])
+        expect(routes.result).to.equal('admin/teams')
       })
     })
 
     describe('when route is many levels deep', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: 'admin/teams/show/report' })
+        routes = updateRoutePath('admin', pathName, { name: 'admin/teams/show/report' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin/teams/show/report')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal([])
+        expect(routes.result).to.equal('admin/teams/show/report')
       })
     })
 
     describe('when route is many levels deep but some levels unrelated', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: 'admin/invoices/show/report' })
+        routes = updateRoutePath('admin', pathName, { name: 'admin/invoices/show/report' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+        expect(routes.result).to.equal('admin')
       })
     })
 
     describe('when route is many levels deep but some levels unrelated', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin/employees', pathName, { name: 'admin/invoices/show/report' })
+        routes = updateRoutePath('admin/employees', pathName, { name: 'admin/invoices/show/report' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin/employees')
-      })
-
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+        expect(routes.result).to.equal('admin/employees')
       })
     })
 
     describe('when route is many levels deep but unrelated', function() {
       beforeEach(function() {
         pathName = ['teams', 'show', 'report']
-        routes = compareRoutes('admin', pathName, { name: 'other/employees/show/report' })
+        routes = updateRoutePath('admin', pathName, { name: 'other/employees/show/report' }, currentLanguage)
       })
 
       it('should return the base route', function() {
-        expect(routes).to.equal('admin')
+        expect(routes.result).to.equal('admin')
       })
+    })
 
-      it('should return the route name', function() {
-        expect(pathName).to.deep.equal(['teams', 'show', 'report'])
+    describe('when language is set', function() {
+      describe('a simple route', function() {
+        beforeEach(function() {
+          currentLanguage = 'de'
+          pathName = ['kalender', 'show', 'report']
+          routes = updateRoutePath(
+            'kalender',
+            pathName,
+            { name: 'calendar', lang: { de: 'kalender', es: 'calendario' } },
+            currentLanguage
+          )
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('kalender')
+        })
+      })
+    })
+
+    describe('a multi route', function() {
+      let pathName = ['kalender', 'edieren', 'report']
+      describe('when language is set', function() {
+        beforeEach(function() {
+          routes = updateRoutePath(
+            'kalender/edieren',
+            pathName,
+            { name: 'calendar/edit', lang: { de: 'kalender/edieren', es: 'calendario/modificar' } },
+            'de'
+          )
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('kalender/edieren')
+        })
       })
     })
   })
@@ -450,6 +525,55 @@ describe('pathWithSearch', function() {
 
     it('should return the base route', function() {
       expect(pathWithSearch(currentRoute)).to.equal('/admin/employee/new')
+    })
+  })
+})
+
+describe('removeSlash', function() {
+  let word = '/example/route/'
+
+  describe('when there is no slash', function() {
+    it('should return the word unchanged', function() {
+      expect(removeSlash('example/route')).to.equal('example/route')
+    })
+  })
+
+  describe('when position is lead ', function() {
+    it('should return the word without leading slash', function() {
+      expect(removeSlash(word, 'lead')).to.equal('example/route/')
+    })
+  })
+
+  describe('when position is trail ', function() {
+    it('should return the word without trailing slash', function() {
+      expect(removeSlash(word, 'trail')).to.equal('/example/route')
+    })
+  })
+
+  describe('when position is both ', function() {
+    it('should return the word without leading and trailing slash', function() {
+      expect(removeSlash(word, 'both')).to.equal('example/route')
+    })
+  })
+})
+
+describe('routeNameLocalised', function() {
+  let currentRoute = { name: 'employees', lang: { de: 'kalender', es: 'calendario' } }
+  let currentLanguage = 'default'
+
+  describe('when language is default', function() {
+    it('should return the default route name', function() {
+      expect(routeNameLocalised(currentRoute, currentLanguage)).to.equal('employees')
+    })
+  })
+
+  describe('when language is not default', function() {
+    beforeEach(function() {
+      currentLanguage = 'de'
+    })
+
+    it('should return the language route name', function() {
+      expect(routeNameLocalised(currentRoute, currentLanguage)).to.equal('kalender')
     })
   })
 })

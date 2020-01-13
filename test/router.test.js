@@ -58,7 +58,10 @@ describe('Router', function() {
         {
           name: '/',
           component: 'PublicLayout',
-          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
+          nestedRoutes: [
+            { name: 'index', component: 'PublicIndex' },
+            { name: 'about-us', component: 'AboutUs' }
+          ]
         },
 
         { name: 'login', component: 'Login' },
@@ -66,7 +69,7 @@ describe('Router', function() {
       ]
     })
 
-    describe('When root path', function() {
+    describe('When root path-', function() {
       beforeEach(function() {
         pathName = 'http://web.app/'
         testRouter = SpaRouter(routes, pathName)
@@ -80,11 +83,7 @@ describe('Router', function() {
         expect(testRouter.activeRoute.component).to.equal('PublicLayout')
       })
 
-      it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/')
-      })
-
-      it('should set component name', function() {
+      it('should set the child route component name', function() {
         expect(testRouter.activeRoute.childRoute.component).to.equal('PublicIndex')
       })
     })
@@ -183,6 +182,21 @@ describe('Router', function() {
           nestedRoutes: [{ name: 'index', component: 'AboutUsPage' }]
         }
       ]
+    })
+
+    describe(' When root path ', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/'
+        testRouter = SpaRouter(routes, pathName)
+      })
+
+      it('should set path to root path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('PublicIndex')
+      })
     })
 
     describe('When path is first level', function() {
@@ -300,7 +314,10 @@ describe('Router', function() {
         {
           name: '/',
           component: 'PublicLayout',
-          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
+          nestedRoutes: [
+            { name: 'index', component: 'PublicIndex' },
+            { name: 'about-us', component: 'AboutUs' }
+          ]
         },
 
         { name: 'login', component: 'Login' },
@@ -403,7 +420,10 @@ describe('Router', function() {
         {
           name: '/',
           component: 'PublicLayout',
-          nestedRoutes: [{ name: 'index', component: 'PublicIndex' }, { name: 'about-us', component: 'AboutUs' }]
+          nestedRoutes: [
+            { name: 'index', component: 'PublicIndex' },
+            { name: 'about-us', component: 'AboutUs' }
+          ]
         },
 
         { name: 'login', component: 'Login' },
@@ -692,6 +712,70 @@ describe('Router', function() {
     })
   })
 
+  describe('When there are nested routes, named params and alias', function() {
+    beforeEach(function() {
+      routes = [
+        {
+          name: '/',
+          component: 'PublicIndex'
+        },
+        { name: 'login', component: 'Login', lang: { es: 'iniciar-sesion' } },
+        { name: 'signup', component: 'SignUp', lang: { es: 'registrarse' } },
+        {
+          name: 'admin',
+          component: 'AdminIndex',
+          nestedRoutes: [
+            {
+              name: 'employees',
+              component: 'EmployeesIndex',
+              lang: { es: 'empleados' },
+              nestedRoutes: [
+                {
+                  name: 'show/:id',
+                  component: 'ShowEmployeeLayout',
+                  lang: { es: 'mostrar', it: 'mostrare' },
+                  nestedRoutes: [
+                    {
+                      name: 'index',
+                      component: 'ShowEmployee'
+                    },
+                    {
+                      name: 'calendar/:month',
+                      component: 'CalendarEmployee',
+                      lang: { es: 'calendario', de: 'kalender' }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    })
+
+    describe('when no language is set', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees'
+        testRouter = SpaRouter(routes, pathName)
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+      })
+    })
+
+    describe('when language is set', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/empleados'
+        testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+      })
+
+      it('should use the matched language route', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/empleados')
+      })
+    })
+  })
+
   describe('When there are nested routes with no layout', function() {
     beforeEach(function() {
       routes = [
@@ -749,7 +833,7 @@ describe('Router', function() {
       })
     })
 
-    describe('Employee show route', function() {
+    describe('Employee show route without named param', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
         testRouter = SpaRouter(routes, pathName)
@@ -757,6 +841,25 @@ describe('Router', function() {
 
       it('should set path', function() {
         expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+      })
+
+      it('should set nested component name', function() {
+        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowEmployee')
+      })
+    })
+
+    describe('Employee show route with named param', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show/robert'
+        testRouter = SpaRouter(routes, pathName)
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/robert')
       })
 
       it('should set component name', function() {
@@ -834,12 +937,18 @@ describe('Router', function() {
 describe('navigateTo', function() {
   beforeEach(function() {
     pathName = 'https://fake.com/'
-    SpaRouter([{ name: '/', component: 'MainPage' }], pathName).activeRoute
+    routes = [
+      {
+        name: '/',
+        component: 'PublicIndex'
+      }
+    ]
+    SpaRouter(routes, pathName)
   })
 
   describe('when route is valid', function() {
     it('should set the active route to selected route', function() {
-      expect(navigateTo('/')).to.include({ name: '/', component: 'MainPage', path: '/' })
+      expect(navigateTo('/')).to.include({ name: '/', component: 'PublicIndex', path: '/' })
     })
   })
 
