@@ -167,6 +167,8 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **onlyIf**: An object to conditionally render a route. If guard returns true then route is rendered. If guard is false it redirects to _redirect_.
 
+**lang**: An object with route names localised. Check [Localisation](#localisation)
+
 ```javascript
 
 function userIsAdmin() {
@@ -251,9 +253,13 @@ The simplest approach (although not required) is to have an App.svelte file like
 
 The layout and/or the component that matches the active route will be rendered inside _Router_.
 
-The only option availabe now is _gaPageviews_ that will record route changes as pageviews in Google Analytics. It's disabled by default.
+Options is an object that supports two properties:
 
-## Route
+_gaPageviews_ that will record route changes as pageviews in Google Analytics. It's disabled by default.
+
+_lang_ a string that sets the language that the router will use to match the active route. Check [Localisation](#localisation)
+
+### Route
 
 `import { Route } from 'svelte-router-spa'`
 
@@ -289,7 +295,7 @@ Example:
 </div>
 ```
 
-## currentRoute
+### currentRoute
 
 This object is propagated from _Route_ to the components it renders. It contains information about the current route and the child routes.
 
@@ -301,6 +307,7 @@ These are the properties available in this object:
 - queryParams
 - namedParams
 - childRoute
+- language
 
 **Example:**
 
@@ -354,7 +361,7 @@ This will render:
 <h1>Your name is: Jack</h1>
 ```
 
-## Navigate
+### Navigate
 
 `import { Navigate } from 'svelte-router-spa'`
 
@@ -432,7 +439,7 @@ routeIsActive('other-company', true) // returns false
 
 If _includePath_ is true and the current route is `/admin/companies/show/my-company`
 
-## Not Found - 404
+### Not Found - 404
 
 Svelte Router redirects to a 404.html page if a route is not found. You need to host and upload that page to your site. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages so chances are you already have one.
 
@@ -441,14 +448,98 @@ Svelte Router redirects to a 404.html page if a route is not found. You need to 
 If you want to track route changes as pageviews in Google Analytics just add
 
 ```javascript
-<Router {routes} options={{gaPageviews: true}} />
+<Router { routes } options={ {gaPageviews: true} } />
 ```
+
+## Localisation
+
+How localisation works depends on the _lang_ param being passed to the _Router_ component. If a language is specified the router will try to match a route in that language only. If no language is specified then the router will try to find a route in any language.
+
+```javascript
+  const options = { lang: 'de' }
+
+  <Router {routes} {options} />
+```
+
+Let's see some examples using the following routes.
+
+```javascript
+const routes = [
+  {
+    name: '/',
+    component: 'PublicIndex'
+  },
+  { name: 'login', component: 'Login', lang: { es: 'iniciar-sesion' } },
+  { name: 'signup', component: 'SignUp', lang: { es: 'registrarse' } },
+  {
+    name: 'admin',
+    component: 'AdminIndex',
+    lang: { es: 'administrador' },
+    nestedRoutes: [
+      {
+        name: 'employees',
+        component: 'EmployeesIndex',
+        lang: { es: 'empleados' },
+        nestedRoutes: [
+          {
+            name: 'show/:id',
+            component: 'ShowEmployeeLayout',
+            lang: { es: 'mostrar/:id' },
+            nestedRoutes: [
+              {
+                name: 'index',
+                component: 'ShowEmployee'
+              },
+              {
+                name: 'calendar/:month',
+                component: 'CalendarEmployee',
+                lang: { es: 'calendario/:month' }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+If we don't specify a language the following routes are valid:
+
+`/login`
+`/setup`
+`/admin/employees`
+`/admin/employees/show/123`
+`/admin/employees/show/123/calendar/june`
+`/iniciar-sesion`
+`/registrarse`
+`/administrador/empleados`
+`/administrador/empleados/mostrar/123`
+`/administrador/empleados/mostrar/123/calendario/junio`
+
+If we specify a language the router will try to find routes only in that language so if in our current example we set the _lang_ variable to **'es'** these routes will be **invalid** and the router will return a 404 page:
+
+`/login`
+`/setup`
+`/admin/employees`
+`/admin/employees/show/123`
+`/admin/employees/show/123/calendar/june`
+
+however these other routes will be **valid**:
+
+`/iniciar-sesion`
+`/registrarse`
+`/administrador/empleados`
+`/administrador/empleados/mostrar/123`
+`/administrador/empleados/mostrar/123/calendario/junio`
+
+_currentRoute_ will return the language of the matched route.
 
 ## Credits
 
-Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es).
+Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es) - Twitter: @jorgealvarez
 
-I would like to thank all the people that create issues and comment on Github. Your feedback is the best way of improving.
+I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/issues). Your feedback is the best way of improving.
 
 ### Contributors
 

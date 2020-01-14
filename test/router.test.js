@@ -724,6 +724,7 @@ describe('Router', function() {
         {
           name: 'admin',
           component: 'AdminIndex',
+          lang: { es: 'administrador' },
           nestedRoutes: [
             {
               name: 'employees',
@@ -733,7 +734,7 @@ describe('Router', function() {
                 {
                   name: 'show/:id',
                   component: 'ShowEmployeeLayout',
-                  lang: { es: 'mostrar', it: 'mostrare' },
+                  lang: { es: 'mostrar/:id', it: 'mostrare/:id' },
                   nestedRoutes: [
                     {
                       name: 'index',
@@ -742,7 +743,7 @@ describe('Router', function() {
                     {
                       name: 'calendar/:month',
                       component: 'CalendarEmployee',
-                      lang: { es: 'calendario', de: 'kalender' }
+                      lang: { es: 'calendario/:month', de: 'kalender/:month' }
                     }
                   ]
                 }
@@ -754,24 +755,81 @@ describe('Router', function() {
     })
 
     describe('when no language is set', function() {
-      beforeEach(function() {
-        pathName = 'http://web.app/admin/employees'
-        testRouter = SpaRouter(routes, pathName)
+      describe('a simple route', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/admin/employees'
+          testRouter = SpaRouter(routes, pathName)
+        })
+
+        it('should set the correct path', function() {
+          expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+        })
       })
 
-      it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+      describe('a route with named params', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/admin/employees/show/123/calendar/april'
+          testRouter = SpaRouter(routes, pathName)
+        })
+
+        it('should set the correct path', function() {
+          expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar/april')
+        })
       })
     })
 
     describe('when language is set', function() {
       beforeEach(function() {
-        pathName = 'http://web.app/admin/empleados'
+        pathName = 'http://web.app/administrador/empleados'
         testRouter = SpaRouter(routes, pathName, { lang: 'es' })
       })
 
       it('should use the matched language route', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/empleados')
+        expect(testRouter.activeRoute.path).to.equal('/administrador/empleados')
+      })
+
+      describe('when path does not exist in the specified language', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/login'
+          testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+        })
+
+        it('should return 404', function() {
+          expect(testRouter.activeRoute.path).to.equal('404')
+        })
+
+        describe('when route has nested routes', function() {
+          beforeEach(function() {
+            pathName = 'http://web.app/administrador/employees/show/123/calendar/april'
+            testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+          })
+
+          it('should return 404', function() {
+            expect(testRouter.activeRoute.path).to.equal('404')
+          })
+        })
+      })
+
+      describe('when path does exist in the specified language', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/iniciar-sesion'
+          testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+        })
+
+        it('should return the matched path', function() {
+          expect(testRouter.activeRoute.path).to.equal('/iniciar-sesion')
+        })
+
+        describe('when route has nested routes', function() {
+          beforeEach(function() {
+            pathName = 'http://web.app/administrador/empleados/mostrar/123/calendario/abril'
+            testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+          })
+
+          it('should return y the matched path', function() {
+            expect(testRouter.activeRoute.path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
+          })
+        })
       })
     })
   })
