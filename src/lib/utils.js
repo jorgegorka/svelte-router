@@ -188,7 +188,6 @@ function updateRoutePath(basePath, pathNames, route, language) {
     routeNames.forEach(() => {
       const currentPathName = pathNames[0]
       localisedRoute = findLocalisedRoute(`${basePathResult}/${currentPathName}`, route, currentLanguage)
-
       if (currentPathName && localisedRoute.exists) {
         basePathResult += `/${pathNames.shift()}`
       } else {
