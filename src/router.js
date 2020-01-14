@@ -109,6 +109,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
    * @param basePath
    * @param pathNames
    **/
+
   function searchActiveRoutes(routes, basePath, pathNames, currentLanguage) {
     let currentRoute = {}
     let routeLanguage = currentLanguage
@@ -116,6 +117,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
     routes.forEach(function(route) {
       const updatedPath = updateRoutePath(basePathName, pathNames, route, routeLanguage)
+
       basePathName = updatedPath.result
       routeLanguage = updatedPath.language
 

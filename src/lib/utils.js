@@ -18,6 +18,20 @@ function anyEmptyNestedRoutes(routeObject) {
 }
 
 /**
+ * Compare two routes ignoring named params
+ * @param pathName string
+ * @param routeName string
+ **/
+
+function compareRoutes(pathName, routeName) {
+  if (routeName.includes(':')) {
+    return routeName.includes(pathName)
+  } else {
+    return routeName.startsWith(pathName)
+  }
+}
+
+/**
  * Returns the name of the route based on the language parameter
  * @param route object
  * @param language string
@@ -30,17 +44,17 @@ function findLocalisedRoute(pathName, route, language) {
     return { exists: route.lang && route.lang[language] && route.lang[language].includes(pathName), language }
   }
 
-  if (route.lang && typeof route.lang === 'object') {
+  exists = compareRoutes(pathName, route.name)
+
+  console.log(exists, pathName, route.name)
+
+  if (!exists && route.lang && typeof route.lang === 'object') {
     for (const [key, value] of Object.entries(route.lang)) {
-      if (value.includes(pathName)) {
+      if (compareRoutes(pathName, value)) {
         exists = true
         language = key
       }
     }
-  }
-
-  if (!exists) {
-    exists = route.name.includes(pathName)
   }
 
   return { exists, language }
@@ -164,11 +178,11 @@ function updateRoutePath(basePath, pathNames, route, language) {
   let currentLanguage = language
 
   routeName = removeSlash(routeName)
-
   basePathResult = removeSlash(basePathResult)
 
   if (!route.childRoute) {
     let localisedRoute = findLocalisedRoute(basePathResult, route, currentLanguage)
+
     let routeNames = routeName.split(':')[0]
     routeNames = removeSlash(routeNames, 'trail')
     routeNames = routeNames.split('/')
@@ -176,6 +190,7 @@ function updateRoutePath(basePath, pathNames, route, language) {
     routeNames.forEach(() => {
       const currentPathName = pathNames[0]
       localisedRoute = findLocalisedRoute(`${basePathResult}/${currentPathName}`, route, currentLanguage)
+      console.log(`${basePathResult}/${currentPathName}`, route)
       if (currentPathName && localisedRoute.exists) {
         basePathResult += `/${pathNames.shift()}`
       } else {
@@ -190,6 +205,7 @@ function updateRoutePath(basePath, pathNames, route, language) {
 
 module.exports = {
   anyEmptyNestedRoutes,
+  compareRoutes,
   findLocalisedRoute,
   getNamedParams,
   getPathNames,

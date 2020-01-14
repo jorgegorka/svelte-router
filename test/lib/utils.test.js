@@ -2,6 +2,7 @@ const expect = require('chai').expect
 
 const {
   anyEmptyNestedRoutes,
+  compareRoutes,
   findLocalisedRoute,
   getNamedParams,
   getPathNames,
@@ -115,6 +116,32 @@ describe('getPathNames', function() {
 
     it('should include the name', function() {
       expect(pathNames).to.include('please')
+    })
+  })
+})
+
+describe('compareRoutes', function() {
+  describe('when route does not have a named param', function() {
+    it('should return true if they are identical', function() {
+      expect(compareRoutes('first/route', 'first/route')).to.be.true
+    })
+
+    it('should return false if they are different', function() {
+      expect(compareRoutes('first/route', 'second/route')).to.be.false
+    })
+
+    it('should return true route includes all path names', function() {
+      expect(compareRoutes('first/route', 'first/route/with/extra/info')).to.be.true
+    })
+  })
+
+  describe('when route has a named param', function() {
+    it('should return true if route includes the path name', function() {
+      expect(compareRoutes('first/route', 'first/route/:id/other/stuff')).to.be.true
+    })
+
+    it('should return false if route does not include the path name', function() {
+      expect(compareRoutes('first/route', 'second/route/:id/other/stuff')).to.be.false
     })
   })
 })
@@ -412,7 +439,7 @@ describe('updateRoutePath', function() {
         routes = updateRoutePath('admin', pathName, { name: 'admin/teams/show/report' }, currentLanguage)
       })
 
-      it('should return the base route', function() {
+      it('should return the base route 439', function() {
         expect(routes.result).to.equal('admin/teams/show/report')
       })
     })
