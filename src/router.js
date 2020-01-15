@@ -169,17 +169,19 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
         if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
           currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames, routeLanguage)
+          currentRoute.language = currentRoute.childRoute.language
         } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
           const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'], routeLanguage)
           if (indexRoute && Object.keys(indexRoute).length > 0) {
             currentRoute.childRoute = indexRoute
+            currentRoute.language = currentRoute.childRoute.language
           }
         }
       }
     })
 
     if (redirectTo) {
-      currentRoute['redirectTo'] = redirectTo
+      currentRoute.redirectTo = redirectTo
     }
 
     return currentRoute

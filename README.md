@@ -493,7 +493,7 @@ const routes = [
               {
                 name: 'calendar/:month',
                 component: 'CalendarEmployee',
-                lang: { es: 'calendario/:month' }
+                lang: { es: 'calendario/:month', de: 'kalender/:month' }
               }
             ]
           }
@@ -507,37 +507,62 @@ const routes = [
 If we don't specify a language the following routes are valid:
 
 `/login`
+
 `/setup`
+
 `/admin/employees`
+
 `/admin/employees/show/123`
+
 `/admin/employees/show/123/calendar/june`
+
 `/iniciar-sesion`
+
 `/registrarse`
+
 `/administrador/empleados`
+
 `/administrador/empleados/mostrar/123`
+
 `/administrador/empleados/mostrar/123/calendario/junio`
 
 If we specify a language the router will try to find routes only in that language so if in our current example we set the _lang_ variable to **'es'** these routes will be **invalid** and the router will return a 404 page:
 
 `/login`
+
 `/setup`
+
 `/admin/employees`
+
 `/admin/employees/show/123`
+
 `/admin/employees/show/123/calendar/june`
 
 however these other routes will be **valid**:
 
 `/iniciar-sesion`
+
 `/registrarse`
+
 `/administrador/empleados`
+
 `/administrador/empleados/mostrar/123`
+
 `/administrador/empleados/mostrar/123/calendario/junio`
 
 _currentRoute_ will return the language of the matched route.
 
+Another example: In the routes above there is only one german localised route for _calendar_ so this url will be valid:
+
+`/admin/employees/show/123/kalender/april`
+
+The router will match the default route for all paths that are not localised and will match the german one for the one that specfies a localisation.
+
+That route will set **'de'** as the language in _currentRoute_
+
 ## Credits
 
-Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es) - Twitter: @jorgealvarez
+Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es) - Twitter: [@jorgealvarez](https://twitter.com/jorgealvarez)
 
 I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/issues). Your feedback is the best way of improving.
 
