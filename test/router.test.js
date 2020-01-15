@@ -903,6 +903,65 @@ describe('Router', function() {
     })
   })
 
+  describe('When there are simple routes with localisation', function() {
+    let publicRoutes = []
+
+    beforeEach(function() {
+      publicRoutes = [
+        { name: '/', component: 'Login', layout: 'PublicLayout' },
+        { name: 'login', component: 'Login', layout: 'PublicLayout', lang: { es: 'iniciar-sesion' } },
+        { name: 'logout', component: 'Logout', layout: 'PublicLayout', lang: { es: 'cerrar-sesion' } },
+        { name: 'signup', component: 'Signup', layout: 'PublicLayout', lang: { es: 'registrarse' } },
+        { name: 'userUpdate', component: 'UserUpdate', layout: 'PublicLayout', lang: { es: 'actualizar-usuario' } },
+        {
+          name: 'reset-password',
+          component: 'PasswordReset',
+          layout: 'PublicLayout',
+          lang: { es: 'cambiar-contraseña' }
+        },
+        { name: 'access/:companyId', component: 'Track', layout: 'PublicLayout', lang: { es: 'acceso/:companyId' } }
+      ]
+    })
+
+    describe('Login page', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/iniciar-sesion'
+        testRouter = SpaRouter(publicRoutes, pathName)
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/iniciar-sesion')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('Login')
+      })
+
+      it('should set the language', function() {
+        expect(testRouter.activeRoute.language).to.equal('es')
+      })
+    })
+
+    describe('Access page', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/acceso/4433'
+        testRouter = SpaRouter(publicRoutes, pathName)
+      })
+
+      it('should set path', function() {
+        expect(testRouter.activeRoute.path).to.equal('/acceso/4433')
+      })
+
+      it('should set component name', function() {
+        expect(testRouter.activeRoute.component).to.equal('Track')
+      })
+
+      it('should set the language', function() {
+        expect(testRouter.activeRoute.language).to.equal('es')
+      })
+    })
+  })
+
   describe('When there are nested routes with no layout', function() {
     beforeEach(function() {
       routes = [

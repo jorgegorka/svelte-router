@@ -468,32 +468,32 @@ Let's see some examples using the following routes.
 const routes = [
   {
     name: '/',
-    component: 'PublicIndex'
+    component: PublicIndex
   },
-  { name: 'login', component: 'Login', lang: { es: 'iniciar-sesion' } },
-  { name: 'signup', component: 'SignUp', lang: { es: 'registrarse' } },
+  { name: 'login', component: Login, lang: { es: 'iniciar-sesion' } },
+  { name: 'signup', component: SignUp, lang: { es: 'registrarse' } },
   {
     name: 'admin',
-    component: 'AdminIndex',
+    component: AdminIndex,
     lang: { es: 'administrador' },
     nestedRoutes: [
       {
         name: 'employees',
-        component: 'EmployeesIndex',
+        component: EmployeesIndex,
         lang: { es: 'empleados' },
         nestedRoutes: [
           {
             name: 'show/:id',
-            component: 'ShowEmployeeLayout',
+            component: ShowEmployeeLayout,
             lang: { es: 'mostrar/:id' },
             nestedRoutes: [
               {
                 name: 'index',
-                component: 'ShowEmployee'
+                component: ShowEmployee
               },
               {
                 name: 'calendar/:month',
-                component: 'CalendarEmployee',
+                component: CalendarEmployee,
                 lang: { es: 'calendario/:month', de: 'kalender/:month' }
               }
             ]
