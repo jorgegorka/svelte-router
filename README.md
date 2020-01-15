@@ -18,6 +18,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 - Layouts global, per page or nested.
 - Nested routes.
 - Named params.
+- Localisation.
 - Guards to protect urls. Public and private urls.
 - Track pageviews in Google Analytics (optional).
 - Use standard `<a href="/about-us">About</a>` elements to navigate between pages (or use [`<Navigate />`](#navigate) for bonus features).
