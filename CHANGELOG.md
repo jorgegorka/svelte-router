@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.3.2
+
+Add missing code to Navigate component onMount.
+
 ## 5.3.1
 
 Fix bug where navigateTo did not return the right localised route.

@@ -8,7 +8,10 @@
 
   onMount(function() {
     if (lang) {
-      to = localisedRoute(to, lang)
+      const route = localisedRoute(to, lang)
+      if (route) {
+        to = route.path
+      }
     }
   })
 
