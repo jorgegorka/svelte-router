@@ -108,7 +108,7 @@ function nameToPath(name = '') {
  * Return the path name including query params
  * @param name
  **/
-function pathWithSearch(currentRoute) {
+function pathWithQueryParams(currentRoute) {
   let queryParams = []
   if (currentRoute.queryParams) {
     for (let [key, value] of Object.entries(currentRoute.queryParams)) {
@@ -225,7 +225,7 @@ module.exports = {
   getNamedParams,
   getPathNames,
   nameToPath,
-  pathWithSearch,
+  pathWithQueryParams,
   removeSlash,
   routeNameLocalised,
   updateRoutePath

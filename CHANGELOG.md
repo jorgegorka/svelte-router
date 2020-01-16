@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.3.0
+
+currentRoute.path returns the full path including query params.
+
 ## 5.2.1
 
 Navigate and navigateTo support route generation for a language.

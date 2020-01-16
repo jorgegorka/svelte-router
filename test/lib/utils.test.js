@@ -7,7 +7,7 @@ const {
   getNamedParams,
   getPathNames,
   nameToPath,
-  pathWithSearch,
+  pathWithQueryParams,
   removeSlash,
   routeNameLocalised,
   updateRoutePath
@@ -557,7 +557,7 @@ describe('updateRoutePath', function() {
   })
 })
 
-describe('pathWithSearch', function() {
+describe('pathWithQueryParams', function() {
   let currentRoute = {}
 
   describe('when there are no query params', function() {
@@ -566,7 +566,7 @@ describe('pathWithSearch', function() {
     })
 
     it('should return the base route', function() {
-      expect(pathWithSearch(currentRoute)).to.equal('/admin')
+      expect(pathWithQueryParams(currentRoute)).to.equal('/admin')
     })
   })
 
@@ -581,7 +581,9 @@ describe('pathWithSearch', function() {
     })
 
     it('should return the base route', function() {
-      expect(pathWithSearch(currentRoute)).to.equal('/admin/employee/new?date=2019-11-21&employeeId=1234324&ping=false')
+      expect(pathWithQueryParams(currentRoute)).to.equal(
+        '/admin/employee/new?date=2019-11-21&employeeId=1234324&ping=false'
+      )
     })
   })
 
@@ -592,7 +594,7 @@ describe('pathWithSearch', function() {
     })
 
     it('should return the base route', function() {
-      expect(pathWithSearch(currentRoute)).to.equal('/admin/employee/new')
+      expect(pathWithQueryParams(currentRoute)).to.equal('/admin/employee/new')
     })
   })
 })

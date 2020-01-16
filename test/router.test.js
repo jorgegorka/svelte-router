@@ -690,7 +690,7 @@ describe('Router', function() {
         testRouter = SpaRouter(routes, pathName)
       })
 
-      it('should set path', function() {
+      it('should set the path shadow', function() {
         expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
       })
 
@@ -1063,15 +1063,15 @@ describe('Router', function() {
         testRouter = SpaRouter(routes, pathName)
       })
 
-      it('should set path', function() {
+      it('should set the route path here', function() {
         expect(testRouter.activeRoute.path).to.equal('/admin/teams')
       })
 
-      it('should set component name', function() {
+      it('should set the component name', function() {
         expect(testRouter.activeRoute.component).to.equal('AdminIndex')
       })
 
-      it('should set nested component name', function() {
+      it('should set the nested component name', function() {
         expect(testRouter.activeRoute.childRoute.component).to.equal('TeamsIndex')
       })
     })
@@ -1158,11 +1158,19 @@ describe('navigateTo', function() {
   })
 
   describe('when language is set', function() {
-    it('should set the active route to the localised route mine', function() {
+    it('should set the active route as the localised route', function() {
       expect(navigateTo('/setup', 'es')).to.include({
         name: '/configuracion',
         component: 'SetupComponent',
-        path: '/setup'
+        path: '/configuracion'
+      })
+    })
+
+    it('should set the active route as the localised route with params', function() {
+      expect(navigateTo('/setup?me=true', 'es')).to.include({
+        name: '/configuracion',
+        component: 'SetupComponent',
+        path: '/configuracion?me=true'
       })
     })
   })
@@ -1234,7 +1242,7 @@ describe('routeIsActive', function() {
       SpaRouter(routes, pathName).activeRoute
     })
 
-    it('should return true', function() {
+    it('should be active mona', function() {
       expect(routeIsActive('/current/active/4343/route/?test=true&routing=awesome')).to.be.true
     })
   })

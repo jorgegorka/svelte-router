@@ -5,7 +5,7 @@ const {
   updateRoutePath,
   getNamedParams,
   nameToPath,
-  pathWithSearch,
+  pathWithQueryParams,
   removeSlash,
   routeNameLocalised
 } = require('./lib/utils')
@@ -52,7 +52,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
         searchActiveRoute = { name: '404', component: '', path: '404' }
       }
     } else {
-      searchActiveRoute.path = urlParser.pathname
+      searchActiveRoute.path = pathWithQueryParams(searchActiveRoute)
     }
 
     return searchActiveRoute
@@ -102,7 +102,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
    **/
   function pushActiveRoute(currentRoute) {
     if (typeof window !== 'undefined') {
-      const pathAndSearch = pathWithSearch(currentRoute)
+      const pathAndSearch = pathWithQueryParams(currentRoute)
       window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
       if (routerOptions.gaPageviews) {
         gaTracking(pathAndSearch)
@@ -174,12 +174,14 @@ function SpaRouter(routes, currentUrl, options = {}) {
             layout: route.layout,
             queryParams: urlParser.queryParams,
             namedParams: routeNamedParams,
+            path: routePath,
             language: routeLanguage
           }
         }
 
         if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
           currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames, routeLanguage)
+          currentRoute.path = currentRoute.childRoute.path
           currentRoute.language = currentRoute.childRoute.language
         } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
           const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'], routeLanguage)
@@ -227,17 +229,19 @@ function routeIsActive(queryPath, includePath = false) {
     queryPath = '/' + queryPath
   }
 
+  // remove query params for comparison
   let pathName = UrlParser(`http://fake.com${queryPath}`).pathname
+  let activeRoute = currentActiveRoute || pathName
+  let activeRoutePath = UrlParser(`http://fake.com${activeRoute}`).pathname
 
   pathName = removeSlash(pathName, 'trail')
 
-  let activeRoute = currentActiveRoute || pathName
-  activeRoute = removeSlash(activeRoute, 'trail')
+  activeRoutePath = removeSlash(activeRoutePath, 'trail')
 
   if (includePath) {
-    return activeRoute.includes(pathName)
+    return activeRoutePath.includes(pathName)
   } else {
-    return activeRoute === pathName
+    return activeRoutePath === pathName
   }
 }
 
