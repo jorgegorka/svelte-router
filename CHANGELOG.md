@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.3.1
+
+Fix bug where navigateTo did not return the right localised route.
+
 ## 5.3.0
 
 currentRoute.path returns the full path including query params.

@@ -1,6 +1,7 @@
 const expect = require('chai').expect
 const SpaRouter = require('../src/router').SpaRouter
 const navigateTo = require('../src/router').navigateTo
+const localisedRoute = require('../src/router').localisedRoute
 const routeIsActive = require('../src/router').routeIsActive
 
 let testRouter = null
@@ -22,15 +23,15 @@ describe('Router', function() {
     })
 
     it('should set the component', function() {
-      expect(testRouter.activeRoute.component).to.equal('')
+      expect(testRouter.setActiveRoute().component).to.equal('')
     })
 
     it('should set the route name to 404', function() {
-      expect(testRouter.activeRoute.name).to.equal('404')
+      expect(testRouter.setActiveRoute().name).to.equal('404')
     })
 
     it('should set the route path to 404', function() {
-      expect(testRouter.activeRoute.path).to.equal('404')
+      expect(testRouter.setActiveRoute().path).to.equal('404')
     })
   })
 
@@ -40,15 +41,15 @@ describe('Router', function() {
     })
 
     it('should set thecomponent', function() {
-      expect(testRouter.activeRoute.component).to.equal('')
+      expect(testRouter.setActiveRoute().component).to.equal('')
     })
 
     it('should set the route name to 404', function() {
-      expect(testRouter.activeRoute.name).to.equal('404')
+      expect(testRouter.setActiveRoute().name).to.equal('404')
     })
 
     it('should set the route path to 404', function() {
-      expect(testRouter.activeRoute.path).to.equal('404')
+      expect(testRouter.setActiveRoute().path).to.equal('404')
     })
   })
 
@@ -76,15 +77,15 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/')
+        expect(testRouter.setActiveRoute().path).to.equal('/')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('PublicLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('PublicLayout')
       })
 
       it('should set the child route component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('PublicIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('PublicIndex')
       })
     })
 
@@ -95,11 +96,11 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/login')
+        expect(testRouter.setActiveRoute().path).to.equal('/login')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('Login')
+        expect(testRouter.setActiveRoute().component).to.equal('Login')
       })
     })
   })
@@ -128,7 +129,7 @@ describe('Router', function() {
       })
 
       it('should update queryParams', function() {
-        expect(testRouter.activeRoute.queryParams.q).to.equal('sangria')
+        expect(testRouter.setActiveRoute().queryParams.q).to.equal('sangria')
       })
     })
 
@@ -139,11 +140,11 @@ describe('Router', function() {
       })
 
       it('should update queryParams', function() {
-        expect(testRouter.activeRoute.queryParams.climate).to.equal('change')
+        expect(testRouter.setActiveRoute().queryParams.climate).to.equal('change')
       })
 
       it('should update queryParams', function() {
-        expect(testRouter.activeRoute.queryParams['sea-level']).to.equal('rising')
+        expect(testRouter.setActiveRoute().queryParams['sea-level']).to.equal('rising')
       })
     })
   })
@@ -155,15 +156,15 @@ describe('Router', function() {
     })
 
     it('should update queryParams', function() {
-      expect(testRouter.activeRoute.namedParams.title).to.equal('save_earth')
+      expect(testRouter.setActiveRoute().namedParams.title).to.equal('save_earth')
     })
 
     it('should update queryParams', function() {
-      expect(testRouter.activeRoute.queryParams.climate).to.equal('change')
+      expect(testRouter.setActiveRoute().queryParams.climate).to.equal('change')
     })
 
     it('should update queryParams', function() {
-      expect(testRouter.activeRoute.queryParams['sea-level']).to.equal('rising')
+      expect(testRouter.setActiveRoute().queryParams['sea-level']).to.equal('rising')
     })
   })
 
@@ -191,11 +192,11 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/')
+        expect(testRouter.setActiveRoute().path).to.equal('/')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('PublicIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('PublicIndex')
       })
     })
 
@@ -206,15 +207,15 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/project/easy-routing')
+        expect(testRouter.setActiveRoute().path).to.equal('/project/easy-routing')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('ProjectList')
+        expect(testRouter.setActiveRoute().component).to.equal('ProjectList')
       })
 
       it('should set named params', function() {
-        expect(testRouter.activeRoute.namedParams.name).to.equal('easy-routing')
+        expect(testRouter.setActiveRoute().namedParams.name).to.equal('easy-routing')
       })
     })
 
@@ -225,15 +226,15 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/about-us')
+        expect(testRouter.setActiveRoute().path).to.equal('/about-us')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AboutUsLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AboutUsLayout')
       })
 
       it('should set named params', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('AboutUsPage')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('AboutUsPage')
       })
     })
 
@@ -244,15 +245,15 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/about-us')
+        expect(testRouter.setActiveRoute().path).to.equal('/about-us')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AboutUsLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AboutUsLayout')
       })
 
       it('should set named params', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('AboutUsPage')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('AboutUsPage')
       })
     })
 
@@ -263,11 +264,11 @@ describe('Router', function() {
       })
 
       it('should set the route name to 404', function() {
-        expect(testRouter.activeRoute.name).to.equal('404')
+        expect(testRouter.setActiveRoute().name).to.equal('404')
       })
 
       it('should set the route path to 404', function() {
-        expect(testRouter.activeRoute.path).to.equal('404')
+        expect(testRouter.setActiveRoute().path).to.equal('404')
       })
     })
   })
@@ -291,19 +292,19 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/project/easy-routing/2019-03-26')
+        expect(testRouter.setActiveRoute().path).to.equal('/project/easy-routing/2019-03-26')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('ProjectList')
+        expect(testRouter.setActiveRoute().component).to.equal('ProjectList')
       })
 
       it('should set named params', function() {
-        expect(testRouter.activeRoute.namedParams.name).to.equal('easy-routing')
+        expect(testRouter.setActiveRoute().namedParams.name).to.equal('easy-routing')
       })
 
       it('should set named params', function() {
-        expect(testRouter.activeRoute.namedParams.date).to.equal('2019-03-26')
+        expect(testRouter.setActiveRoute().namedParams.date).to.equal('2019-03-26')
       })
     })
   })
@@ -346,7 +347,7 @@ describe('Router', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/12/Danny-filth'
         testRouter = SpaRouter(routes, pathName)
-        activeRoute = testRouter.activeRoute
+        activeRoute = testRouter.setActiveRoute()
         const employeeRoute = activeRoute.childRoute
         showEmployeeRoute = employeeRoute.childRoute
       })
@@ -397,19 +398,19 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
       })
 
       it('should set root component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminLayout')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeeLayout')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeeLayout')
       })
 
       it('should set nested index component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('EmployeesIndex')
       })
     })
   })
@@ -454,11 +455,11 @@ describe('Router', function() {
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminLayout')
       })
     })
 
@@ -469,23 +470,23 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminLayout')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.childRoute).to.be
+        expect(testRouter.setActiveRoute().childRoute).to.be
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.be.undefined
+        expect(testRouter.setActiveRoute().childRoute.component).to.be.undefined
       })
     })
 
@@ -496,19 +497,19 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminLayout')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminLayout')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.be.undefined
+        expect(testRouter.setActiveRoute().childRoute.component).to.be.undefined
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
   })
@@ -548,19 +549,19 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
   })
@@ -610,23 +611,23 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
 
@@ -637,27 +638,27 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/calendar')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
       })
     })
 
@@ -668,19 +669,19 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar/july')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/calendar/july')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.component).to.equal('CalendarEmployee')
       })
 
       it('should set first nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.namedParams).to.include({ id: '123' })
       })
 
       it('should set second nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.namedParams).to.include({ month: 'july' })
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.namedParams).to.include({ month: 'july' })
       })
     })
 
@@ -691,23 +692,23 @@ describe('Router', function() {
       })
 
       it('should set the path shadow', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
   })
@@ -762,7 +763,7 @@ describe('Router', function() {
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
         })
       })
 
@@ -773,11 +774,11 @@ describe('Router', function() {
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/calendar/april')
+          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/calendar/april')
         })
 
         it('should not set the language', function() {
-          expect(testRouter.activeRoute.language).to.be.undefined
+          expect(testRouter.setActiveRoute().language).to.be.undefined
         })
       })
 
@@ -788,11 +789,11 @@ describe('Router', function() {
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.activeRoute.path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
+          expect(testRouter.setActiveRoute().path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
         })
 
         it('should set the language', function() {
-          expect(testRouter.activeRoute.language).to.equal('es')
+          expect(testRouter.setActiveRoute().language).to.equal('es')
         })
       })
 
@@ -803,11 +804,11 @@ describe('Router', function() {
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/kalender/april')
+          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/kalender/april')
         })
 
         it('should set the language', function() {
-          expect(testRouter.activeRoute.language).to.equal('de')
+          expect(testRouter.setActiveRoute().language).to.equal('de')
         })
       })
     })
@@ -819,11 +820,11 @@ describe('Router', function() {
       })
 
       it('should use the matched language route', function() {
-        expect(testRouter.activeRoute.path).to.equal('/administrador/empleados')
+        expect(testRouter.setActiveRoute().path).to.equal('/administrador/empleados')
       })
 
       it('should set the language', function() {
-        expect(testRouter.activeRoute.language).to.equal('es')
+        expect(testRouter.setActiveRoute().language).to.equal('es')
       })
 
       describe('when path does not exist in the specified language', function() {
@@ -833,11 +834,11 @@ describe('Router', function() {
         })
 
         it('should return 404', function() {
-          expect(testRouter.activeRoute.path).to.equal('404')
+          expect(testRouter.setActiveRoute().path).to.equal('404')
         })
 
         it('should set the language', function() {
-          expect(testRouter.activeRoute.language).to.be.undefined
+          expect(testRouter.setActiveRoute().language).to.be.undefined
         })
 
         describe('when route has nested routes', function() {
@@ -847,11 +848,11 @@ describe('Router', function() {
           })
 
           it('should return 404', function() {
-            expect(testRouter.activeRoute.path).to.equal('404')
+            expect(testRouter.setActiveRoute().path).to.equal('404')
           })
 
           it('should set the language', function() {
-            expect(testRouter.activeRoute.language).to.be.undefined
+            expect(testRouter.setActiveRoute().language).to.be.undefined
           })
         })
 
@@ -862,11 +863,11 @@ describe('Router', function() {
           })
 
           it('should set the correct path', function() {
-            expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/123/kalender/april')
+            expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/kalender/april')
           })
 
           it('should set the language', function() {
-            expect(testRouter.activeRoute.language).to.equal('de')
+            expect(testRouter.setActiveRoute().language).to.equal('de')
           })
         })
       })
@@ -878,11 +879,11 @@ describe('Router', function() {
         })
 
         it('should return the matched path', function() {
-          expect(testRouter.activeRoute.path).to.equal('/iniciar-sesion')
+          expect(testRouter.setActiveRoute().path).to.equal('/iniciar-sesion')
         })
 
         it('should set the language', function() {
-          expect(testRouter.activeRoute.language).to.equal('es')
+          expect(testRouter.setActiveRoute().language).to.equal('es')
         })
 
         describe('when route has nested routes', function() {
@@ -892,11 +893,11 @@ describe('Router', function() {
           })
 
           it('should return y the matched path', function() {
-            expect(testRouter.activeRoute.path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
+            expect(testRouter.setActiveRoute().path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
           })
 
           it('should set the language', function() {
-            expect(testRouter.activeRoute.language).to.equal('es')
+            expect(testRouter.setActiveRoute().language).to.equal('es')
           })
         })
       })
@@ -930,15 +931,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/iniciar-sesion')
+        expect(testRouter.setActiveRoute().path).to.equal('/iniciar-sesion')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('Login')
+        expect(testRouter.setActiveRoute().component).to.equal('Login')
       })
 
       it('should set the language', function() {
-        expect(testRouter.activeRoute.language).to.equal('es')
+        expect(testRouter.setActiveRoute().language).to.equal('es')
       })
     })
 
@@ -949,15 +950,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/acceso/4433')
+        expect(testRouter.setActiveRoute().path).to.equal('/acceso/4433')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('Track')
+        expect(testRouter.setActiveRoute().component).to.equal('Track')
       })
 
       it('should set the language', function() {
-        expect(testRouter.activeRoute.language).to.equal('es')
+        expect(testRouter.setActiveRoute().language).to.equal('es')
       })
     })
   })
@@ -1007,15 +1008,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
     })
 
@@ -1026,15 +1027,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
       })
     })
 
@@ -1045,15 +1046,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/employees/show/robert')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/robert')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
       })
     })
 
@@ -1064,15 +1065,15 @@ describe('Router', function() {
       })
 
       it('should set the route path here', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/teams')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/teams')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set the nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('TeamsIndex')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('TeamsIndex')
       })
     })
 
@@ -1083,15 +1084,15 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/teams/active')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/teams/active')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('ActiveTeams')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ActiveTeams')
       })
     })
 
@@ -1102,19 +1103,19 @@ describe('Router', function() {
       })
 
       it('should set path', function() {
-        expect(testRouter.activeRoute.path).to.equal('/admin/teams/show/leader-team')
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/teams/show/leader-team')
       })
 
       it('should set component name', function() {
-        expect(testRouter.activeRoute.component).to.equal('AdminIndex')
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.activeRoute.childRoute.component).to.equal('ShowTeams')
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowTeams')
       })
 
       it('should set the named param', function() {
-        expect(testRouter.activeRoute.childRoute.namedParams.name).to.equal('leader-team')
+        expect(testRouter.setActiveRoute().childRoute.namedParams.name).to.equal('leader-team')
       })
     })
   })
@@ -1197,7 +1198,7 @@ describe('routeIsActive', function() {
 
   describe('a standard route not active', function() {
     beforeEach(function() {
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should return false', function() {
@@ -1207,7 +1208,7 @@ describe('routeIsActive', function() {
 
   describe('a route with a named param', function() {
     beforeEach(function() {
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should return true', function() {
@@ -1217,7 +1218,7 @@ describe('routeIsActive', function() {
 
   describe('a route with a named param and a value', function() {
     beforeEach(function() {
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should return false', function() {
@@ -1228,7 +1229,7 @@ describe('routeIsActive', function() {
   describe('a route with named params', function() {
     beforeEach(function() {
       pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should return true', function() {
@@ -1239,7 +1240,7 @@ describe('routeIsActive', function() {
   describe('a route with search queries', function() {
     beforeEach(function() {
       pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome'
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should be active mona', function() {
@@ -1249,7 +1250,7 @@ describe('routeIsActive', function() {
 
   describe('a non active route', function() {
     beforeEach(function() {
-      SpaRouter(routes, pathName).activeRoute
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should return false', function() {
@@ -1298,7 +1299,7 @@ describe('routeIsActive', function() {
     describe('a standard route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/login'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1313,7 +1314,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1328,7 +1329,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/active'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1343,7 +1344,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/accountants'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1358,7 +1359,7 @@ describe('routeIsActive', function() {
     describe('a standard route not active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/accountants'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1377,7 +1378,7 @@ describe('routeIsActive', function() {
     describe('with include active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/accountants'
-        SpaRouter(routes, pathName).activeRoute
+        SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should return true if matches active route', function() {
@@ -1433,7 +1434,7 @@ describe('onlyIf', function() {
       ]
 
       pathName = 'http://web.app/admin'
-      SpaRouter(routes, pathName)
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
     it('should render admin', function() {
@@ -1458,11 +1459,43 @@ describe('onlyIf', function() {
       ]
 
       pathName = 'http://web.app/admin'
-      SpaRouter(routes, pathName)
+      SpaRouter(routes, pathName).setActiveRoute()
     })
 
-    it('should render login', function() {
-      expect(routeIsActive('/login')).to.be.false
+    it('should render login now', function() {
+      expect(routeIsActive('/login')).to.be.true
     })
+  })
+})
+
+describe('localisedRoute', function() {
+  let activeRoute = ''
+
+  beforeEach(function() {
+    routes = [
+      {
+        name: '/admin',
+        component: 'AdminLayout',
+        lang: { es: 'administrador' },
+        nestedRoutes: [
+          { name: 'index', component: 'AdminIndex' },
+          { name: 'private', component: 'PrivateComponent', lang: { es: 'privado' } }
+        ],
+        onlyIf: { guard: thisIsTrue, redirect: '/login' }
+      },
+
+      { name: 'login', component: 'Login' }
+    ]
+
+    pathName = 'http://web.app/admin'
+    SpaRouter(routes, pathName)
+  })
+
+  it('should render admin', function() {
+    expect(localisedRoute('/admin', 'es').path).to.equal('/administrador')
+  })
+
+  it('should render admin private', function() {
+    expect(localisedRoute('/admin/private', 'es').path).to.equal('/administrador/privado')
   })
 })

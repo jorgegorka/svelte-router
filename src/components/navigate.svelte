@@ -1,14 +1,21 @@
 <script>
-  import { navigateTo, routeIsActive } from '../router'
+  import { onMount } from 'svelte'
+  import { localisedRoute, navigateTo, routeIsActive } from '../router'
   export let to = '/'
   export let title = ''
   export let styles = ''
   export let lang = null
 
+  onMount(function() {
+    if (lang) {
+      to = localisedRoute(to, lang)
+    }
+  })
+
   function navigate(event) {
     event.preventDefault()
     event.stopPropagation()
-    navigateTo(to, lang)
+    navigateTo(to)
   }
 </script>
 

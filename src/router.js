@@ -63,8 +63,9 @@ function SpaRouter(routes, currentUrl, options = {}) {
    * @param destinationUrl
    **/
   function forceRedirect(destinationUrl) {
+    currentActiveRoute = destinationUrl
+
     if (typeof window !== 'undefined') {
-      currentActiveRoute = destinationUrl
       if (destinationUrl === NotFoundPage) {
         window.location = destinationUrl
       } else {
@@ -82,12 +83,13 @@ function SpaRouter(routes, currentUrl, options = {}) {
     }
   }
 
-  function generate() {
+  function setActiveRoute() {
     const currentRoute = findActiveRoute()
 
     if (currentRoute.redirectTo) {
       return forceRedirect(redirectTo)
     }
+
     currentActiveRoute = currentRoute.path
     activeRoute.set(currentRoute)
 
@@ -180,11 +182,11 @@ function SpaRouter(routes, currentUrl, options = {}) {
         }
 
         if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
-          currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames, routeLanguage)
+          currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames, routeLanguage, convert)
           currentRoute.path = currentRoute.childRoute.path
           currentRoute.language = currentRoute.childRoute.language
         } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
-          const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'], routeLanguage)
+          const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'], routeLanguage, convert)
           if (indexRoute && Object.keys(indexRoute).length > 0) {
             currentRoute.childRoute = indexRoute
             currentRoute.language = currentRoute.childRoute.language
@@ -201,8 +203,22 @@ function SpaRouter(routes, currentUrl, options = {}) {
   }
 
   return Object.freeze({
-    activeRoute: generate()
+    setActiveRoute,
+    findActiveRoute
   })
+}
+
+/**
+ * Updates the current active route and updates the browser pathname
+ * @param pathName
+ **/
+function localisedRoute(pathName, language) {
+  pathName = removeSlash(pathName, 'lead')
+  routerOptions.langConvertTo = language
+
+  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).findActiveRoute()
+
+  return activeRoute
 }
 
 /**
@@ -215,7 +231,7 @@ function navigateTo(pathName, language = null) {
   if (language) {
     routerOptions.langConvertTo = language
   }
-  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).activeRoute
+  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
 
   return activeRoute
 }
@@ -231,7 +247,7 @@ function routeIsActive(queryPath, includePath = false) {
 
   // remove query params for comparison
   let pathName = UrlParser(`http://fake.com${queryPath}`).pathname
-  let activeRoute = currentActiveRoute || pathName
+  let activeRoute = currentActiveRoute
   let activeRoutePath = UrlParser(`http://fake.com${activeRoute}`).pathname
 
   pathName = removeSlash(pathName, 'trail')
@@ -260,4 +276,4 @@ if (typeof window !== 'undefined') {
   }
 }
 
-module.exports = { SpaRouter, navigateTo, routeIsActive }
+module.exports = { SpaRouter, localisedRoute, navigateTo, routeIsActive }

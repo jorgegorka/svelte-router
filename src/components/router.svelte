@@ -9,7 +9,7 @@
   export let options = {}
 
   onMount(function() {
-    SpaRouter(routes, document.location.href, options).activeRoute
+    SpaRouter(routes, document.location.href, options).setActiveRoute()
   })
 </script>
 

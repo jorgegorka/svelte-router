@@ -45,12 +45,11 @@ yarn add svelte-router-spa
 
 ## Usage
 
-Ensure your local server is configured in SPA mode.  In a default Svelte installation you need to edit your package.json and add _-s_ to `sirv public`.
+Ensure your local server is configured in SPA mode. In a default Svelte installation you need to edit your package.json and add _-s_ to `sirv public`.
 
 ```javascript
 "start": "sirv public -s"
 ```
-
 
 Instead of having your routes spread inside your code Svelte Router SPA lets you define them inside a file where you can easily identify all available routes.
 
@@ -408,7 +407,7 @@ Example:
 _route name_ String A valid route to navigate to.
 _language_ String A language to convert the route to.
 
-navigateTo allows you to programatically navigate to a route from inside your app code.
+navigateTo allows you to programatically navigate to a route from inside your app updating the browser url and history.
 
 navigateTo receives a route name as a param and an optional language and will try to navigate to that route.
 
@@ -467,6 +466,32 @@ routeIsActive('other-company', true) // returns false
 ```
 
 If _includePath_ is true and the current route is `/admin/companies/show/my-company`
+
+### localisedRoute
+
+`import { localisedRoute } from 'svelte-router-spa'`
+
+#### params
+
+_route name_ String A valid route to navigate to.
+_language_ String A language to convert the route to.
+
+localisedRoute returns a string with the route localised to the specified language.
+
+```javascript
+  // Example route
+  {
+    name: '/setup',
+    component: 'SetupComponent',
+    lang: { es: 'configuracion', it: 'configurazione' }
+  }
+```
+
+```javascript
+localisedRoute('setup', 'es') // Will return the string "/configuracion"
+
+localisedRoute('setup', 'it') // Will return the string "/configurazione"
+```
 
 ### Not Found - 404
 
@@ -611,6 +636,8 @@ navigateTo('setup') // Will redirect to /setup
 
 navigateTo('setup', 'es') // Will redirect to /configuracion
 ```
+
+There is also available a function called _localisedRoute_ that will return a string with the translated route. If you just want the translation and not navigating to the route.
 
 Inside your application you just need to define your routes using the default language (_route name_) and then when you specify a language, the route will be translated to the specified language automatically.
 
