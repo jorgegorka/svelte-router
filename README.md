@@ -472,8 +472,8 @@ If _includePath_ is true and the current route is `/admin/companies/show/my-comp
 
 #### params
 
-- **route name** String A valid route to navigate to.
-- **language** String A language to convert the route to.
+- **route name** (Required) String A valid route to navigate to.
+- **language** (Required) String A language to convert the route to.
 
 localisedRoute returns a string with the route localised to the specified language.
 
