@@ -366,9 +366,18 @@ This will render:
 
 `import { Navigate } from 'svelte-router-spa'`
 
+#### params
+
+_to_ String A valid route to navigate to.
+_title_ String A title for the _a_ element.
+_styles_ String Class styles to be applied to the _a class_ element.
+_lang_ String A language to convert the route to.
+
 Navigate is a wrapper around the < a href="" > element to help you generate links quick and easily.
 
-It adds an _active_ class if the generated route is the active one.
+It adds an _active_ class to the styles if the generated route is the active one.
+
+Check **navigateTo** belown for more information about the language param.
 
 Example:
 
@@ -387,18 +396,30 @@ Example:
 
 `import { navigateTo } from 'svelte-router-spa'`
 
+#### params
+
+_route name_ String A valid route to navigate to.
+_language_ String A language to convert the route to.
+
 navigateTo allows you to programatically navigate to a route from inside your app code.
 
-navigateTo receives a path name as a param and will try to navigate to that route.
+navigateTo receives a route name as a param and an optional language and will try to navigate to that route.
 
-Example:
+When a language is provided _navigateTo_ will try to convert the _route name_ to the localised version of the route.
 
 ```javascript
-if (loginSuccess) {
-  navigateTo('admin')
-} else {
-  navigateTo('login')
-}
+  // Example route
+  {
+    name: '/setup',
+    component: 'SetupComponent',
+    lang: { es: 'configuracion' }
+  }
+```
+
+```javascript
+navigateTo('setup') // Will redirect to /setup
+
+navigateTo('setup', 'es') // Will redirect to /configuracion
 ```
 
 ### routeIsActive
@@ -454,7 +475,7 @@ If you want to track route changes as pageviews in Google Analytics just add
 
 ## Localisation
 
-How localisation works depends on the _lang_ param being passed to the _Router_ component. If a language is specified the router will try to match a route in that language only. If no language is specified then the router will try to find a route in any language.
+How localisation works depends on the _lang_ param being passed to the _Router_ component. If a language is specified the router will try to match a route in that language only. If no language is specified then the router will try to find a route in any language available.
 
 ```javascript
   const options = { lang: 'de' }
@@ -527,7 +548,7 @@ If we don't specify a language the following routes are valid:
 
 `/administrador/empleados/mostrar/123/calendario/junio`
 
-If we specify a language the router will try to find routes only in that language so if in our current example we set the _lang_ variable to **'es'** these routes will be **invalid** and the router will return a 404 page:
+If we specify a language the router will try to find routes **only** in that language so if in our current example we set the _lang_ variable to _'es'_ these routes will be **invalid** and the router will return a 404 page:
 
 `/login`
 
@@ -539,7 +560,7 @@ If we specify a language the router will try to find routes only in that languag
 
 `/admin/employees/show/123/calendar/june`
 
-however these other routes will be **valid**:
+However these other routes will be **valid**:
 
 `/iniciar-sesion`
 
@@ -560,6 +581,31 @@ Another example: In the routes above there is only one german localised route fo
 The router will match the default route for all paths that are not localised and will match the german one for the one that specfies a localisation.
 
 That route will set **'de'** as the language in _currentRoute_
+
+### Rendering a page in different languages
+
+If you use _Navigate_ and _navigateTo_ to generate links and navigate to different parts of your application an automatic language conversion will be done for you.
+
+Both _Navigate_ and _navigateTo_ support an aditional parameter with a language. If a language is provided they will try to convert the default route into the corresponding one for that language.
+
+Example:
+
+```javascript
+  // Example route
+  {
+    name: '/setup',
+    component: 'SetupComponent',
+    lang: { es: 'configuracion' }
+  }
+```
+
+```javascript
+navigateTo('setup') // Will redirect to /setup
+
+navigateTo('setup', 'es') // Will redirect to /configuracion
+```
+
+Inside your application you just need to define your routes using the default language (_route name_) and then when you specify a language, the route will be translated to the specified language automatically.
 
 ## Credits
 

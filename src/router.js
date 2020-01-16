@@ -35,8 +35,15 @@ function SpaRouter(routes, currentUrl, options = {}) {
   let routeNamedParams = {}
 
   function findActiveRoute() {
+    let convert = false
     redirectTo = ''
-    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions['lang'])
+
+    if (routerOptions.langConvertTo) {
+      routerOptions.lang = routerOptions.langConvertTo
+      convert = true
+    }
+
+    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
 
     if (!searchActiveRoute || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
@@ -110,16 +117,20 @@ function SpaRouter(routes, currentUrl, options = {}) {
    * @param pathNames
    **/
 
-  function searchActiveRoutes(routes, basePath, pathNames, currentLanguage) {
+  function searchActiveRoutes(routes, basePath, pathNames, currentLanguage, convert) {
     let currentRoute = {}
     let routeLanguage = currentLanguage
     let basePathName = pathNames.shift().toLowerCase()
 
     routes.forEach(function(route) {
-      const updatedPath = updateRoutePath(basePathName, pathNames, route, routeLanguage)
+      const updatedPath = updateRoutePath(basePathName, pathNames, route, routeLanguage, convert)
 
       basePathName = updatedPath.result
-      routeLanguage = updatedPath.language
+      if (convert) {
+        routeLanguage = currentLanguage
+      } else {
+        routeLanguage = updatedPath.language
+      }
 
       const localisedPathName = routeNameLocalised(route, routeLanguage)
       const localisedRouteName = nameToPath(localisedPathName)
@@ -196,9 +207,12 @@ function SpaRouter(routes, currentUrl, options = {}) {
  * Updates the current active route and updates the browser pathname
  * @param pathName
  **/
-function navigateTo(pathName) {
+function navigateTo(pathName, language = null) {
   pathName = removeSlash(pathName, 'lead')
 
+  if (language) {
+    routerOptions.langConvertTo = language
+  }
   const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).activeRoute
 
   return activeRoute

@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.2.1
+
+Navigate and navigateTo support route generation for a language.
+
 ## 5.2.0
 
 - Internationalisation. Translate the route names to as many languages as you need.

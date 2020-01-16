@@ -933,7 +933,7 @@ describe('Router', function() {
         expect(testRouter.activeRoute.path).to.equal('/iniciar-sesion')
       })
 
-      it('should set component name', function() {
+      it('should set the component name', function() {
         expect(testRouter.activeRoute.component).to.equal('Login')
       })
 
@@ -952,7 +952,7 @@ describe('Router', function() {
         expect(testRouter.activeRoute.path).to.equal('/acceso/4433')
       })
 
-      it('should set component name', function() {
+      it('should set the component name', function() {
         expect(testRouter.activeRoute.component).to.equal('Track')
       })
 
@@ -1127,20 +1127,43 @@ describe('navigateTo', function() {
       {
         name: '/',
         component: 'PublicIndex'
+      },
+      {
+        name: '/setup',
+        component: 'SetupComponent',
+        lang: { es: 'configuracion' }
       }
     ]
     SpaRouter(routes, pathName)
   })
 
   describe('when route is valid', function() {
-    it('should set the active route to selected route', function() {
+    it('should set the active route to the selected route', function() {
       expect(navigateTo('/')).to.include({ name: '/', component: 'PublicIndex', path: '/' })
+    })
+
+    it('should set the active route to the localised route', function() {
+      expect(navigateTo('/setup')).to.include({
+        name: '/setup',
+        component: 'SetupComponent',
+        path: '/setup'
+      })
     })
   })
 
   describe('when route is not valid', function() {
     it('should set the active route to 404', function() {
       expect(navigateTo('/invalid')).to.include({ name: '404', component: '', path: '404' })
+    })
+  })
+
+  describe('when language is set', function() {
+    it('should set the active route to the localised route mine', function() {
+      expect(navigateTo('/setup', 'es')).to.include({
+        name: '/configuracion',
+        component: 'SetupComponent',
+        path: '/setup'
+      })
     })
   })
 })

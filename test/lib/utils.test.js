@@ -407,18 +407,59 @@ describe('updateRoutePath', function() {
       it('should return the base route', function() {
         expect(routes.result).to.equal('admin')
       })
+
+      describe('and it needs to be converted', function() {
+        beforeEach(function() {
+          pathName = []
+          routes = updateRoutePath('/setup', pathName, { name: 'setup', lang: { es: 'configuracion' } }, 'es', true)
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('configuracion')
+        })
+      })
     })
   })
 
   describe('when there are nested routes', function() {
     describe('when route is one level with trailing slash', function() {
-      beforeEach(function() {
-        pathName = ['teams', 'show', 'report']
-        routes = updateRoutePath('admin', pathName, { name: '/admin' }, currentLanguage)
+      describe('when route does not need to be converted', function() {
+        beforeEach(function() {
+          pathName = ['teams', 'show', 'report']
+          routes = updateRoutePath('admin', pathName, { name: '/admin' }, currentLanguage)
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('admin')
+        })
       })
 
-      it('should return the base route', function() {
-        expect(routes.result).to.equal('admin')
+      describe('when route needs to be converted', function() {
+        beforeEach(function() {
+          pathName = ['teams', 'show', 'report']
+          routes = updateRoutePath('admin', pathName, { name: 'admin', lang: { es: 'administrador' } }, 'es', true)
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('administrador')
+        })
+      })
+
+      describe('when multi-route needs to be converted', function() {
+        beforeEach(function() {
+          pathName = ['teams', 'show', 'report']
+          routes = updateRoutePath(
+            'admin/teams/show/:id/report',
+            pathName,
+            { name: 'admin/teams/show/:id/report', lang: { es: 'admin/equipos/mostrar/:id/informe' } },
+            'es',
+            true
+          )
+        })
+
+        it('should return the base route', function() {
+          expect(routes.result).to.equal('admin/equipos/mostrar/:id/informe')
+        })
       })
     })
 

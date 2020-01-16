@@ -3,11 +3,12 @@
   export let to = '/'
   export let title = ''
   export let styles = ''
+  export let lang = null
 
   function navigate(event) {
     event.preventDefault()
     event.stopPropagation()
-    navigateTo(to)
+    navigateTo(to, lang)
   }
 </script>
 
