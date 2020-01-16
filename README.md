@@ -45,6 +45,13 @@ yarn add svelte-router-spa
 
 ## Usage
 
+Ensure your local server is configured in SPA mode.  In a default Svelte installation you need to edit your package.json and add _-s_ to `sirv public`.
+
+```javascript
+"start": "sirv public -s"
+```
+
+
 Instead of having your routes spread inside your code Svelte Router SPA lets you define them inside a file where you can easily identify all available routes.
 
 Add a routes.js file with your routes info. Example:
