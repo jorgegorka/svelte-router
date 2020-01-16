@@ -373,11 +373,10 @@ This will render:
 `import { Navigate } from 'svelte-router-spa'`
 
 #### params
-
-_to_ String A valid route to navigate to.
-_title_ String A title for the _a_ element.
-_styles_ String Class styles to be applied to the _a class_ element.
-_lang_ String A language to convert the route to.
+- **to** (Required) String A valid route to navigate to.
+- **title** (Optional) String A title for the _a_ element.
+- **styles** (Optional) String Class styles to be applied to the _a class_ element.
+- **lang** (Optional) String A language to convert the route to.
 
 Navigate is a wrapper around the < a href="" > element to help you generate links quick and easily.
 
@@ -404,8 +403,8 @@ Example:
 
 #### params
 
-_route name_ String A valid route to navigate to.
-_language_ String A language to convert the route to.
+- **route name** (Required) String A valid route to navigate to.
+- **language** (Optional) String A language to convert the route to.
 
 navigateTo allows you to programatically navigate to a route from inside your app updating the browser url and history.
 
@@ -473,8 +472,8 @@ If _includePath_ is true and the current route is `/admin/companies/show/my-comp
 
 #### params
 
-_route name_ String A valid route to navigate to.
-_language_ String A language to convert the route to.
+- **route name** String A valid route to navigate to.
+- **language** String A language to convert the route to.
 
 localisedRoute returns a string with the route localised to the specified language.
 
@@ -637,7 +636,7 @@ navigateTo('setup') // Will redirect to /setup
 navigateTo('setup', 'es') // Will redirect to /configuracion
 ```
 
-There is also available a function called _localisedRoute_ that will return a string with the translated route. If you just want the translation and not navigating to the route.
+There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you just want the translation and not navigating to the route.
 
 Inside your application you just need to define your routes using the default language (_route name_) and then when you specify a language, the route will be translated to the specified language automatically.
 
