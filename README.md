@@ -154,13 +154,30 @@ The route page will take care of rendering the appropriate component inside the 
 
 ### Anatomy of a route
 
-Each route is an object with the following elements:
+Each route is an object that may have the following properties:
 
 ```javascript
-{ name: 'about-us', component: About, layout: PublicLayout, redirectTo: 'https://www.alvareznavarro.es' }
+
+function userIdAdmin() {
+  // return true or false
+}
+
+
+{
+  name: 'about-us',
+  component: About,
+  layout: PublicLayout,
+  redirectTo: 'company',
+  onlyIf: { guard: userIsAdmin, redirect: '/login' },
+  lang: { es: 'acerca-de' },
+  nestedRoutes: [
+    { name: 'our-values', component: CompanyValues, lang: { es: 'nuestros-valores' } }
+  ]
+}
+
 ```
 
-**name (required)**: The name that will be used in the url
+**name (required)**: The name that will be used in the url. This is the default name for the route if no localisation is defined or no language is set.
 
 **component (required if no layout is present)**: A component that will be rendered when this route is active. If the route has nestedRoutes the component should be a Layout.
 
@@ -176,18 +193,9 @@ _Either a component or a layout should be specified. Both can not be empty._
 
 **lang**: An object with route names localised. Check [Localisation](#localisation)
 
-```javascript
-
-function userIsAdmin() {
-  // do your checks here and returns true or false
-}
-
-{ name: 'admin', component: Admin, layout: PrivateLayout, onlyIf: { guard: userIsAdmin, redirect: '/login} }
-```
-
 Routes can contain as many nested routes as needed.
 
-It can also contain as many layouts as needed. Layouts can be nested into other layouts.
+They can also contain as many layouts as needed. Layouts can be nested into other layouts.
 
 In the following example both the home root ('/' and 'login' will use the same layout). Admin, employees and employeesShow will use the admin layout and employees will also use the employees layout, rendered inside the admin layout.
 
@@ -373,6 +381,7 @@ This will render:
 `import { Navigate } from 'svelte-router-spa'`
 
 #### params
+
 - **to** (Required) String A valid route to navigate to.
 - **title** (Optional) String A title for the _a_ element.
 - **styles** (Optional) String Class styles to be applied to the _a class_ element.
