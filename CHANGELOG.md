@@ -1,5 +1,11 @@
 # Svelte Router changelog
 
+## 5.3.3
+
+Fix route generation when localised and multiple paths with named params in name. -> { name: 'complex/route/:param/other/stuff/:param2' }
+
+A bit of refactoring
+
 ## 5.3.2
 
 Add missing code to Navigate component onMount.

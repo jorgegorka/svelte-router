@@ -135,28 +135,21 @@ function SpaRouter(routes, currentUrl, options = {}) {
       }
 
       const localisedPathName = routeNameLocalised(route, routeLanguage)
-      const localisedRouteName = nameToPath(localisedPathName)
+      const localisedRouteWithoutNamedParams = nameToPath(localisedPathName)
+      const basePathNameWithoutNamedParams = nameToPath(basePathName)
 
-      if (basePathName === localisedRouteName) {
+      if (basePathNameWithoutNamedParams === localisedRouteWithoutNamedParams) {
         let namedPath = `${basePath}/${localisedPathName}`
-        let routePath = `${basePath}/${localisedRouteName}`
+        let routePath = `${basePath}/${basePathNameWithoutNamedParams}`
         if (routePath === '//') {
           routePath = '/'
         }
 
-        if (route.redirectTo && route.redirectTo.length > 0) {
-          redirectTo = route.redirectTo
+        if (routeLanguage) {
+          pathNames = removeExtraPaths(pathNames, localisedRouteWithoutNamedParams)
         }
 
-        if (route.onlyIf && route.onlyIf.guard) {
-          if (!route.onlyIf.guard()) {
-            let destinationUrl = '/'
-            if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
-              destinationUrl = route.onlyIf.redirect
-            }
-            redirectTo = destinationUrl
-          }
-        }
+        redirectTo = setRedirectPath(route, redirectTo)
 
         const namedParams = getNamedParams(localisedPathName)
         if (namedParams && namedParams.length > 0) {
@@ -168,17 +161,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
         }
 
         if (currentRoute.name !== routePath) {
-          const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
-          routeNamedParams = { ...routeNamedParams, ...parsedParams }
-          currentRoute = {
-            name: routePath,
-            component: route.component,
-            layout: route.layout,
-            queryParams: urlParser.queryParams,
-            namedParams: routeNamedParams,
-            path: routePath,
-            language: routeLanguage
-          }
+          currentRoute = setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath })
         }
 
         if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
@@ -200,6 +183,52 @@ function SpaRouter(routes, currentUrl, options = {}) {
     }
 
     return currentRoute
+  }
+
+  function setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath }) {
+    const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+    routeNamedParams = { ...routeNamedParams, ...parsedParams }
+    return {
+      name: routePath,
+      component: route.component,
+      layout: route.layout,
+      queryParams: urlParser.queryParams,
+      namedParams: routeNamedParams,
+      path: routePath,
+      language: routeLanguage
+    }
+  }
+
+  function setRedirectPath(route, currentValue) {
+    let redirectTo = currentValue
+    if (route.redirectTo && route.redirectTo.length > 0) {
+      redirectTo = route.redirectTo
+    }
+
+    if (route.onlyIf && route.onlyIf.guard) {
+      if (!route.onlyIf.guard()) {
+        let destinationUrl = '/'
+        if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
+          destinationUrl = route.onlyIf.redirect
+        }
+        redirectTo = destinationUrl
+      }
+    }
+
+    return redirectTo
+  }
+
+  function removeExtraPaths(pathNames, basePathNames) {
+    const names = basePathNames.split('/')
+    if (names.length > 1) {
+      names.forEach(function(name, index) {
+        if (name.length > 0 && index > 0) {
+          pathNames.shift()
+        }
+      })
+    }
+
+    return pathNames
   }
 
   return Object.freeze({

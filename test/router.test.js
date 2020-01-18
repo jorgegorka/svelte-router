@@ -76,7 +76,7 @@ describe('Router', function() {
         testRouter = SpaRouter(routes, pathName)
       })
 
-      it('should set path to root path', function() {
+      it('should set path to root path black', function() {
         expect(testRouter.setActiveRoute().path).to.equal('/')
       })
 
@@ -610,23 +610,23 @@ describe('Router', function() {
         testRouter = SpaRouter(routes, pathName)
       })
 
-      it('should set path', function() {
+      it('should set the path', function() {
         expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123')
       })
 
-      it('should set component name', function() {
+      it('should set the component name', function() {
         expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
-      it('should set nested component name', function() {
+      it('should set the nested component name', function() {
         expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
       })
 
-      it('should set nested component name', function() {
+      it('should set the nested component name', function() {
         expect(testRouter.setActiveRoute().childRoute.childRoute.component).to.equal('ShowEmployeeLayout')
       })
 
-      it('should set nested component name', function() {
+      it('should set the nested component name', function() {
         expect(testRouter.setActiveRoute().childRoute.childRoute.childRoute.component).to.equal('ShowEmployee')
       })
     })
@@ -982,7 +982,8 @@ describe('Router', function() {
             },
             {
               name: 'employees/show/:id',
-              component: 'ShowEmployee'
+              component: 'ShowEmployee',
+              nestedRoutes: [{ name: 'print/3d', component: 'PrintEmployee' }]
             },
             {
               name: 'teams',
@@ -1045,15 +1046,34 @@ describe('Router', function() {
         testRouter = SpaRouter(routes, pathName)
       })
 
-      it('should set path', function() {
+      it('should set the path', function() {
         expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/robert')
       })
 
-      it('should set component name', function() {
+      it('should set the component name', function() {
         expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
       })
 
-      it('should set nested component name', function() {
+      it('should set the nested component name', function() {
+        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
+      })
+    })
+
+    describe('Employee show route with named param and extra route info', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/admin/employees/show/robert/print/3d'
+        testRouter = SpaRouter(routes, pathName)
+      })
+
+      it('should set the path', function() {
+        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/robert/print/3d')
+      })
+
+      it('should set the component name', function() {
+        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+      })
+
+      it('should set the nested component name', function() {
         expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
       })
     })
@@ -1409,7 +1429,7 @@ describe('routeIsActive', function() {
         expect(routeIsActive('/show/accountants', true)).to.be.true
       })
 
-      it('should return true if matches active route', function() {
+      it('should return true if matches active route mix', function() {
         expect(routeIsActive('show/accountants', true)).to.be.true
       })
     })
@@ -1469,8 +1489,6 @@ describe('onlyIf', function() {
 })
 
 describe('localisedRoute', function() {
-  let activeRoute = ''
-
   beforeEach(function() {
     routes = [
       {
@@ -1497,5 +1515,137 @@ describe('localisedRoute', function() {
 
   it('should render admin private', function() {
     expect(localisedRoute('/admin/private', 'es').path).to.equal('/administrador/privado')
+  })
+})
+
+describe('admin routes example localised', function() {
+  beforeEach(function() {
+    routes = [
+      {
+        name: 'public/users/show/:user',
+        component: 'PublicLogin',
+        lang: { es: 'publico/usuarios/mostrar/:user' }
+      },
+      {
+        name: 'admin',
+        component: 'AdminLayout',
+        nestedRoutes: [
+          { name: 'index', component: 'DashboardIndex' },
+          {
+            name: 'company',
+            component: 'CompanyLayout',
+            lang: { es: 'empresa' },
+            nestedRoutes: [
+              { name: 'index', component: 'CompanyIndex' },
+              { name: 'edit', component: 'CompanyEdit' }
+            ]
+          },
+          {
+            name: 'employees',
+            component: 'EmployeesLayout',
+            lang: { es: 'empleados' },
+            nestedRoutes: [
+              { name: 'index', component: 'EmployeesIndex' },
+              { name: 'new', component: 'EmployeesNew', lang: { es: 'nuevo' } },
+              { name: 'show/:id', component: 'EmployeesShow', lang: { es: 'mostrar/:id' } },
+              { name: 'edit/:id', component: 'EmployeesEdit', lang: { es: 'modificar/:id' } },
+              { name: 'calendar/:id', component: 'EmployeeCalendar', lang: { es: 'calendario/:id' } },
+              { name: 'list/:id', component: 'EmployeeActivityList', lang: { es: 'listado/:id' } }
+            ]
+          },
+          {
+            name: 'calendar/:teamId',
+            component: 'CalendarIndex',
+            lang: { es: 'calendario/:teamId' }
+          },
+          {
+            name: 'schedules',
+            component: 'SchedulesLayout',
+            lang: { es: 'agenda' },
+            nestedRoutes: [
+              { name: 'index', component: 'SchedulesIndex' },
+              { name: 'new', component: 'SchedulesNew', lang: { es: 'nuevo' } },
+              {
+                name: 'show/:id',
+                layout: 'SchedulesShowLayout',
+                lang: { es: 'mostrar/:id' },
+                nestedRoutes: [
+                  { name: 'index', component: 'SchedulesShow' },
+                  { name: 'hours/new/:day', component: 'SchedulesHoursNew', lang: { es: 'horas/nuevo/:day' } }
+                ]
+              },
+              { name: 'edit/:id', component: 'SchedulesEdit', lang: { es: 'modificar/:id' } }
+            ]
+          },
+          {
+            name: 'teams',
+            component: 'TeamsIndex',
+            lang: { es: 'equipos' },
+            layout: 'TeamsLayout'
+          },
+          { name: 'teams/show/:id', component: 'TeamsShow', lang: { es: 'equipos/mostrar/:id' } },
+          {
+            name: 'activities',
+            component: 'ActivitiesLayout',
+            lang: { es: 'actividades' },
+            nestedRoutes: [
+              { name: 'index', component: 'ActivitiesIndex' },
+              { name: 'new', component: 'ActivitiesNew', lang: { es: 'nueva' } },
+              { name: 'edit/:id', component: 'ActivitiesEdit', lang: { es: 'modificar/:id' } }
+            ]
+          },
+          {
+            name: 'reports',
+            component: 'ReportsLayout',
+            lang: { es: 'informes' },
+            nestedRoutes: [
+              { name: 'daily-absence', component: 'DailyAbsent', lang: { es: 'ausencias-diario' } },
+              { name: 'pending', component: 'PendingActivities', lang: { es: 'pendientes' } },
+              { name: 'activity-list', component: 'ActivityList', lang: { es: 'listado' } },
+              { name: 'late-checkout', component: 'LateCheckoutActivities', lang: { es: 'entrada-tarde' } }
+            ]
+          }
+        ]
+      }
+    ]
+
+    pathName = 'http://web.app/admin'
+    SpaRouter(routes, pathName)
+  })
+
+  it('should render admin route', function() {
+    expect(localisedRoute('/admin', 'es').path).to.equal('/admin')
+  })
+
+  it('should render admin calendar route', function() {
+    expect(localisedRoute('/admin/calendar', 'es').path).to.equal('/admin/calendario')
+  })
+
+  it('should render admin calendar route', function() {
+    expect(localisedRoute('/admin/calendar/june', 'es').path).to.equal('/admin/calendario/june')
+  })
+
+  it('should render admin employees route', function() {
+    expect(localisedRoute('/admin/employees', 'es').path).to.equal('/admin/empleados')
+  })
+
+  it('should render admin employees route', function() {
+    expect(localisedRoute('/admin/employees/edit/888', 'es').path).to.equal('/admin/empleados/modificar/888')
+  })
+
+  it('should render admin schedules route', function() {
+    expect(localisedRoute('/admin/schedules/show/123/hours/new/monday', 'es').path).to.equal(
+      '/admin/agenda/mostrar/123/horas/nuevo/monday'
+    )
+  })
+
+  it('should render admin schedules route', function() {
+    expect(localisedRoute('/admin/schedules/show/123/hours/new', 'es').path).to.equal(
+      '/admin/agenda/mostrar/123/horas/nuevo'
+    )
+  })
+
+  it('should render public route', function() {
+    expect(localisedRoute('public/users/show/frank', 'es').path).to.equal('/publico/usuarios/mostrar/frank')
   })
 })
