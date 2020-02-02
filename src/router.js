@@ -1,5 +1,6 @@
 const { UrlParser } = require('url-params-parser')
 const { activeRoute } = require('./store')
+const { Redirect } = require('./router/redirect')
 const {
   anyEmptyNestedRoutes,
   updateRoutePath,
@@ -149,7 +150,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
           pathNames = removeExtraPaths(pathNames, localisedRouteWithoutNamedParams)
         }
 
-        redirectTo = setRedirectPath(route, redirectTo)
+        redirectTo = Redirect(route, redirectTo).path()
 
         const namedParams = getNamedParams(localisedPathName)
         if (namedParams && namedParams.length > 0) {
@@ -197,25 +198,6 @@ function SpaRouter(routes, currentUrl, options = {}) {
       path: routePath,
       language: routeLanguage
     }
-  }
-
-  function setRedirectPath(route, currentValue) {
-    let redirectTo = currentValue
-    if (route.redirectTo && route.redirectTo.length > 0) {
-      redirectTo = route.redirectTo
-    }
-
-    if (route.onlyIf && route.onlyIf.guard) {
-      if (!route.onlyIf.guard()) {
-        let destinationUrl = '/'
-        if (route.onlyIf.redirect && route.onlyIf.redirect.length > 0) {
-          destinationUrl = route.onlyIf.redirect
-        }
-        redirectTo = destinationUrl
-      }
-    }
-
-    return redirectTo
   }
 
   function removeExtraPaths(pathNames, basePathNames) {
