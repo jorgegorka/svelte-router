@@ -1,6 +1,7 @@
 const { UrlParser } = require('url-params-parser')
 const { activeRoute } = require('./store')
-const { Redirect } = require('./router/redirect')
+const { RouterRedirect } = require('./router/redirect')
+const { RouterCurrent } = require('./router/current')
 const {
   anyEmptyNestedRoutes,
   updateRoutePath,
@@ -14,7 +15,7 @@ const {
 const NotFoundPage = '/404.html'
 let userDefinedRoutes = []
 let routerOptions = {}
-let currentActiveRoute = ''
+let routerCurrent
 
 /**
  * Object exposes one single property: activeRoute
@@ -28,6 +29,8 @@ function SpaRouter(routes, currentUrl, options = {}) {
   if (typeof currentUrl === 'undefined' || currentUrl === '') {
     currentUrl = document.location.href
   }
+
+  routerCurrent = RouterCurrent(routerOptions.gaPageviews)
 
   currentUrl = removeSlash(currentUrl, 'trail')
   userDefinedRoutes = routes
@@ -64,8 +67,6 @@ function SpaRouter(routes, currentUrl, options = {}) {
    * @param destinationUrl
    **/
   function forceRedirect(destinationUrl) {
-    currentActiveRoute = destinationUrl
-
     if (typeof window !== 'undefined') {
       if (destinationUrl === NotFoundPage) {
         window.location = destinationUrl
@@ -77,40 +78,18 @@ function SpaRouter(routes, currentUrl, options = {}) {
     return destinationUrl
   }
 
-  function gaTracking(newPage) {
-    if (typeof ga !== 'undefined') {
-      ga('set', 'page', newPage)
-      ga('send', 'pageview')
-    }
-  }
-
   function setActiveRoute() {
     const currentRoute = findActiveRoute()
-
     if (currentRoute.redirectTo) {
       return forceRedirect(redirectTo)
     }
 
-    currentActiveRoute = currentRoute.path
+    routerCurrent.setActive(currentRoute)
     activeRoute.set(currentRoute)
 
-    pushActiveRoute(currentRoute)
+    // pushActiveRoute(currentRoute)
 
     return currentRoute
-  }
-
-  /**
-   * Updates the browser pathname and history with the active route.
-   * @param currentRoute
-   **/
-  function pushActiveRoute(currentRoute) {
-    if (typeof window !== 'undefined') {
-      const pathAndSearch = pathWithQueryParams(currentRoute)
-      window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
-      if (routerOptions.gaPageviews) {
-        gaTracking(pathAndSearch)
-      }
-    }
   }
 
   /**
@@ -150,7 +129,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
           pathNames = removeExtraPaths(pathNames, localisedRouteWithoutNamedParams)
         }
 
-        redirectTo = Redirect(route, redirectTo).path()
+        redirectTo = RouterRedirect(route, redirectTo).path()
 
         const namedParams = getNamedParams(localisedPathName)
         if (namedParams && namedParams.length > 0) {
@@ -227,9 +206,7 @@ function localisedRoute(pathName, language) {
   pathName = removeSlash(pathName, 'lead')
   routerOptions.langConvertTo = language
 
-  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).findActiveRoute()
-
-  return activeRoute
+  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).findActiveRoute()
 }
 
 /**
@@ -242,9 +219,7 @@ function navigateTo(pathName, language = null) {
   if (language) {
     routerOptions.langConvertTo = language
   }
-  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
-
-  return activeRoute
+  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
 }
 
 /**
@@ -258,7 +233,7 @@ function routeIsActive(queryPath, includePath = false) {
 
   // remove query params for comparison
   let pathName = UrlParser(`http://fake.com${queryPath}`).pathname
-  let activeRoute = currentActiveRoute
+  let activeRoute = routerCurrent.active()
   let activeRoutePath = UrlParser(`http://fake.com${activeRoute}`).pathname
 
   pathName = removeSlash(pathName, 'trail')

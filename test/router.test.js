@@ -1,4 +1,6 @@
 const expect = require('chai').expect
+var jsdom = require('mocha-jsdom')
+
 const SpaRouter = require('../src/router').SpaRouter
 const navigateTo = require('../src/router').navigateTo
 const localisedRoute = require('../src/router').localisedRoute
@@ -7,6 +9,7 @@ const routeIsActive = require('../src/router').routeIsActive
 let testRouter = null
 let pathName = 'http://web.app/'
 let routes = []
+const window = {}
 
 function thisIsFalse() {
   return false
@@ -1437,6 +1440,10 @@ describe('routeIsActive', function() {
 })
 
 describe('onlyIf', function() {
+  const html = ''
+  const src = ''
+  jsdom({ html, src, url: 'http://localhost' })
+
   describe('when guard is true', function() {
     beforeEach(function() {
       routes = [
@@ -1460,6 +1467,10 @@ describe('onlyIf', function() {
     it('should render admin', function() {
       expect(routeIsActive('/admin')).to.be.true
     })
+
+    it('should render login', function() {
+      expect(global.window.history.state.page).to.equal('/admin')
+    })
   })
 
   describe('when guard is false', function() {
@@ -1482,8 +1493,12 @@ describe('onlyIf', function() {
       SpaRouter(routes, pathName).setActiveRoute()
     })
 
-    it('should render login now', function() {
+    it('should render login', function() {
       expect(routeIsActive('/login')).to.be.true
+    })
+
+    it('should render login', function() {
+      expect(global.window.history.state.page).to.equal('/login')
     })
   })
 })

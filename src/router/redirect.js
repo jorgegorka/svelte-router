@@ -1,6 +1,6 @@
 const { RouterGuard } = require('./guard')
 
-function Redirect(route, currentPath) {
+function RouterRedirect(route, currentPath) {
   const guard = RouterGuard(route.onlyIf)
 
   function path() {
@@ -19,4 +19,4 @@ function Redirect(route, currentPath) {
   return Object.freeze({ path })
 }
 
-module.exports = { Redirect }
+module.exports = { RouterRedirect }
