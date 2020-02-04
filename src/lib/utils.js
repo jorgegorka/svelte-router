@@ -128,6 +128,24 @@ function pathWithQueryParams(currentRoute) {
  * @param pathName string
  * @param position string - lead, trail, both
  **/
+function removeExtraPaths(pathNames, basePathNames) {
+  const names = basePathNames.split('/')
+  if (names.length > 1) {
+    names.forEach(function(name, index) {
+      if (name.length > 0 && index > 0) {
+        pathNames.shift()
+      }
+    })
+  }
+
+  return pathNames
+}
+
+/**
+ * Returns a string with trailing or leading slash character removed
+ * @param pathName string
+ * @param position string - lead, trail, both
+ **/
 
 function removeSlash(pathName, position = 'lead') {
   if (pathName.trim().length < 1) {
@@ -227,6 +245,7 @@ module.exports = {
   getPathNames,
   nameToPath,
   pathWithQueryParams,
+  removeExtraPaths,
   removeSlash,
   routeNameLocalised,
   updateRoutePath

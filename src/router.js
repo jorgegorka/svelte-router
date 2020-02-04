@@ -2,12 +2,15 @@ const { UrlParser } = require('url-params-parser')
 const { activeRoute } = require('./store')
 const { RouterRedirect } = require('./router/redirect')
 const { RouterCurrent } = require('./router/current')
+const { RouterRoute } = require('./router/route')
+const { RouterPath } = require('./router/path')
 const {
   anyEmptyNestedRoutes,
   updateRoutePath,
   getNamedParams,
   nameToPath,
   pathWithQueryParams,
+  removeExtraPaths,
   removeSlash,
   routeNameLocalised
 } = require('./lib/utils')
@@ -98,55 +101,44 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
   function searchActiveRoutes(routes, basePath, pathNames, currentLanguage, convert) {
     let currentRoute = {}
-    let routeLanguage = currentLanguage
     let basePathName = pathNames.shift().toLowerCase()
+    const routerPath = RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage })
 
     routes.forEach(function(route) {
-      const updatedPath = updateRoutePath(basePathName, pathNames, route, routeLanguage, convert)
-
-      basePathName = updatedPath.result
-      if (convert) {
-        routeLanguage = currentLanguage
-      } else {
-        routeLanguage = updatedPath.language
-      }
-
-      const localisedPathName = routeNameLocalised(route, routeLanguage)
-      const localisedRouteWithoutNamedParams = nameToPath(localisedPathName)
-      const basePathNameWithoutNamedParams = nameToPath(basePathName)
-
-      if (basePathNameWithoutNamedParams === localisedRouteWithoutNamedParams) {
-        let namedPath = `${basePath}/${localisedPathName}`
-        let routePath = `${basePath}/${basePathNameWithoutNamedParams}`
-        if (routePath === '//') {
-          routePath = '/'
-        }
-
-        if (routeLanguage) {
-          pathNames = removeExtraPaths(pathNames, localisedRouteWithoutNamedParams)
-        }
+      routerPath.updatedPath(route)
+      if (routerPath.basePathSameAsLocalised()) {
+        let routePath = routerPath.routePath()
 
         redirectTo = RouterRedirect(route, redirectTo).path()
 
-        const namedParams = getNamedParams(localisedPathName)
-        if (namedParams && namedParams.length > 0) {
-          namedParams.forEach(function() {
-            if (pathNames.length > 0) {
-              routePath += `/${pathNames.shift()}`
-            }
+        if (currentRoute.name !== routePath) {
+          currentRoute = setCurrentRoute({
+            route,
+            routePath,
+            routeLanguage: routerPath.routeLanguage(),
+            urlParser,
+            namedPath: routerPath.namedPath()
           })
         }
 
-        if (currentRoute.name !== routePath) {
-          currentRoute = setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath })
-        }
-
-        if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length > 0) {
-          currentRoute.childRoute = searchActiveRoutes(route.nestedRoutes, routePath, pathNames, routeLanguage, convert)
+        if (route.nestedRoutes && route.nestedRoutes.length > 0 && routerPath.pathNames.length > 0) {
+          currentRoute.childRoute = searchActiveRoutes(
+            route.nestedRoutes,
+            routePath,
+            routerPath.pathNames,
+            routerPath.routeLanguage(),
+            convert
+          )
           currentRoute.path = currentRoute.childRoute.path
           currentRoute.language = currentRoute.childRoute.language
-        } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0) {
-          const indexRoute = searchActiveRoutes(route.nestedRoutes, routePath, ['index'], routeLanguage, convert)
+        } else if (route.nestedRoutes && route.nestedRoutes.length > 0 && routerPath.pathNames.length === 0) {
+          const indexRoute = searchActiveRoutes(
+            route.nestedRoutes,
+            routePath,
+            ['index'],
+            routerPath.routeLanguage(),
+            convert
+          )
           if (indexRoute && Object.keys(indexRoute).length > 0) {
             currentRoute.childRoute = indexRoute
             currentRoute.language = currentRoute.childRoute.language
@@ -163,30 +155,16 @@ function SpaRouter(routes, currentUrl, options = {}) {
   }
 
   function setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath }) {
-    const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
-    routeNamedParams = { ...routeNamedParams, ...parsedParams }
-    return {
-      name: routePath,
-      component: route.component,
-      layout: route.layout,
-      queryParams: urlParser.queryParams,
-      namedParams: routeNamedParams,
+    const routerRoute = RouterRoute({
+      routeInfo: route,
+      urlParser,
       path: routePath,
+      routeNamedParams,
+      namedPath,
       language: routeLanguage
-    }
-  }
-
-  function removeExtraPaths(pathNames, basePathNames) {
-    const names = basePathNames.split('/')
-    if (names.length > 1) {
-      names.forEach(function(name, index) {
-        if (name.length > 0 && index > 0) {
-          pathNames.shift()
-        }
-      })
-    }
-
-    return pathNames
+    })
+    routeNamedParams = routerRoute.namedParams()
+    return routerRoute.get()
   }
 
   return Object.freeze({
@@ -196,7 +174,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
 }
 
 /**
- * Updates the current active route and updates the browser pathname
+ * Converts a route to its localised version
  * @param pathName
  **/
 function localisedRoute(pathName, language) {
