@@ -13,6 +13,7 @@ const {
 } = require('./lib/utils')
 
 const NotFoundPage = '/404.html'
+
 let userDefinedRoutes = []
 let routerOptions = {}
 let routerCurrent
@@ -49,11 +50,9 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
     let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
 
-    if (!searchActiveRoute || anyEmptyNestedRoutes(searchActiveRoute)) {
+    if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
-        forceRedirect(NotFoundPage)
-      } else {
-        searchActiveRoute = { name: '404', component: '', path: '404' }
+        searchActiveRoute = { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
       }
     } else {
       searchActiveRoute.path = pathWithQueryParams(searchActiveRoute)
@@ -69,7 +68,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
   function forceRedirect(destinationUrl) {
     if (typeof window !== 'undefined') {
       if (destinationUrl === NotFoundPage) {
-        window.location = destinationUrl
+        routerCurrent.setActive({ path: NotFoundPage })
       } else {
         navigateTo(destinationUrl)
       }
@@ -81,13 +80,11 @@ function SpaRouter(routes, currentUrl, options = {}) {
   function setActiveRoute() {
     const currentRoute = findActiveRoute()
     if (currentRoute.redirectTo) {
-      return forceRedirect(redirectTo)
+      return forceRedirect(currentRoute.redirectTo)
     }
 
     routerCurrent.setActive(currentRoute)
     activeRoute.set(currentRoute)
-
-    // pushActiveRoute(currentRoute)
 
     return currentRoute
   }

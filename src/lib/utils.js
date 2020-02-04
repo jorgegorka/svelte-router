@@ -115,6 +115,7 @@ function pathWithQueryParams(currentRoute) {
       queryParams.push(`${key}=${value}`)
     }
   }
+
   if (queryParams.length > 0) {
     return `${currentRoute.path}?${queryParams.join('&')}`
   } else {

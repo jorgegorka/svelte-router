@@ -9,7 +9,9 @@ const routeIsActive = require('../src/router').routeIsActive
 let testRouter = null
 let pathName = 'http://web.app/'
 let routes = []
-const window = {}
+const html = ''
+const src = ''
+jsdom({ html, src, url: 'http://localhost' })
 
 function thisIsFalse() {
   return false
@@ -20,21 +22,25 @@ function thisIsTrue() {
 }
 
 describe('Router', function() {
-  describe('When route does not exist', function() {
+  describe('When there are no routes defined', function() {
     beforeEach(function() {
-      testRouter = SpaRouter([], pathName)
+      testRouter = SpaRouter([], pathName).setActiveRoute()
     })
 
     it('should set the component', function() {
-      expect(testRouter.setActiveRoute().component).to.equal('')
+      expect(testRouter.component).to.be.undefined
     })
 
     it('should set the route name to 404', function() {
-      expect(testRouter.setActiveRoute().name).to.equal('404')
+      expect(testRouter.name).to.be.undefined
     })
 
     it('should set the route path to 404', function() {
-      expect(testRouter.setActiveRoute().path).to.equal('404')
+      expect(testRouter.path).to.be.undefined
+    })
+
+    it('should set the route path to 404', function() {
+      expect(global.window.history.state.page).to.equal('/404.html')
     })
   })
 
@@ -43,16 +49,20 @@ describe('Router', function() {
       testRouter = SpaRouter(routes, 'http://web.app/this/route/does/not/exist')
     })
 
-    it('should set thecomponent', function() {
-      expect(testRouter.setActiveRoute().component).to.equal('')
+    it('should set the component', function() {
+      expect(testRouter.component).to.be.undefined
     })
 
     it('should set the route name to 404', function() {
-      expect(testRouter.setActiveRoute().name).to.equal('404')
+      expect(testRouter.name).to.be.undefined
     })
 
     it('should set the route path to 404', function() {
-      expect(testRouter.setActiveRoute().path).to.equal('404')
+      expect(testRouter.path).to.be.undefined
+    })
+
+    it('should set the route path to 404', function() {
+      expect(global.window.history.state.page).to.equal('/404.html')
     })
   })
 
@@ -244,34 +254,34 @@ describe('Router', function() {
     describe('When top level layout with index', function() {
       beforeEach(function() {
         pathName = 'http://web.app/about-us/'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/about-us')
+        expect(testRouter.path).to.equal('/about-us')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AboutUsLayout')
+        expect(testRouter.component).to.equal('AboutUsLayout')
       })
 
       it('should set named params', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('AboutUsPage')
+        expect(testRouter.childRoute.component).to.equal('AboutUsPage')
       })
     })
 
     describe('When top level layout with index and wrong address', function() {
       beforeEach(function() {
         pathName = 'http://web.app/about-us/pepe'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
-      it('should set the route name to 404', function() {
-        expect(testRouter.setActiveRoute().name).to.equal('404')
+      it('should set the route path to undefined', function() {
+        expect(testRouter.path).to.be.undefined
       })
 
-      it('should set the route path to 404', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('404')
+      it('should set the route path to 404 here', function() {
+        expect(global.window.history.state.page).to.equal('/404.html')
       })
     })
   })
@@ -291,23 +301,23 @@ describe('Router', function() {
     describe('When path is first level', function() {
       beforeEach(function() {
         pathName = 'http://web.app/project/easy-routing/2019-03-26'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path to root path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/project/easy-routing/2019-03-26')
+        expect(testRouter.path).to.equal('/project/easy-routing/2019-03-26')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('ProjectList')
+        expect(testRouter.component).to.equal('ProjectList')
       })
 
       it('should set named params', function() {
-        expect(testRouter.setActiveRoute().namedParams.name).to.equal('easy-routing')
+        expect(testRouter.namedParams.name).to.equal('easy-routing')
       })
 
       it('should set named params', function() {
-        expect(testRouter.setActiveRoute().namedParams.date).to.equal('2019-03-26')
+        expect(testRouter.namedParams.date).to.equal('2019-03-26')
       })
     })
   })
@@ -833,15 +843,15 @@ describe('Router', function() {
       describe('when path does not exist in the specified language', function() {
         beforeEach(function() {
           pathName = 'http://web.app/login'
-          testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+          testRouter = SpaRouter(routes, pathName, { lang: 'es' }).setActiveRoute()
         })
 
         it('should return 404', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('404')
+          expect(testRouter.path).to.be.undefined
         })
 
         it('should set the language', function() {
-          expect(testRouter.setActiveRoute().language).to.be.undefined
+          expect(testRouter.language).to.be.undefined
         })
 
         describe('when route has nested routes', function() {
@@ -851,7 +861,7 @@ describe('Router', function() {
           })
 
           it('should return 404', function() {
-            expect(testRouter.setActiveRoute().path).to.equal('404')
+            expect(testRouter.setActiveRoute().path).to.be.undefined
           })
 
           it('should set the language', function() {
@@ -862,15 +872,15 @@ describe('Router', function() {
         describe('a partially localised route with named params', function() {
           beforeEach(function() {
             pathName = 'http://web.app/admin/employees/show/123/kalender/april'
-            testRouter = SpaRouter(routes, pathName, { lang: 'de' })
+            testRouter = SpaRouter(routes, pathName, { lang: 'de' }).setActiveRoute()
           })
 
           it('should set the correct path', function() {
-            expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/kalender/april')
+            expect(testRouter.path).to.equal('/admin/employees/show/123/kalender/april')
           })
 
           it('should set the language', function() {
-            expect(testRouter.setActiveRoute().language).to.equal('de')
+            expect(testRouter.language).to.equal('de')
           })
         })
       })
@@ -878,29 +888,29 @@ describe('Router', function() {
       describe('when path does exist in the specified language', function() {
         beforeEach(function() {
           pathName = 'http://web.app/iniciar-sesion'
-          testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+          testRouter = SpaRouter(routes, pathName, { lang: 'es' }).setActiveRoute()
         })
 
         it('should return the matched path', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('/iniciar-sesion')
+          expect(testRouter.path).to.equal('/iniciar-sesion')
         })
 
         it('should set the language', function() {
-          expect(testRouter.setActiveRoute().language).to.equal('es')
+          expect(testRouter.language).to.equal('es')
         })
 
         describe('when route has nested routes', function() {
           beforeEach(function() {
             pathName = 'http://web.app/administrador/empleados/mostrar/123/calendario/abril'
-            testRouter = SpaRouter(routes, pathName, { lang: 'es' })
+            testRouter = SpaRouter(routes, pathName, { lang: 'es' }).setActiveRoute()
           })
 
           it('should return y the matched path', function() {
-            expect(testRouter.setActiveRoute().path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
+            expect(testRouter.path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
           })
 
           it('should set the language', function() {
-            expect(testRouter.setActiveRoute().language).to.equal('es')
+            expect(testRouter.language).to.equal('es')
           })
         })
       })
@@ -930,38 +940,38 @@ describe('Router', function() {
     describe('Login page', function() {
       beforeEach(function() {
         pathName = 'http://web.app/iniciar-sesion'
-        testRouter = SpaRouter(publicRoutes, pathName)
+        testRouter = SpaRouter(publicRoutes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/iniciar-sesion')
+        expect(testRouter.path).to.equal('/iniciar-sesion')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('Login')
+        expect(testRouter.component).to.equal('Login')
       })
 
       it('should set the language', function() {
-        expect(testRouter.setActiveRoute().language).to.equal('es')
+        expect(testRouter.language).to.equal('es')
       })
     })
 
     describe('Access page', function() {
       beforeEach(function() {
         pathName = 'http://web.app/acceso/4433'
-        testRouter = SpaRouter(publicRoutes, pathName)
+        testRouter = SpaRouter(publicRoutes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/acceso/4433')
+        expect(testRouter.path).to.equal('/acceso/4433')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('Track')
+        expect(testRouter.component).to.equal('Track')
       })
 
       it('should set the language', function() {
-        expect(testRouter.setActiveRoute().language).to.equal('es')
+        expect(testRouter.language).to.equal('es')
       })
     })
   })
@@ -1008,57 +1018,57 @@ describe('Router', function() {
     describe('Employee index route', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
+        expect(testRouter.path).to.equal('/admin/employees')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+        expect(testRouter.component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('EmployeesIndex')
+        expect(testRouter.childRoute.component).to.equal('EmployeesIndex')
       })
     })
 
     describe('Employee show route without named param', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show')
+        expect(testRouter.path).to.equal('/admin/employees/show')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+        expect(testRouter.component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.childRoute.component).to.equal('ShowEmployee')
       })
     })
 
     describe('Employee show route with named param', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/employees/show/robert'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set the path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/robert')
+        expect(testRouter.path).to.equal('/admin/employees/show/robert')
       })
 
       it('should set the component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+        expect(testRouter.component).to.equal('AdminIndex')
       })
 
       it('should set the nested component name', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowEmployee')
+        expect(testRouter.childRoute.component).to.equal('ShowEmployee')
       })
     })
 
@@ -1103,42 +1113,42 @@ describe('Router', function() {
     describe('Teams active', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/active'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/admin/teams/active')
+        expect(testRouter.path).to.equal('/admin/teams/active')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+        expect(testRouter.component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ActiveTeams')
+        expect(testRouter.childRoute.component).to.equal('ActiveTeams')
       })
     })
 
     describe('Teams show', function() {
       beforeEach(function() {
         pathName = 'http://web.app/admin/teams/show/leader-team'
-        testRouter = SpaRouter(routes, pathName)
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
       it('should set path', function() {
-        expect(testRouter.setActiveRoute().path).to.equal('/admin/teams/show/leader-team')
+        expect(testRouter.path).to.equal('/admin/teams/show/leader-team')
       })
 
       it('should set component name', function() {
-        expect(testRouter.setActiveRoute().component).to.equal('AdminIndex')
+        expect(testRouter.component).to.equal('AdminIndex')
       })
 
       it('should set nested component name', function() {
-        expect(testRouter.setActiveRoute().childRoute.component).to.equal('ShowTeams')
+        expect(testRouter.childRoute.component).to.equal('ShowTeams')
       })
 
       it('should set the named param', function() {
-        expect(testRouter.setActiveRoute().childRoute.namedParams.name).to.equal('leader-team')
+        expect(testRouter.childRoute.namedParams.name).to.equal('leader-team')
       })
     })
   })
@@ -1177,7 +1187,7 @@ describe('navigateTo', function() {
 
   describe('when route is not valid', function() {
     it('should set the active route to 404', function() {
-      expect(navigateTo('/invalid')).to.include({ name: '404', component: '', path: '404' })
+      expect(navigateTo('/invalid')).to.equal('/404.html')
     })
   })
 
@@ -1440,10 +1450,6 @@ describe('routeIsActive', function() {
 })
 
 describe('onlyIf', function() {
-  const html = ''
-  const src = ''
-  jsdom({ html, src, url: 'http://localhost' })
-
   describe('when guard is true', function() {
     beforeEach(function() {
       routes = [
