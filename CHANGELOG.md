@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.4.0
+
+Refactor of code. Renaming router.js as spa_router.js
+
 ## 5.3.3
 
 Fix route generation when localised and multiple paths with named params in name. -> { name: 'complex/route/:param/other/stuff/:param2' }

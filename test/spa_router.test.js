@@ -1,10 +1,10 @@
 const expect = require('chai').expect
 var jsdom = require('mocha-jsdom')
 
-const SpaRouter = require('../src/router').SpaRouter
-const navigateTo = require('../src/router').navigateTo
-const localisedRoute = require('../src/router').localisedRoute
-const routeIsActive = require('../src/router').routeIsActive
+const SpaRouter = require('../src/spa_router').SpaRouter
+const navigateTo = require('../src/spa_router').navigateTo
+const localisedRoute = require('../src/spa_router').localisedRoute
+const routeIsActive = require('../src/spa_router').routeIsActive
 
 let testRouter = null
 let pathName = 'http://web.app/'
