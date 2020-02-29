@@ -1,13 +1,4 @@
-const {
-  anyEmptyNestedRoutes,
-  updateRoutePath,
-  getNamedParams,
-  nameToPath,
-  pathWithQueryParams,
-  removeExtraPaths,
-  removeSlash,
-  routeNameLocalised
-} = require('../lib/utils')
+const { updateRoutePath, getNamedParams, nameToPath, removeExtraPaths, routeNameLocalised } = require('../lib/utils')
 
 function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage }) {
   let updatedPathRoute
