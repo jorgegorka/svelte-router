@@ -26,7 +26,9 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
   }
 
   function namedPath() {
-    return `${basePath}/${localisedPathName()}`
+    const localisedPath = localisedPathName()
+
+    return basePath ? `${basePath}/${localisedPath}` : localisedPath
   }
 
   function routePath() {

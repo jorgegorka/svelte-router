@@ -3,6 +3,7 @@ const { UrlParser } = require('url-params-parser')
 function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
   function namedParams() {
     const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+
     return { ...routeNamedParams, ...parsedParams }
   }
 

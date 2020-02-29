@@ -67,12 +67,12 @@ function findLocalisedRoute(pathName, route, language) {
  **/
 function getNamedParams(pathName = '') {
   if (pathName.trim().length === 0) return []
-
   const namedUrlParams = getPathNames(pathName)
-  return namedUrlParams.reduce((validParams, param, _index) => {
+  return namedUrlParams.reduce((validParams, param) => {
     if (param[0] === ':') {
       validParams.push(param.slice(1))
     }
+
     return validParams
   }, [])
 }

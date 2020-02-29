@@ -101,6 +101,7 @@ function RouterFinder(routes, currentUrl, language, convert) {
       language: routeLanguage
     })
     routeNamedParams = routerRoute.namedParams()
+
     return routerRoute.get()
   }
 

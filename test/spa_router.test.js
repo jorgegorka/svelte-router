@@ -127,6 +127,7 @@ describe('Router', function() {
         },
         { name: 'login', component: 'Login' },
         { name: 'project/:title', component: 'ProjectList' },
+        { name: '/invoice/:id', component: 'ShowInvoice' },
         {
           name: '/about-us',
           component: 'AboutUsLayout',
@@ -160,24 +161,47 @@ describe('Router', function() {
         expect(testRouter.setActiveRoute().queryParams['sea-level']).to.equal('rising')
       })
     })
-  })
 
-  describe('Query params to named routes', function() {
-    beforeEach(function() {
-      pathName = 'http://web.app/project/save_earth?climate=change&sea-level=rising'
-      testRouter = SpaRouter(routes, pathName)
+    describe('When named route does not start with a slash', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/project/save_earth?climate=change&sea-level=rising'
+        testRouter = SpaRouter(routes, pathName)
+      })
+
+      it('should set the component name', function() {
+        expect(testRouter.setActiveRoute().component).to.equal('ProjectList')
+      })
+
+      it('should update queryParams', function() {
+        expect(testRouter.setActiveRoute().namedParams.title).to.equal('save_earth')
+      })
+
+      it('should update queryParams', function() {
+        expect(testRouter.setActiveRoute().queryParams.climate).to.equal('change')
+      })
+
+      it('should update queryParams', function() {
+        expect(testRouter.setActiveRoute().queryParams['sea-level']).to.equal('rising')
+      })
     })
 
-    it('should update queryParams', function() {
-      expect(testRouter.setActiveRoute().namedParams.title).to.equal('save_earth')
-    })
+    describe('When named route starts with a slash', function() {
+      beforeEach(function() {
+        pathName = 'http://web.app/invoice/asf56dse56?fullView=true'
+        testRouter = SpaRouter(routes, pathName)
+      })
 
-    it('should update queryParams', function() {
-      expect(testRouter.setActiveRoute().queryParams.climate).to.equal('change')
-    })
+      it('should set the component name', function() {
+        expect(testRouter.setActiveRoute().component).to.equal('ShowInvoice')
+      })
 
-    it('should update queryParams', function() {
-      expect(testRouter.setActiveRoute().queryParams['sea-level']).to.equal('rising')
+      it('should update queryParams', function() {
+        expect(testRouter.setActiveRoute().namedParams.id).to.equal('asf56dse56')
+      })
+
+      it('should update queryParams', function() {
+        expect(testRouter.setActiveRoute().queryParams['fullView']).to.equal('true')
+      })
     })
   })
 
