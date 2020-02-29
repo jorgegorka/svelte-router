@@ -2,13 +2,14 @@
 
 ## 5.4.0
 
-Refactor of code. Renaming router.js as spa_router.js
+Refactor of code. Renaming router.js as spa_router.js.
+Fix issue where namedParams get an undefined value if route name starts with a '/'.
 
 ## 5.3.3
 
 Fix route generation when localised and multiple paths with named params in name. -> { name: 'complex/route/:param/other/stuff/:param2' }
 
-A bit of refactoring
+A bit of refactoring.
 
 ## 5.3.2
 
