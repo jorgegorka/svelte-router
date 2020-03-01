@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
 
-  import { SpaRouter } from '../router'
+  import { SpaRouter } from '../spa_router'
   import Route from './route.svelte'
   import { activeRoute } from '../store'
 
