@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.4.2
+
+Fix wrong import routes. Now it's true.
+
 ## 5.4.1
 
 Fix wrong import routes.
