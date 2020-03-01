@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.4.1
+
+Fix wrong import routes.
+
 ## 5.4.0
 
 Refactor of code. Renaming router.js as spa_router.js.
