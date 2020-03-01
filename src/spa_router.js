@@ -28,7 +28,6 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
   function findActiveRoute() {
     let convert = false
-    redirectTo = ''
 
     if (routerOptions.langConvertTo) {
       routerOptions.lang = routerOptions.langConvertTo
