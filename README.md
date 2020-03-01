@@ -658,3 +658,4 @@ I would like to thank all the people that create issues and comment on [Github](
 ### Contributors
 
 [Mark Kopenga](https://github.com/mjarkk)
+[Fidel Ramos](https://github.com/haplo)
