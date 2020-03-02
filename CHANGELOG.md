@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.4.3
+
+Remove warining of assignment to undeclared variable redirectTo.
+
 ## 5.4.2
 
 Fix wrong import routes. Now it's true.
