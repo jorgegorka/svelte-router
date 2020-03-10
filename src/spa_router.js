@@ -104,7 +104,7 @@ function navigateTo(pathName, language = null) {
  * @param includePath Boolean if true checks that pathName is included in current route. If false should match it.
  **/
 function routeIsActive(queryPath, includePath = false) {
-  return routerCurrent.isActive(queryPath, includePath)
+  return typeof routerCurrent !== "undefined" ? routerCurrent.isActive(queryPath, includePath) : false
 }
 
 if (typeof window !== 'undefined') {
