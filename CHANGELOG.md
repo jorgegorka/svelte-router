@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.4.4
+
+Fix bug that was duplicating query params on page reload.
+
 ## 5.4.3
 
 Remove warining of assignment to undeclared variable redirectTo.

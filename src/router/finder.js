@@ -3,7 +3,7 @@ const { UrlParser } = require('url-params-parser')
 const { RouterRedirect } = require('./redirect')
 const { RouterRoute } = require('./route')
 const { RouterPath } = require('./path')
-const { anyEmptyNestedRoutes, pathWithQueryParams } = require('../lib/utils')
+const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
 
 const NotFoundPage = '/404.html'
 
@@ -20,7 +20,7 @@ function RouterFinder(routes, currentUrl, language, convert) {
         searchActiveRoute = { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
       }
     } else {
-      searchActiveRoute.path = pathWithQueryParams(searchActiveRoute)
+      searchActiveRoute.path = pathWithoutQueryParams(searchActiveRoute)
     }
 
     return searchActiveRoute

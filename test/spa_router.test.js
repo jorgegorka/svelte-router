@@ -1228,7 +1228,7 @@ describe('navigateTo', function() {
       expect(navigateTo('/setup?me=true', 'es')).to.include({
         name: '/configuracion',
         component: 'SetupComponent',
-        path: '/configuracion?me=true'
+        path: '/configuracion'
       })
     })
   })
