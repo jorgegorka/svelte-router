@@ -795,12 +795,17 @@ describe('Router', function() {
     describe('when no language is set', function() {
       describe('a simple route', function() {
         beforeEach(function() {
+          const options = { baseLang: 'en' }
           pathName = 'http://web.app/admin/employees'
-          testRouter = SpaRouter(routes, pathName)
+          testRouter = SpaRouter(routes, pathName, options)
         })
 
         it('should set the correct path', function() {
           expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
+        })
+
+        it('should return the base language if provided by user', function() {
+          expect(testRouter.setActiveRoute().language).equal('en')
         })
       })
 
