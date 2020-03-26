@@ -7,7 +7,7 @@ const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
 
 const NotFoundPage = '/404.html'
 
-function RouterFinder(routes, currentUrl, language, convert) {
+function RouterFinder(routes, currentUrl, language, baseLanguage, convert) { 
   let redirectTo = ''
   let routeNamedParams = {}
   const urlParser = UrlParser(currentUrl)
@@ -98,7 +98,7 @@ function RouterFinder(routes, currentUrl, language, convert) {
       path: routePath,
       routeNamedParams,
       namedPath,
-      language: routeLanguage
+      language: routeLanguage === undefined ? baseLanguage : routeLanguage
     })
     routeNamedParams = routerRoute.namedParams()
 
