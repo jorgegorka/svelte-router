@@ -138,6 +138,7 @@ Filename: _admin_layout.svelte_
   import { Route } from "svelte-router-spa";
 
   export let currentRoute;
+  const params = {}
 </script>
 
 <div>
