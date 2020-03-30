@@ -159,7 +159,7 @@ Each route is an object that may have the following properties:
 
 ```javascript
 
-function userIdAdmin() {
+function userIsAdmin() {
   // return true or false
 }
 
