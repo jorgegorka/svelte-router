@@ -665,3 +665,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [Fidel Ramos](https://github.com/haplo)
 
 [Steve Phillips](https://github.com/elimisteve)
+
+[David McCrea](https://github.com/davemccrea)
