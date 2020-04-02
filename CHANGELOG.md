@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.5.0
+
+Add a default language.
+
 ## 5.4.4
 
 Fix bug that was duplicating query params on page reload.

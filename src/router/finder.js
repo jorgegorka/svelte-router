@@ -7,13 +7,14 @@ const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
 
 const NotFoundPage = '/404.html'
 
-function RouterFinder(routes, currentUrl, language, convert) {
+function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
+  const defaultLanguage = routerOptions.defaultLanguage
+  const urlParser = UrlParser(currentUrl)
   let redirectTo = ''
   let routeNamedParams = {}
-  const urlParser = UrlParser(currentUrl)
 
   function findActiveRoute() {
-    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, language, convert)
+    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
 
     if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
@@ -98,7 +99,7 @@ function RouterFinder(routes, currentUrl, language, convert) {
       path: routePath,
       routeNamedParams,
       namedPath,
-      language: routeLanguage
+      language: routeLanguage || defaultLanguage
     })
     routeNamedParams = routerRoute.namedParams()
 

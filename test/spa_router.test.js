@@ -793,14 +793,37 @@ describe('Router', function() {
     })
 
     describe('when no language is set', function() {
+      let activeRoute
+
       describe('a simple route', function() {
         beforeEach(function() {
           pathName = 'http://web.app/admin/employees'
           testRouter = SpaRouter(routes, pathName)
+          activeRoute = testRouter.setActiveRoute()
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees')
+          expect(activeRoute.path).to.equal('/admin/employees')
+        })
+
+        it('should leave language empty', function() {
+          expect(activeRoute.language).be.undefined
+        })
+      })
+
+      describe('a simple route with default language', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/admin/employees'
+          testRouter = SpaRouter(routes, pathName, { defaultLanguage: 'en' })
+          activeRoute = testRouter.setActiveRoute()
+        })
+
+        it('should set the correct path', function() {
+          expect(activeRoute.path).to.equal('/admin/employees')
+        })
+
+        it('should leave language empty', function() {
+          expect(activeRoute.language).be.equal('en')
         })
       })
 
@@ -808,14 +831,31 @@ describe('Router', function() {
         beforeEach(function() {
           pathName = 'http://web.app/admin/employees/show/123/calendar/april'
           testRouter = SpaRouter(routes, pathName)
+          activeRoute = testRouter.setActiveRoute()
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/calendar/april')
+          expect(activeRoute.path).to.equal('/admin/employees/show/123/calendar/april')
         })
 
         it('should not set the language', function() {
-          expect(testRouter.setActiveRoute().language).to.be.undefined
+          expect(activeRoute.language).to.be.undefined
+        })
+      })
+
+      describe('a route with named params and a default language', function() {
+        beforeEach(function() {
+          pathName = 'http://web.app/admin/employees/show/123/calendar/april'
+          testRouter = SpaRouter(routes, pathName, { defaultLanguage: 'en' })
+          activeRoute = testRouter.setActiveRoute()
+        })
+
+        it('should set the correct path', function() {
+          expect(activeRoute.path).to.equal('/admin/employees/show/123/calendar/april')
+        })
+
+        it('should not set the language', function() {
+          expect(activeRoute.language).be.equal('en')
         })
       })
 
@@ -823,14 +863,15 @@ describe('Router', function() {
         beforeEach(function() {
           pathName = 'http://web.app/administrador/empleados/mostrar/123/calendario/abril'
           testRouter = SpaRouter(routes, pathName)
+          activeRoute = testRouter.setActiveRoute()
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
+          expect(activeRoute.path).to.equal('/administrador/empleados/mostrar/123/calendario/abril')
         })
 
         it('should set the language', function() {
-          expect(testRouter.setActiveRoute().language).to.equal('es')
+          expect(activeRoute.language).to.equal('es')
         })
       })
 
@@ -838,14 +879,15 @@ describe('Router', function() {
         beforeEach(function() {
           pathName = 'http://web.app/admin/employees/show/123/kalender/april'
           testRouter = SpaRouter(routes, pathName)
+          activeRoute = testRouter.setActiveRoute()
         })
 
         it('should set the correct path', function() {
-          expect(testRouter.setActiveRoute().path).to.equal('/admin/employees/show/123/kalender/april')
+          expect(activeRoute.path).to.equal('/admin/employees/show/123/kalender/april')
         })
 
         it('should set the language', function() {
-          expect(testRouter.setActiveRoute().language).to.equal('de')
+          expect(activeRoute.language).to.equal('de')
         })
       })
     })
@@ -1655,7 +1697,7 @@ describe('admin routes example localised', function() {
     ]
 
     pathName = 'http://web.app/admin'
-    SpaRouter(routes, pathName)
+    SpaRouter(routes, pathName, { defaultLanguage: 'en' })
   })
 
   it('should render admin route', function() {

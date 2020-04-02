@@ -34,7 +34,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
       convert = true
     }
 
-    return RouterFinder(routes, currentUrl, routerOptions.lang, convert).findActiveRoute()
+    return RouterFinder({ routes, currentUrl, routerOptions, convert }).findActiveRoute()
   }
 
   /**

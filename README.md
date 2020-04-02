@@ -268,11 +268,13 @@ The simplest approach (although not required) is to have an App.svelte file like
 
 The layout and/or the component that matches the active route will be rendered inside _Router_.
 
-Options is an object that supports two properties:
+Options is an object that supports three properties:
 
 _gaPageviews_ that will record route changes as pageviews in Google Analytics. It's disabled by default.
 
 _lang_ a string that sets the language that the router will use to match the active route. Check [Localisation](#localisation)
+
+_defaultLanguage_ If no language is set the active route will return this value as the active language.
 
 ### Route
 
@@ -645,9 +647,9 @@ navigateTo('setup') // Will redirect to /setup
 navigateTo('setup', 'es') // Will redirect to /configuracion
 ```
 
-There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you just want the translation and not navigating to the route.
+There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you want the translation but not navigating to the route.
 
-Inside your application you just need to define your routes using the default language (_route name_) and then when you specify a language, the route will be translated to the specified language automatically.
+The router options accept a property called _defaultLanguage_ This value will be returned by the activeRoute object if there is no language selected.
 
 ## Credits
 
