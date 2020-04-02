@@ -138,6 +138,7 @@ Filename: _admin_layout.svelte_
   import { Route } from "svelte-router-spa";
 
   export let currentRoute;
+  const params = {}
 </script>
 
 <div>
@@ -158,7 +159,7 @@ Each route is an object that may have the following properties:
 
 ```javascript
 
-function userIdAdmin() {
+function userIsAdmin() {
   // return true or false
 }
 
@@ -662,3 +663,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [Mark Kopenga](https://github.com/mjarkk)
 
 [Fidel Ramos](https://github.com/haplo)
+
+[Steve Phillips](https://github.com/elimisteve)
