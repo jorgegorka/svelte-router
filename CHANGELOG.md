@@ -1,5 +1,21 @@
 # Svelte Router changelog
 
+## 5.4.4
+
+Fix bug that was duplicating query params on page reload.
+
+## 5.4.3
+
+Remove warining of assignment to undeclared variable redirectTo.
+
+## 5.4.2
+
+Fix wrong import routes. Now it's true.
+
+## 5.4.1
+
+Fix wrong import routes.
+
 ## 5.4.0
 
 Refactor of code. Renaming router.js as spa_router.js.

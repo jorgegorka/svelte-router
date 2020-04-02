@@ -93,9 +93,8 @@ function navigateTo(pathName, language = null) {
   if (language) {
     routerOptions.langConvertTo = language
   }
-  const activeRoute = SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
 
-  return activeRoute
+  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
 }
 
 /**

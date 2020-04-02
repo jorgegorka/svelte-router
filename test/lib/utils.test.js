@@ -8,6 +8,7 @@ const {
   getPathNames,
   nameToPath,
   pathWithQueryParams,
+  pathWithoutQueryParams,
   removeSlash,
   routeNameLocalised,
   updateRoutePath
@@ -557,6 +558,51 @@ describe('updateRoutePath', function() {
   })
 })
 
+describe('pathWithoutQueryParams', function() {
+  let currentRoute = {}
+
+  describe('when there are no query params', function() {
+    beforeEach(function() {
+      currentRoute.path = '/admin'
+    })
+
+    it('should return the base route', function() {
+      expect(pathWithoutQueryParams(currentRoute)).to.equal('/admin')
+    })
+  })
+
+  describe('when there are query params', function() {
+    describe('when route has no segments', () => {
+      beforeEach(function() {
+        currentRoute.path = '/'
+        currentRoute.queryParams = {
+          date: '2019-11-21',
+          employeeId: '1234324',
+          ping: false
+        }
+      })
+
+      it('should return the base route', function() {
+        expect(pathWithoutQueryParams(currentRoute)).to.equal('/')
+      })
+    })
+    describe('when route has segments ending with a slash', () => {
+      beforeEach(function() {
+        currentRoute.path = '/admin/employee/new/'
+        currentRoute.queryParams = {
+          date: '2019-11-21',
+          employeeId: '1234324',
+          ping: false
+        }
+      })
+
+      it('should return the base route', function() {
+        expect(pathWithoutQueryParams(currentRoute)).to.equal('/admin/employee/new/')
+      })
+    })
+  })
+})
+
 describe('pathWithQueryParams', function() {
   let currentRoute = {}
 
@@ -580,7 +626,7 @@ describe('pathWithQueryParams', function() {
       }
     })
 
-    it('should return the base route', function() {
+    it('should return the base route with the params', function() {
       expect(pathWithQueryParams(currentRoute)).to.equal(
         '/admin/employee/new?date=2019-11-21&employeeId=1234324&ping=false'
       )

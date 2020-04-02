@@ -105,6 +105,15 @@ function nameToPath(name = '') {
 }
 
 /**
+ * Return the path name excluding query params
+ * @param name
+ **/
+function pathWithoutQueryParams(currentRoute) {
+  const path = currentRoute.path.split('?')
+  return path[0]
+}
+
+/**
  * Return the path name including query params
  * @param name
  **/
@@ -245,6 +254,7 @@ module.exports = {
   getPathNames,
   nameToPath,
   pathWithQueryParams,
+  pathWithoutQueryParams,
   removeExtraPaths,
   removeSlash,
   routeNameLocalised,
