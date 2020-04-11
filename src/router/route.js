@@ -1,6 +1,6 @@
 import { UrlParser } from 'url-params-parser';
 
-function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
+export function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
   function namedParams() {
     const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
 
@@ -21,5 +21,3 @@ function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, 
 
   return Object.freeze({ get, namedParams })
 }
-
-module.exports = { RouterRoute }

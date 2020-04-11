@@ -6,7 +6,7 @@ import { anyEmptyNestedRoutes, pathWithoutQueryParams } from '../lib/utils';
 
 const NotFoundPage = '/404.html'
 
-function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
+export function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
   const defaultLanguage = routerOptions.defaultLanguage
   const urlParser = UrlParser(currentUrl)
   let redirectTo = ''
@@ -109,5 +109,3 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
   return Object.freeze({ findActiveRoute })
 }
-
-module.exports = { RouterFinder }

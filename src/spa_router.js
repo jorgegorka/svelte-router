@@ -1,7 +1,7 @@
-const { activeRoute } = require('./store')
-const { RouterCurrent } = require('./router/current')
-const { RouterFinder } = require('./router/finder')
-const { removeSlash } = require('./lib/utils')
+import { activeRoute } from './store';
+import { RouterCurrent } from './router/current';
+import { RouterFinder } from './router/finder';
+import { removeSlash } from './lib/utils';
 
 const NotFoundPage = '/404.html'
 
