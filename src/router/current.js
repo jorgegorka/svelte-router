@@ -59,4 +59,3 @@ export function RouterCurrent(trackPage) {
   return Object.freeze({ active, isActive, setActive })
 }
 
-module.exports = { RouterCurrent }

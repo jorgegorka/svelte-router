@@ -1,4 +1,4 @@
-const { RouterGuard } = require('./guard')
+import { RouterGuard } from './guard';
 
 export function RouterRedirect(route, currentPath) {
   const guard = RouterGuard(route.onlyIf)
