@@ -15,7 +15,7 @@ let routerCurrent
  * @param currentUrl current url
  * @param options configuration options
  **/
-function SpaRouter(routes, currentUrl, options = {}) {
+export function SpaRouter(routes, currentUrl, options = {}) {
   routerOptions = { ...options }
   if (typeof currentUrl === 'undefined' || currentUrl === '') {
     currentUrl = document.location.href
@@ -75,7 +75,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
  * Converts a route to its localised version
  * @param pathName
  **/
-function localisedRoute(pathName, language) {
+export function localisedRoute(pathName, language) {
   pathName = removeSlash(pathName, 'lead')
   routerOptions.langConvertTo = language
 
@@ -87,7 +87,7 @@ function localisedRoute(pathName, language) {
  * @param pathName String
  * @param language String
  **/
-function navigateTo(pathName, language = null) {
+export function navigateTo(pathName, language = null) {
   pathName = removeSlash(pathName, 'lead')
 
   if (language) {
@@ -102,7 +102,7 @@ function navigateTo(pathName, language = null) {
  * @param pathName String The path name to check against the current route.
  * @param includePath Boolean if true checks that pathName is included in current route. If false should match it.
  **/
-function routeIsActive(queryPath, includePath = false) {
+export function routeIsActive(queryPath, includePath = false) {
   return routerCurrent.isActive(queryPath, includePath)
 }
 
@@ -121,4 +121,3 @@ if (typeof window !== 'undefined') {
   }
 }
 
-module.exports = { SpaRouter, localisedRoute, navigateTo, routeIsActive }

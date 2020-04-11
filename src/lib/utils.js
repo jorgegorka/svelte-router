@@ -2,7 +2,7 @@
  * Returns true if object has any nested routes empty
  * @param routeObject
  **/
-function anyEmptyNestedRoutes(routeObject) {
+export function anyEmptyNestedRoutes(routeObject) {
   let result = false
   if (Object.keys(routeObject).length === 0) {
     return true
@@ -23,7 +23,7 @@ function anyEmptyNestedRoutes(routeObject) {
  * @param routeName string
  **/
 
-function compareRoutes(pathName, routeName) {
+export function compareRoutes(pathName, routeName) {
   routeName = removeSlash(routeName)
 
   if (routeName.includes(':')) {
@@ -40,7 +40,7 @@ function compareRoutes(pathName, routeName) {
  * @param language string
  **/
 
-function findLocalisedRoute(pathName, route, language) {
+export function findLocalisedRoute(pathName, route, language) {
   let exists = false
 
   if (language) {
@@ -65,7 +65,7 @@ function findLocalisedRoute(pathName, route, language) {
  * Return all the consecutive named param (placeholders) of a pathname
  * @param pathname
  **/
-function getNamedParams(pathName = '') {
+export function getNamedParams(pathName = '') {
   if (pathName.trim().length === 0) return []
   const namedUrlParams = getPathNames(pathName)
   return namedUrlParams.reduce((validParams, param) => {
@@ -82,7 +82,7 @@ function getNamedParams(pathName = '') {
  * @param pathName
  * Private method
  **/
-function getPathNames(pathName) {
+export function getPathNames(pathName) {
   if (pathName === '/' || pathName.trim().length === 0) return [pathName]
 
   pathName = removeSlash(pathName, 'both')
@@ -94,7 +94,7 @@ function getPathNames(pathName) {
  * Return the first part of a pathname until the first named param is found
  * @param name
  **/
-function nameToPath(name = '') {
+export function nameToPath(name = '') {
   let routeName
   if (name === '/' || name.trim().length === 0) return name
   name = removeSlash(name, 'lead')
@@ -108,7 +108,7 @@ function nameToPath(name = '') {
  * Return the path name excluding query params
  * @param name
  **/
-function pathWithoutQueryParams(currentRoute) {
+export function pathWithoutQueryParams(currentRoute) {
   const path = currentRoute.path.split('?')
   return path[0]
 }
@@ -117,7 +117,7 @@ function pathWithoutQueryParams(currentRoute) {
  * Return the path name including query params
  * @param name
  **/
-function pathWithQueryParams(currentRoute) {
+export function pathWithQueryParams(currentRoute) {
   let queryParams = []
   if (currentRoute.queryParams) {
     for (let [key, value] of Object.entries(currentRoute.queryParams)) {
@@ -137,7 +137,7 @@ function pathWithQueryParams(currentRoute) {
  * @param pathName string
  * @param position string - lead, trail, both
  **/
-function removeExtraPaths(pathNames, basePathNames) {
+export function removeExtraPaths(pathNames, basePathNames) {
   const names = basePathNames.split('/')
   if (names.length > 1) {
     names.forEach(function(name, index) {
@@ -156,7 +156,7 @@ function removeExtraPaths(pathNames, basePathNames) {
  * @param position string - lead, trail, both
  **/
 
-function removeSlash(pathName, position = 'lead') {
+export function removeSlash(pathName, position = 'lead') {
   if (pathName.trim().length < 1) {
     return ''
   }
@@ -182,7 +182,7 @@ function removeSlash(pathName, position = 'lead') {
  * @param language string
  **/
 
-function routeNameLocalised(route, language = null) {
+export function routeNameLocalised(route, language = null) {
   if (!language || !route.lang || !route.lang[language]) {
     return route.name
   } else {
@@ -200,7 +200,7 @@ function routeNameLocalised(route, language = null) {
  * @param language string
  **/
 
-function updateRoutePath(basePath, pathNames, route, language, convert = false) {
+export function updateRoutePath(basePath, pathNames, route, language, convert = false) {
   if (basePath === '/' || basePath.trim().length === 0) return { result: basePath, language: null }
 
   let basePathResult = basePath
@@ -244,19 +244,4 @@ function updateRoutePath(basePath, pathNames, route, language, convert = false) 
   } else {
     return { result: basePath, language: currentLanguage }
   }
-}
-
-module.exports = {
-  anyEmptyNestedRoutes,
-  compareRoutes,
-  findLocalisedRoute,
-  getNamedParams,
-  getPathNames,
-  nameToPath,
-  pathWithQueryParams,
-  pathWithoutQueryParams,
-  removeExtraPaths,
-  removeSlash,
-  routeNameLocalised,
-  updateRoutePath
 }

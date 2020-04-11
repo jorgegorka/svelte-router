@@ -1,6 +1,6 @@
-const { updateRoutePath, getNamedParams, nameToPath, removeExtraPaths, routeNameLocalised } = require('../lib/utils')
+import { updateRoutePath, getNamedParams, nameToPath, removeExtraPaths, routeNameLocalised } from '../lib/utils';
 
-function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage }) {
+export function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage }) {
   let updatedPathRoute
   let route
   let routePathLanguage = currentLanguage
@@ -73,5 +73,3 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
     routePath
   })
 }
-
-module.exports = { RouterPath }

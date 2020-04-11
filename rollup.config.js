@@ -2,6 +2,7 @@ import svelte from 'rollup-plugin-svelte'
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
 import pkg from './package.json'
+import json from "@rollup/plugin-json";
 
 export default [
   {
@@ -10,9 +11,9 @@ export default [
     plugins: [resolve(), svelte()]
   },
 
-  // tests
-  {
-    input: 'test/index.js',
-    plugins: [resolve(), commonjs(), svelte()]
-  }
+  // // tests
+  // {
+  //   input: 'test/index.js',
+  //   plugins: [resolve(), commonjs(), svelte(), json()]
+  // }
 ]

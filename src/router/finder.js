@@ -1,9 +1,8 @@
-const { UrlParser } = require('url-params-parser')
-
-const { RouterRedirect } = require('./redirect')
-const { RouterRoute } = require('./route')
-const { RouterPath } = require('./path')
-const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
+import { UrlParser } from 'url-params-parser';
+import { RouterRedirect } from './redirect';
+import { RouterRoute } from './route';
+import { RouterPath } from './path';
+import { anyEmptyNestedRoutes, pathWithoutQueryParams } from '../lib/utils';
 
 const NotFoundPage = '/404.html'
 
@@ -32,6 +31,8 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
    * @param routes
    * @param basePath
    * @param pathNames
+   * @param currentLanguage
+   * @param convert
    **/
   function searchActiveRoutes(routes, basePath, pathNames, currentLanguage, convert) {
     let currentRoute = {}

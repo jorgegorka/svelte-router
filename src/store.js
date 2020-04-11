@@ -1,4 +1,4 @@
-const writable = require('svelte/store').writable
+import {writable} from 'svelte/store';
 
 const router = writable({})
 
@@ -10,10 +10,9 @@ function remove() {
   router.set({})
 }
 
-const activeRoute = {
+export const activeRoute = {
   subscribe: router.subscribe,
   set,
   remove
 }
 
-module.exports = { activeRoute }

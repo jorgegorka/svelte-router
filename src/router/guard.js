@@ -1,4 +1,4 @@
-function RouterGuard(onlyIf) {
+export function RouterGuard(onlyIf) {
   const guardInfo = onlyIf
 
   function valid() {
@@ -21,4 +21,3 @@ function RouterGuard(onlyIf) {
   return Object.freeze({ valid, redirect, redirectPath })
 }
 
-module.exports = { RouterGuard }

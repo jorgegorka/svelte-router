@@ -1,8 +1,7 @@
-const { UrlParser } = require('url-params-parser')
+import { UrlParser } from 'url-params-parser';
+import { pathWithQueryParams, removeSlash } from '../lib/utils';
 
-const { pathWithQueryParams, removeSlash } = require('../lib/utils')
-
-function RouterCurrent(trackPage) {
+export function RouterCurrent(trackPage) {
   const trackPageview = trackPage || false
   let activeRoute = ''
 

@@ -1,4 +1,4 @@
-const { UrlParser } = require('url-params-parser')
+import { UrlParser } from 'url-params-parser';
 
 function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
   function namedParams() {
