@@ -70,7 +70,7 @@ function userIsAdmin() {
 const routes = [
   {
     name: '/',
-    component: PublicLayout
+    component: PublicLayout,
   },
   { name: 'login', component: Login, layout: PublicLayout },
   {
@@ -84,11 +84,11 @@ const routes = [
         component: '',
         nestedRoutes: [
           { name: 'index', component: EmployeesIndex },
-          { name: 'show/:id', component: EmployeesShow }
-        ]
-      }
-    ]
-  }
+          { name: 'show/:id', component: EmployeesShow },
+        ],
+      },
+    ],
+  },
 ]
 
 export { routes }
@@ -207,7 +207,7 @@ const routes = [
   {
     name: '/',
     component: PublicIndex,
-    layout: PublicLayout
+    layout: PublicLayout,
   },
   { name: 'login', component: Login, layout: PublicLayout },
   {
@@ -224,13 +224,13 @@ const routes = [
             component: EmployeesShowLayout,
             nestedRoutes: [
               { name: 'index', component: EmployeesShow },
-              { name: 'list', component: EmployeesShowList }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+              { name: 'list', component: EmployeesShowList },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -340,11 +340,11 @@ const routes = [
         component: 'AboutUsLayout',
         nestedRoutes: [
           { name: 'company', component: CompanyPage },
-          { name: 'people', component: PeoplePage }
-        ]
-      }
-    ]
-  }
+          { name: 'people', component: PeoplePage },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -506,7 +506,22 @@ localisedRoute('setup', 'it') // Will return the string "/configurazione"
 
 ### Not Found - 404
 
-Svelte Router redirects to a 404.html page if a route is not found. You need to host and upload that page to your site. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages so chances are you already have one.
+#### Default behaviour
+
+Svelte Router redirects to a 404.html page if a route is not found. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages. Just add a 404.html page in the same directory where your index.html file is.
+
+#### Custom behaviour
+
+If you define a 404 route it will be rendered instead of the default behaviour.
+
+```javascript
+  // Example of a custom 404 route
+  {
+    name: '404',
+    path: '404',
+    component: MyCustomNotFoundcomponent
+  }
+```
 
 ## Google Analytics
 
@@ -532,7 +547,7 @@ Let's see some examples using the following routes.
 const routes = [
   {
     name: '/',
-    component: PublicIndex
+    component: PublicIndex,
   },
   { name: 'login', component: Login, lang: { es: 'iniciar-sesion' } },
   { name: 'signup', component: SignUp, lang: { es: 'registrarse' } },
@@ -553,19 +568,19 @@ const routes = [
             nestedRoutes: [
               {
                 name: 'index',
-                component: ShowEmployee
+                component: ShowEmployee,
               },
               {
                 name: 'calendar/:month',
                 component: CalendarEmployee,
-                lang: { es: 'calendario/:month', de: 'kalender/:month' }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+                lang: { es: 'calendario/:month', de: 'kalender/:month' },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -667,3 +682,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [Steve Phillips](https://github.com/elimisteve)
 
 [David McCrea](https://github.com/davemccrea)
+
+[Pascal Clanget](https://github.com/Gh05d)

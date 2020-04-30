@@ -18,7 +18,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
     if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
-        searchActiveRoute = { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
+        searchActiveRoute = routeNotFound(routerOptions.lang)
       }
     } else {
       searchActiveRoute.path = pathWithoutQueryParams(searchActiveRoute)
@@ -38,7 +38,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     let basePathName = pathNames.shift().toLowerCase()
     const routerPath = RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage })
 
-    routes.forEach(function(route) {
+    routes.forEach(function (route) {
       routerPath.updatedPath(route)
       if (routerPath.basePathSameAsLocalised()) {
         let routePath = routerPath.routePath()
@@ -51,7 +51,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
             routePath,
             routeLanguage: routerPath.routeLanguage(),
             urlParser,
-            namedPath: routerPath.namedPath()
+            namedPath: routerPath.namedPath(),
           })
         }
 
@@ -99,11 +99,21 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
       path: routePath,
       routeNamedParams,
       namedPath,
-      language: routeLanguage || defaultLanguage
+      language: routeLanguage || defaultLanguage,
     })
     routeNamedParams = routerRoute.namedParams()
 
     return routerRoute.get()
+  }
+
+  function routeNotFound(customLanguage) {
+    const custom404Page = routes.find((route) => route.name == '404')
+    const language = customLanguage || defaultLanguage || ''
+    if (custom404Page) {
+      return { ...custom404Page, language, path: '404' }
+    } else {
+      return { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
+    }
   }
 
   return Object.freeze({ findActiveRoute })

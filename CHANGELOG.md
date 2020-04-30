@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.6.0
+
+Add custom 404 page.
+
 ## 5.5.0
 
 Add a default language.
@@ -56,8 +60,8 @@ const adminRoutes = [
   {
     name: 'employees',
     layout: EmployeesPage,
-    lang: { es: 'empleados', fr: 'employes', de: 'angestellte', it: 'impiegati' }
-  }
+    lang: { es: 'empleados', fr: 'employes', de: 'angestellte', it: 'impiegati' },
+  },
 ]
 ```
 
@@ -77,11 +81,11 @@ const adminRoutes = [
         component: DashboardIndex,
         onlyIf: {
           guard: isLoggedIn,
-          redirect: '/login'
-        }
-      }
-    ]
-  }
+          redirect: '/login',
+        },
+      },
+    ],
+  },
 ]
 ```
 
