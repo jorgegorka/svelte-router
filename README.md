@@ -307,7 +307,7 @@ Example:
   <TopHeader />
   <section class="section">
     <Route {currentRoute} {params} />
-    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams)
+    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams}</p>
   </section>
   <FooterContent />
 </div>

@@ -110,7 +110,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     const custom404Page = routes.find((route) => route.name == '404')
     const language = customLanguage || defaultLanguage || ''
     if (custom404Page) {
-      return { ...custom404Page, language, path: '404' }
+      return { path: '404', ...custom404Page, language }
     } else {
       return { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
     }
