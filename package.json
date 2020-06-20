@@ -8,16 +8,16 @@
     "build": "rollup -c",
     "dev": "rollup -cw",
     "prepublishOnly": "npm test",
-    "test": "mocha"
+    "test": "mocha --reporter min --watch --recursive --watch-files ./"
   },
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.0.0",
-    "mocha": "^7.2.0",
+    "eslint": "^7.3.0",
+    "mocha": "^8.0.0",
     "mocha-jsdom": "^2.0.0",
-    "svelte": "^3.22.0"
+    "svelte": "^3.23.2"
   },
   "dependencies": {
     "url-params-parser": "^1.0.2"
