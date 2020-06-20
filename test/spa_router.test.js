@@ -1378,8 +1378,19 @@ describe('routeIsActive', function () {
       SpaRouter(routes, pathName).setActiveRoute()
     })
 
-    it('should be active mona', function () {
+    it('should be active', function () {
       expect(routeIsActive('/current/active/4343/route/?test=true&routing=awesome')).to.be.true
+    })
+  })
+
+  describe('a route with an anchor tag', function () {
+    beforeEach(function () {
+      pathName = 'http://web.app/current/active/4343/route/?test=true&routing=awesome#anchor'
+      SpaRouter(routes, pathName).setActiveRoute()
+    })
+
+    it('should be active', function () {
+      expect(routeIsActive('/current/active/4343/route')).to.be.true
     })
   })
 

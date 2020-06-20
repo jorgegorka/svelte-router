@@ -1,6 +1,6 @@
 {
   "name": "svelte-router-spa",
-  "version": "5.7.0",
+  "version": "5.7.1",
   "description": "A full featured router component for Svelte and your Single Page Applications.",
   "main": "src/index.js",
   "svelte": "src/index.js",
@@ -8,7 +8,7 @@
     "build": "rollup -c",
     "dev": "rollup -cw",
     "prepublishOnly": "npm test",
-    "test:watch": "mocha --reporter min --watch --recursive --watch-files ./",
+    "testWatch": "mocha --reporter min --watch --recursive --watch-files ./",
     "test": "mocha"
   },
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",

@@ -67,7 +67,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
   return Object.freeze({
     setActiveRoute,
-    findActiveRoute
+    findActiveRoute,
   })
 }
 
@@ -108,16 +108,23 @@ function routeIsActive(queryPath, includePath = false) {
 
 if (typeof window !== 'undefined') {
   // Avoid full page reload on local routes
-  window.addEventListener('click', event => {
+  window.addEventListener('click', (event) => {
     if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
       event.preventDefault()
-      // event.stopPropagation()
+      let navigatePathname = event.target.pathname + event.target.search
+      if (event.target.hash) {
+        navigatePathname += event.target.hash
+      }
       navigateTo(event.target.pathname + event.target.search)
     }
   })
 
-  window.onpopstate = function(_event) {
-    navigateTo(window.location.pathname + window.location.search)
+  window.onpopstate = function (_event) {
+    const navigatePathname = window.location.pathname + window.location.search
+    if (window.location.hash) {
+      navigatePathname += window.location.hash
+    }
+    navigateTo(navigatePathname)
   }
 }
 

@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.7.1
+
+Fix bug that removed anchor tags from url.
+
 ## 5.7.0
 
 Support named params at the beginning of the path name.
