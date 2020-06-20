@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.7.0
+
+Support named params at the beginning of the path name.
+
 ## 5.6.0
 
 Add custom 404 page.

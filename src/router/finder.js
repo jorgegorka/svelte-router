@@ -3,7 +3,7 @@ const { UrlParser } = require('url-params-parser')
 const { RouterRedirect } = require('./redirect')
 const { RouterRoute } = require('./route')
 const { RouterPath } = require('./path')
-const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
+const { anyEmptyNestedRoutes, pathWithoutQueryParams, startsWithNamedParam } = require('../lib/utils')
 
 const NotFoundPage = '/404.html'
 
@@ -12,6 +12,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
   const urlParser = UrlParser(currentUrl)
   let redirectTo = ''
   let routeNamedParams = {}
+  let staticParamMatch = false
 
   function findActiveRoute() {
     let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
@@ -37,12 +38,12 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     let currentRoute = {}
     let basePathName = pathNames.shift().toLowerCase()
     const routerPath = RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage })
+    staticParamMatch = false
 
     routes.forEach(function (route) {
       routerPath.updatedPath(route)
-      if (routerPath.basePathSameAsLocalised()) {
+      if (matchRoute(routerPath, route.name)) {
         let routePath = routerPath.routePath()
-
         redirectTo = RouterRedirect(route, redirectTo).path()
 
         if (currentRoute.name !== routePath) {
@@ -86,6 +87,15 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     }
 
     return currentRoute
+  }
+
+  function matchRoute(routerPath, routeName) {
+    const basePathSameAsLocalised = routerPath.basePathSameAsLocalised()
+    if (basePathSameAsLocalised) {
+      staticParamMatch = true
+    }
+
+    return basePathSameAsLocalised || (!staticParamMatch && startsWithNamedParam(routeName))
   }
 
   function nestedRoutesAndNoPath(route, pathNames) {

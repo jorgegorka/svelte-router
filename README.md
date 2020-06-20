@@ -246,6 +246,46 @@ The routes that this file will parse successfully are:
 /admin/employees/show/{id}/list
 ```
 
+### Using named params as first part of path name (not recommended)
+
+Svelte Router is usually smart enough to find the right route for you. It means that you don't need to care about the order in which you write your routes. There is an exception to this rule: If you define a named param as the very first part of the path like: /:user-name/edit
+
+In this specific case order matters and you should add that route **after** all other routes.
+
+This is not recommended and you should always start your routes with a static path name. You can add as many named params as you need after the first static name.
+
+```javascript
+
+function userIsAdmin() {
+  // return true or false
+}
+
+
+{
+  name: 'about-us',
+  component: About,
+  lang: { es: 'acerca-de' },
+  nestedRoutes: [
+    {
+      name: 'our-values', component: CompanyValues, lang: { es: 'nuestros-valores' }
+    }
+  ]
+},
+{
+  name: '/',
+  component: HomeComponent
+},
+{
+  name: '/project/:name',
+  component: ProjectComponent
+},
+{
+  name: '/:user-name/edit',
+  component: EditUserComponent
+}
+
+```
+
 ## API
 
 ### Router

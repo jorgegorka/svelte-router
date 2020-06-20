@@ -240,7 +240,22 @@ describe('Router', function () {
           component: 'AboutUsLayout',
           nestedRoutes: [{ name: 'index', component: 'AboutUsPage' }],
         },
+        {
+          name: '/:customer/user-admin',
+          component: 'StartsWithNamedParamIndex',
+        },
       ]
+    })
+
+    describe('When route starts with a named parameter', function () {
+      beforeEach(function () {
+        pathName = 'http://web.app/bigcustomer/user-admin'
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
+      })
+
+      it('should find the route with the name param', function () {
+        expect(testRouter.component).to.equal('StartsWithNamedParamIndex')
+      })
     })
 
     describe(' When root path ', function () {
