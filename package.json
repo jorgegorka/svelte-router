@@ -8,7 +8,8 @@
     "build": "rollup -c",
     "dev": "rollup -cw",
     "prepublishOnly": "npm test",
-    "test": "mocha --reporter min --watch --recursive --watch-files ./"
+    "test:watch": "mocha --reporter min --watch --recursive --watch-files ./",
+    "test": "mocha"
   },
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
