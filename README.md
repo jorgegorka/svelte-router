@@ -347,7 +347,7 @@ Example:
   <TopHeader />
   <section class="section">
     <Route {currentRoute} {params} />
-    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams)
+    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams}</p>
   </section>
   <FooterContent />
 </div>
@@ -445,7 +445,7 @@ Example:
 
 <div class="app">
   <h1>My content</h1>
-  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate>
+  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate></p>
 </div>
 ```
 
