@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.7.2
+
+Fix bug that prevented internal links to be open in a new tab.
+
 ## 5.7.1
 
 Fix bug that removed anchor tags from url.

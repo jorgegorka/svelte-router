@@ -115,7 +115,12 @@ if (typeof window !== 'undefined') {
       if (event.target.hash) {
         navigatePathname += event.target.hash
       }
-      navigateTo(event.target.pathname + event.target.search)
+      const destinationUrl = event.target.pathname + event.target.search
+      if (event.target.target === '_blank') {
+        window.open(destinationUrl, 'newTab')
+      } else {
+        navigateTo(destinationUrl)
+      }
     }
   })
 
