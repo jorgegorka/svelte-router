@@ -43,7 +43,7 @@ function RouterCurrent(trackPage) {
   function pushActiveRoute(newRoute) {
     if (typeof window !== 'undefined') {
       const pathAndSearch = pathWithQueryParams(newRoute)
-      //if (window.history && window.history.state && window.history.state.page !== pathAndSearch) {
+
       window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
       if (trackPageview) {
         gaTracking(pathAndSearch)

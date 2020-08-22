@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.7.3
+
+Fix assignment to constat variable error
+
 ## 5.7.2
 
 Fix bug that prevented internal links to be open in a new tab.

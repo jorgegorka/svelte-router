@@ -125,7 +125,7 @@ if (typeof window !== 'undefined') {
   })
 
   window.onpopstate = function (_event) {
-    const navigatePathname = window.location.pathname + window.location.search
+    let navigatePathname = window.location.pathname + window.location.search
     if (window.location.hash) {
       navigatePathname += window.location.hash
     }
