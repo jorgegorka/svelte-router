@@ -8,6 +8,9 @@ function RouterCurrent(trackPage) {
 
   function setActive(newRoute) {
     activeRoute = newRoute.path
+    if (newRoute.hash) {
+      location.hash = newRoute.hash;
+    }
     pushActiveRoute(newRoute)
   }
 

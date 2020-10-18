@@ -11,6 +11,7 @@ function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, 
     return {
       name: path,
       component: routeInfo.component,
+      hash: urlParser.hash,
       layout: routeInfo.layout,
       queryParams: urlParser.queryParams,
       namedParams: namedParams(),
