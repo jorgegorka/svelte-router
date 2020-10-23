@@ -1,8 +1,12 @@
 # Svelte Router changelog
 
+## 5.7.4
+
+Fix bug with anchor tags.
+
 ## 5.7.3
 
-Fix assignment to constat variable error
+Fix assignment to constat variable error.
 
 ## 5.7.2
 

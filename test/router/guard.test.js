@@ -41,18 +41,6 @@ describe('RouterGuard', function () {
     })
   })
 
-  // describe.only('when guard function is a promise', function() {
-  //   beforeEach(function() {
-  //     guard = RouterGuard({ guard: thisIsAPromise, redirect: '/login' })
-  //   })
-
-  //   it('should resolve it and return the value', async function() {
-  //     let result = await guard.redirect()
-
-  //     expect(result).to.be.true
-  //   })
-  // })
-
   describe('redirectPath', function () {
     it('should return the redirect path', function () {
       guard = RouterGuard({ redirect: '/login' })

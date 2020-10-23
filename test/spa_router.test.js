@@ -1193,6 +1193,21 @@ describe('Router', function () {
       })
     })
 
+    describe('Employee index route with anchor hash', function () {
+      beforeEach(function () {
+        pathName = 'http://web.app/admin/employees#cv'
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
+      })
+
+      it('should set path', function () {
+        expect(testRouter.path).to.equal('/admin/employees')
+      })
+
+      it('should set the anchor hash', function () {
+        expect(testRouter.hash).to.equal('#cv')
+      })
+    })
+
     describe('Teams index route', function () {
       beforeEach(function () {
         pathName = 'http://web.app/admin/teams'

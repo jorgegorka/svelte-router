@@ -726,3 +726,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [Pascal Clanget](https://github.com/Gh05d)
 
 [A J](https://github.com/aj-nk)
+
+[David Kiss](https://github.com/xdavidkissx)

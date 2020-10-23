@@ -112,10 +112,8 @@ if (typeof window !== 'undefined') {
     if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
       event.preventDefault()
       let navigatePathname = event.target.pathname + event.target.search
-      if (event.target.hash) {
-        navigatePathname += event.target.hash
-      }
-      const destinationUrl = navigatePathname + event.target.search
+
+      const destinationUrl = navigatePathname + event.target.search + event.target.hash
       if (event.target.target === '_blank') {
         window.open(destinationUrl, 'newTab')
       } else {
@@ -125,10 +123,8 @@ if (typeof window !== 'undefined') {
   })
 
   window.onpopstate = function (_event) {
-    let navigatePathname = window.location.pathname + window.location.search
-    if (window.location.hash) {
-      navigatePathname += window.location.hash
-    }
+    let navigatePathname = window.location.pathname + window.location.search + window.location.hash
+
     navigateTo(navigatePathname)
   }
 }

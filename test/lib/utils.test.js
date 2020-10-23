@@ -643,6 +643,24 @@ describe('pathWithQueryParams', function () {
       expect(pathWithQueryParams(currentRoute)).to.equal('/admin/employee/new')
     })
   })
+
+  describe('when there are query params and a hash', function () {
+    beforeEach(function () {
+      currentRoute.path = '/admin/employee/new'
+      currentRoute.queryParams = {
+        date: '2019-11-21',
+        employeeId: '1234324',
+        ping: false,
+      }
+      currentRoute.hash = '#article'
+    })
+
+    it('should return the base route with the params', function () {
+      expect(pathWithQueryParams(currentRoute)).to.equal(
+        '/admin/employee/new?date=2019-11-21&employeeId=1234324&ping=false#article'
+      )
+    })
+  })
 })
 
 describe('removeSlash', function () {

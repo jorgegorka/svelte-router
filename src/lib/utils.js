@@ -125,10 +125,12 @@ function pathWithQueryParams(currentRoute) {
     }
   }
 
+  const hash = currentRoute.hash ? currentRoute.hash : ''
+
   if (queryParams.length > 0) {
-    return `${currentRoute.path}?${queryParams.join('&')}`
+    return `${currentRoute.path}?${queryParams.join('&')}${hash}`
   } else {
-    return currentRoute.path
+    return currentRoute.path + hash
   }
 }
 
