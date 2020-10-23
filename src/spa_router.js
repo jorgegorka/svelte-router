@@ -115,7 +115,7 @@ if (typeof window !== 'undefined') {
       if (event.target.hash) {
         navigatePathname += event.target.hash
       }
-      const destinationUrl = event.target.pathname + event.target.search
+      const destinationUrl = navigatePathname + event.target.search
       if (event.target.target === '_blank') {
         window.open(destinationUrl, 'newTab')
       } else {
