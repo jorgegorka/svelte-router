@@ -110,7 +110,7 @@ describe('Router', function () {
         testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
-      it('should set path to root path black', function () {
+      it('should set path to root path', function () {
         expect(testRouter.path).to.equal('/')
       })
 
@@ -1796,5 +1796,96 @@ describe('admin routes example localised', function () {
 
   it('should render public route', function () {
     expect(localisedRoute('public/users/show/frank', 'es').path).to.equal('/publico/usuarios/mostrar/frank')
+  })
+})
+
+describe('With site prefix', function () {
+  const routes = [
+    {
+      name: '/',
+      component: 'PublicLayout',
+      nestedRoutes: [{ name: 'index', component: 'PublicIndex' }],
+    },
+    { name: 'about-us', component: 'AboutUs' },
+    { name: 'login', component: 'Login' },
+    { name: 'project/:name', component: 'ProjectList' },
+    {
+      name: 'admin',
+      component: 'AdminLayout',
+      nestedRoutes: [
+        { name: 'index', component: 'DashboardIndex' },
+        {
+          name: 'company',
+          component: 'CompanyLayout',
+          lang: { es: 'empresa' },
+          nestedRoutes: [
+            { name: 'index', component: 'CompanyIndex' },
+            { name: 'edit', component: 'CompanyEdit' },
+          ],
+        },
+        {
+          name: 'employees',
+          component: 'EmployeesLayout',
+          lang: { es: 'empleados' },
+          nestedRoutes: [
+            { name: 'index', component: 'EmployeesIndex' },
+            { name: 'new', component: 'EmployeesNew', lang: { es: 'nuevo' } },
+            { name: 'show/:id', component: 'EmployeesShow', lang: { es: 'mostrar/:id' } },
+            { name: 'edit/:id', component: 'EmployeesEdit', lang: { es: 'modificar/:id' } },
+            { name: 'calendar/:id', component: 'EmployeeCalendar', lang: { es: 'calendario/:id' } },
+            { name: 'list/:id', component: 'EmployeeActivityList', lang: { es: 'listado/:id' } },
+          ],
+        },
+      ],
+    },
+  ]
+
+  describe('about us route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/company/about-us'
+      activeRoute = SpaRouter(routes, currentUrl, { prefix: 'company' }).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/company/about-us')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.component).to.equal('AboutUs')
+    })
+  })
+
+  describe('named params', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/company/project/miracle'
+      activeRoute = SpaRouter(routes, currentUrl, { prefix: 'company' }).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/company/project/miracle')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.component).to.equal('ProjectList')
+    })
+  })
+
+  describe('named params', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/admin/employees/show/12/Danny-filth'
+      activeRoute = SpaRouter(routes, currentUrl, { prefix: 'company' }).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/company/admin/employees/show/12')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.component).to.equal('AdminLayout')
+    })
+
+    it('should set named params', function () {
+      expect(activeRoute.childRoute.childRoute.namedParams.id).to.equal('12')
+    })
   })
 })

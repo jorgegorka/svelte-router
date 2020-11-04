@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.8.0
+
+Added prefix param to constrain routes.
+
 ## 5.7.4
 
 Fix bug with anchor tags.

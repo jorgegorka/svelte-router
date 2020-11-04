@@ -20,6 +20,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 - Named params.
 - Localisation.
 - Guards to protect urls. Public and private urls.
+- Route prefix.
 - Track pageviews in Google Analytics (optional).
 - Use standard `<a href="/about-us">About</a>` elements to navigate between pages (or use [`<Navigate />`](#navigate) for bonus features).
 
@@ -562,6 +563,21 @@ If you define a 404 route it will be rendered instead of the default behaviour.
     component: MyCustomNotFoundcomponent
   }
 ```
+
+## Route prefix
+
+You can easily constrain all your routes to a specific path like _/blog_
+
+```javascript
+<Router { routes } options={ {prefix: 'blog'} } />
+```
+
+With this option you don't have to define all your routes starting with _blog_ they will be prefixed automatically.
+
+Using prefix has two advantages:
+
+- You don't need to create a top level route in your routes file and then add every route as a nested route.
+- Routes that don't start with the prefix will not be returned as 404 since they are out of the scope of the prefixed routes so you can navigate to them.
 
 ## Google Analytics
 

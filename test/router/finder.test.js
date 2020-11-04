@@ -44,3 +44,30 @@ describe('RouterFinder', function () {
     })
   })
 })
+
+describe('With site prefix', function () {
+  beforeEach(function () {
+    routes = [
+      {
+        name: '/',
+        component: 'PublicLayout',
+        nestedRoutes: [{ name: 'index', component: 'PublicIndex' }],
+      },
+      { name: 'about-us', component: 'AboutUs' },
+      { name: 'login', component: 'Login' },
+      { name: 'project/:name', component: 'ProjectList' },
+    ]
+
+    currentUrl = 'http://web.app/company/about-us'
+    routerOptions = { prefix: 'company' }
+    activeRoute = RouterFinder({ routes, currentUrl, routerOptions }).findActiveRoute()
+  })
+
+  it('should set path to root path', function () {
+    expect(activeRoute.path).to.equal('/company/about-us')
+  })
+
+  it('should set component name', function () {
+    expect(activeRoute.component).to.equal('AboutUs')
+  })
+})

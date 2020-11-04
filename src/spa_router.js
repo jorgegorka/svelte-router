@@ -109,7 +109,12 @@ function routeIsActive(queryPath, includePath = false) {
 if (typeof window !== 'undefined') {
   // Avoid full page reload on local routes
   window.addEventListener('click', (event) => {
-    if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
+    const sitePrefix = routerOptions.prefix ? `/${routerOptions.prefix.toLowerCase()}` : ''
+    const targetHostNameInternal = event.target.pathname && event.target.hostname === window.location.hostname
+    const eventIsAnchor = event.target.localName === 'a'
+    const prefixMatchPath = sitePrefix.length > 1 ? event.target.pathname.startsWith(sitePrefix) : true
+
+    if (targetHostNameInternal && eventIsAnchor && prefixMatchPath) {
       event.preventDefault()
       let navigatePathname = event.target.pathname + event.target.search
 
