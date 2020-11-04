@@ -9,14 +9,14 @@ const NotFoundPage = '/404.html'
 
 function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
   const defaultLanguage = routerOptions.defaultLanguage
-  const urlParser = UrlParser(currentUrl)
+  const sitePrefix = routerOptions.prefix ? routerOptions.prefix.toLowerCase() : ''
+  const urlParser = parseCurrentUrl(currentUrl, sitePrefix)
   let redirectTo = ''
   let routeNamedParams = {}
   let staticParamMatch = false
-  const routePrefix = routerOptions.prefix || ''
 
   function findActiveRoute() {
-    let searchActiveRoute = searchActiveRoutes(routes, routePrefix, urlParser.pathNames, routerOptions.lang, convert)
+    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
 
     if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
@@ -24,6 +24,9 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
       }
     } else {
       searchActiveRoute.path = pathWithoutQueryParams(searchActiveRoute)
+      if (sitePrefix) {
+        searchActiveRoute.path = `/${sitePrefix}${searchActiveRoute.path}`
+      }
     }
 
     return searchActiveRoute
@@ -101,6 +104,15 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
   function nestedRoutesAndNoPath(route, pathNames) {
     return route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0
+  }
+
+  function parseCurrentUrl(currentUrl, sitePrefix) {
+    if (sitePrefix && sitePrefix.trim().length > 0) {
+      const noPrefixUrl = currentUrl.replace(sitePrefix + '/', '')
+      return UrlParser(noPrefixUrl)
+    } else {
+      return UrlParser(currentUrl)
+    }
   }
 
   function setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath }) {
