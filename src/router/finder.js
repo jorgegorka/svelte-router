@@ -13,9 +13,10 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
   let redirectTo = ''
   let routeNamedParams = {}
   let staticParamMatch = false
+  const routePrefix = routerOptions.prefix || ''
 
   function findActiveRoute() {
-    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
+    let searchActiveRoute = searchActiveRoutes(routes, routePrefix, urlParser.pathNames, routerOptions.lang, convert)
 
     if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {

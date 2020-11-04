@@ -15,8 +15,8 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.11.0",
-    "mocha": "^8.2.0",
+    "eslint": "^7.12.1",
+    "mocha": "^8.2.1",
     "mocha-jsdom": "^2.0.0",
     "svelte": "^3.29.4"
   },
@@ -24,7 +24,7 @@
     "url-params-parser": "^1.0.3"
   },
   "peerDependencies": {
-    "svelte": "^3.6.7"
+    "svelte": "^3.29.0"
   },
   "repository": {
     "type": "git",

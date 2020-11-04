@@ -110,7 +110,7 @@ describe('Router', function () {
         testRouter = SpaRouter(routes, pathName).setActiveRoute()
       })
 
-      it('should set path to root path black', function () {
+      it('should set path to root path', function () {
         expect(testRouter.path).to.equal('/')
       })
 
@@ -1796,5 +1796,30 @@ describe('admin routes example localised', function () {
 
   it('should render public route', function () {
     expect(localisedRoute('public/users/show/frank', 'es').path).to.equal('/publico/usuarios/mostrar/frank')
+  })
+})
+
+describe.only('admin routes example localised', function () {
+  beforeEach(function () {
+    const routes = [
+      {
+        name: '/',
+        component: 'Comp1',
+      },
+      { name: '/a', component: 'Comp2' },
+      { name: '/a/:id', component: 'Comp3' },
+      { name: '/a/:id/b', component: 'Comp4' },
+    ]
+
+    pathName = 'https://fake.web/a'
+    testRouter = SpaRouter(routes, pathName).setActiveRoute()
+  })
+
+  it('should set path to root path', function () {
+    expect(testRouter.path).to.equal('/')
+  })
+
+  it('should set component name', function () {
+    expect(testRouter.component).to.equal('Comp1')
   })
 })
