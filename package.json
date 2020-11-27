@@ -1,6 +1,6 @@
 {
   "name": "svelte-router-spa",
-  "version": "5.8.0",
+  "version": "5.8.1",
   "description": "A full featured router component for Svelte and your Single Page Applications.",
   "main": "src/index.js",
   "svelte": "src/index.js",
@@ -15,10 +15,10 @@
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^7.12.1",
+    "eslint": "^7.14.0",
     "mocha": "^8.2.1",
     "mocha-jsdom": "^2.0.0",
-    "svelte": "^3.29.4"
+    "svelte": "^3.30.0"
   },
   "dependencies": {
     "url-params-parser": "^1.0.3"

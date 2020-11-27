@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.8.1
+
+Improve handling of href links.
+
 ## 5.8.0
 
 Added prefix param to constrain routes.
