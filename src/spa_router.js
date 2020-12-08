@@ -132,7 +132,7 @@ if (typeof window !== 'undefined') {
 
   window.onpopstate = function (_event) {
     let navigatePathname = window.location.pathname + window.location.search + window.location.hash
-    console.log('here we are')
+
     navigateTo(navigatePathname, null, false)
   }
 }

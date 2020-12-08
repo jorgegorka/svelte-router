@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.8.3
+
+Remove console log.
+
 ## 5.8.2
 
 Fix issue with history when using browser's back button.
