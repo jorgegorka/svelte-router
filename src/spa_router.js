@@ -41,10 +41,10 @@ function SpaRouter(routes, currentUrl, options = {}) {
    * Redirect current route to another
    * @param destinationUrl
    **/
-  function navigateNow(destinationUrl) {
+  function navigateNow(destinationUrl, updateBrowserHistory) {
     if (typeof window !== 'undefined') {
       if (destinationUrl === NotFoundPage) {
-        routerCurrent.setActive({ path: NotFoundPage })
+        routerCurrent.setActive({ path: NotFoundPage }, updateBrowserHistory)
       } else {
         navigateTo(destinationUrl)
       }
@@ -53,13 +53,13 @@ function SpaRouter(routes, currentUrl, options = {}) {
     return destinationUrl
   }
 
-  function setActiveRoute() {
+  function setActiveRoute(updateBrowserHistory = true) {
     const currentRoute = findActiveRoute()
     if (currentRoute.redirectTo) {
-      return navigateNow(currentRoute.redirectTo)
+      return navigateNow(currentRoute.redirectTo, updateBrowserHistory)
     }
 
-    routerCurrent.setActive(currentRoute)
+    routerCurrent.setActive(currentRoute, updateBrowserHistory)
     activeRoute.set(currentRoute)
 
     return currentRoute
@@ -86,15 +86,16 @@ function localisedRoute(pathName, language) {
  * Updates the current active route and updates the browser pathname
  * @param pathName String
  * @param language String
+ * @param updateBrowserHistory Boolean
  **/
-function navigateTo(pathName, language = null) {
+function navigateTo(pathName, language = null, updateBrowserHistory = true) {
   pathName = removeSlash(pathName, 'lead')
 
   if (language) {
     routerOptions.langConvertTo = language
   }
 
-  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
+  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute(updateBrowserHistory)
 }
 
 /**
@@ -131,8 +132,8 @@ if (typeof window !== 'undefined') {
 
   window.onpopstate = function (_event) {
     let navigatePathname = window.location.pathname + window.location.search + window.location.hash
-
-    navigateTo(navigatePathname)
+    console.log('here we are')
+    navigateTo(navigatePathname, null, false)
   }
 }
 

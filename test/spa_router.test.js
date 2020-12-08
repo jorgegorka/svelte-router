@@ -22,6 +22,28 @@ function thisIsTrue() {
 }
 
 describe('Router', function () {
+  describe('When there are no routes defined and update browser history is false', function () {
+    beforeEach(function () {
+      testRouter = SpaRouter([], pathName).setActiveRoute(false)
+    })
+
+    it('should set the component', function () {
+      expect(testRouter.component).to.be.undefined
+    })
+
+    it('should set the route name to 404', function () {
+      expect(testRouter.name).to.be.undefined
+    })
+
+    it('should set the route path to 404', function () {
+      expect(testRouter.path).to.be.undefined
+    })
+
+    it('should not update history', function () {
+      expect(global.window.history.state).to.be.null
+    })
+  })
+
   describe('When there are no routes defined', function () {
     beforeEach(function () {
       testRouter = SpaRouter([], pathName).setActiveRoute()
@@ -1595,7 +1617,7 @@ describe('onlyIf', function () {
       ]
 
       pathName = 'http://web.app/admin'
-      SpaRouter(routes, pathName).setActiveRoute()
+      SpaRouter(routes, pathName).setActiveRoute(true)
     })
 
     it('should render admin', function () {

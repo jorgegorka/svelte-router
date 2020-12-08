@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.8.2
+
+Fix issue with history when using browser's back button.
+
 ## 5.8.1
 
 Improve handling of href links.

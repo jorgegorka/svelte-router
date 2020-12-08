@@ -6,9 +6,9 @@ function RouterCurrent(trackPage) {
   const trackPageview = trackPage || false
   let activeRoute = ''
 
-  function setActive(newRoute) {
+  function setActive(newRoute, updateBrowserHistory) {
     activeRoute = newRoute.path
-    pushActiveRoute(newRoute)
+    pushActiveRoute(newRoute, updateBrowserHistory)
   }
 
   function active() {
@@ -40,11 +40,14 @@ function RouterCurrent(trackPage) {
     }
   }
 
-  function pushActiveRoute(newRoute) {
+  function pushActiveRoute(newRoute, updateBrowserHistory) {
     if (typeof window !== 'undefined') {
       const pathAndSearch = pathWithQueryParams(newRoute)
 
-      window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
+      if (updateBrowserHistory) {
+        window.history.pushState({ page: pathAndSearch }, '', pathAndSearch)
+      }
+      // Moving back in history does not update browser history but does update tracking.
       if (trackPageview) {
         gaTracking(pathAndSearch)
       }
