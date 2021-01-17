@@ -1911,3 +1911,139 @@ describe('With site prefix', function () {
     })
   })
 })
+
+describe('With site prefix', function () {
+  const routes = [
+    {
+      name: '/',
+      component: 'StartView',
+    },
+    {
+      name: '/login',
+      layout: 'StartView',
+      component: 'Login',
+    },
+    {
+      name: '/main',
+      layout: 'MainLayout',
+      onlyIf: {
+        guard: () => true,
+        redirect: '/login',
+      },
+      nestedRoutes: [
+        {
+          name: 'dashboard',
+          component: 'Dashboard',
+        },
+        {
+          name: 'profile',
+          layout: 'RouterComponent',
+          component: 'UserProfile',
+          nestedRoutes: [
+            {
+              name: 'view',
+              component: 'UserProfile',
+            },
+            {
+              name: 'edit',
+              component: 'UserProfileEdit',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: '404',
+      path: '404',
+      component: 'View404',
+    },
+  ]
+
+  describe('main dashboard route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/main/dashboard'
+      activeRoute = SpaRouter(routes, currentUrl).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/main/dashboard')
+    })
+
+    it('should set the layout name', function () {
+      expect(activeRoute.layout).to.equal('MainLayout')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.childRoute.component).to.equal('Dashboard')
+    })
+  })
+
+  describe('profile route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/main/profile'
+      activeRoute = SpaRouter(routes, currentUrl).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/main/profile')
+    })
+
+    it('should set the layout name', function () {
+      expect(activeRoute.layout).to.equal('MainLayout')
+    })
+
+    it('should set layout name', function () {
+      expect(activeRoute.childRoute.layout).to.equal('RouterComponent')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.childRoute.component).to.equal('UserProfile')
+    })
+  })
+
+  describe('profile view route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/main/profile/view'
+      activeRoute = SpaRouter(routes, currentUrl).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/main/profile/view')
+    })
+
+    it('should set the layout name', function () {
+      expect(activeRoute.layout).to.equal('MainLayout')
+    })
+
+    it('should set layout name', function () {
+      expect(activeRoute.childRoute.layout).to.equal('RouterComponent')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.childRoute.childRoute.component).to.equal('UserProfile')
+    })
+  })
+
+  describe('profile edit route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/main/profile/edit'
+      activeRoute = SpaRouter(routes, currentUrl).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/main/profile/edit')
+    })
+
+    it('should set the layout name', function () {
+      expect(activeRoute.layout).to.equal('MainLayout')
+    })
+
+    it('should set the child layout name', function () {
+      expect(activeRoute.childRoute.layout).to.equal('RouterComponent')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.childRoute.childRoute.component).to.equal('UserProfileEdit')
+    })
+  })
+})
