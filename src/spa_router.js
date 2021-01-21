@@ -114,7 +114,7 @@ if (typeof window !== 'undefined') {
     if (event.metaKey || event.ctrlKey || event.shiftKey) return
 
     const sitePrefix = routerOptions.prefix ? `/${routerOptions.prefix.toLowerCase()}` : ''
-    const targetHostNameInternal = event.target.pathname && event.target.hostname === window.location.hostname
+    const targetHostNameInternal = event.target.pathname && event.target.host === window.location.host
     const prefixMatchPath = sitePrefix.length > 1 ? event.target.pathname.startsWith(sitePrefix) : true
 
     if (targetHostNameInternal && prefixMatchPath) {
