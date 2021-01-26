@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 5.8.4
+
+Use host instead of hostname to include port in url comparison.
+
 ## 5.8.3
 
 Remove console log.
