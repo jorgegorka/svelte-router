@@ -103,7 +103,7 @@ Import the routes into your main component (probably App.svelte)
   import { routes } from './routes'
 </script>
 
-<Router {routes} />
+<Router.default {routes} />
 ```
 
 That's all
