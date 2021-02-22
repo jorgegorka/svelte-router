@@ -1,4 +1,4 @@
-const writable = require('svelte/store').writable
+import { writable } from 'svelte/store'
 
 const router = writable({})
 
@@ -16,4 +16,4 @@ const activeRoute = {
   remove
 }
 
-module.exports = { activeRoute }
+export { activeRoute }

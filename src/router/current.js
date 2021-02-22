@@ -1,6 +1,6 @@
-const { UrlParser } = require('url-params-parser')
+import { UrlParser } from './url_parser'
 
-const { pathWithQueryParams, removeSlash } = require('../lib/utils')
+import { pathWithQueryParams, removeSlash } from '../lib/utils'
 
 function RouterCurrent(trackPage) {
   const trackPageview = trackPage || false
@@ -64,4 +64,4 @@ function RouterCurrent(trackPage) {
   return Object.freeze({ active, isActive, setActive })
 }
 
-module.exports = { RouterCurrent }
+export { RouterCurrent }

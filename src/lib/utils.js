@@ -257,7 +257,7 @@ function updateRoutePath(basePath, pathNames, route, language, convert = false) 
   }
 }
 
-module.exports = {
+export {
   anyEmptyNestedRoutes,
   compareRoutes,
   findLocalisedRoute,

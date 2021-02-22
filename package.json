@@ -2,7 +2,8 @@
   "name": "svelte-router-spa",
   "version": "5.8.4",
   "description": "A full featured router component for Svelte and your Single Page Applications.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
+  "module": "lib/esm/index.js",
   "svelte": "src/index.js",
   "scripts": {
     "build": "rollup -c",
@@ -14,10 +15,15 @@
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-json": "^4.1.0",
     "chai": "^4.2.0",
     "eslint": "^7.18.0",
     "mocha": "^8.2.1",
     "mocha-jsdom": "^2.0.0",
+    "rollup": "^2.39.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^7.1.0",
     "svelte": "^3.32.0"
   },
   "dependencies": {

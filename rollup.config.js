@@ -11,8 +11,8 @@ export default [
   },
 
   // tests
-  {
-    input: 'test/index.js',
-    plugins: [resolve(), commonjs(), svelte()]
-  }
+  // {
+  //   input: 'test/index.js',
+  //   plugins: [resolve(), commonjs(), svelte()]
+  // }
 ]

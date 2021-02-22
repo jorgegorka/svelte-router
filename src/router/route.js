@@ -1,4 +1,4 @@
-const { UrlParser } = require('url-params-parser')
+import { UrlParser } from './url_parser'
 
 function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
   function namedParams() {
@@ -23,4 +23,4 @@ function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, 
   return Object.freeze({ get, namedParams })
 }
 
-module.exports = { RouterRoute }
+export { RouterRoute }
