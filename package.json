@@ -6,6 +6,7 @@
   "module": "lib/esm/index.js",
   "svelte": "src/index.js",
   "unpkg": "lib/index.min.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -cw",
@@ -19,6 +20,7 @@
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
+    "@tsconfig/svelte": "^1.0.10",
     "chai": "^4.3.0",
     "eslint": "^7.20.0",
     "esm": "^3.2.25",
