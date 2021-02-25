@@ -1,6 +1,6 @@
 <script>
-  export let currentRoute = {}
-  export let params = {}
+  export let currentRoute = {};
+  export let params = {};
 </script>
 
 {#if currentRoute.layout}

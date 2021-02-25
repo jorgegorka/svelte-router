@@ -1,13 +1,13 @@
-import { UrlParser } from './url_parser'
+import { UrlParser } from './url_parser';
 
 function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
-  function namedParams() {
-    const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams
+  const namedParams = () => {
+    const parsedParams = UrlParser(`https://fake.com${urlParser.pathname}`, namedPath).namedParams;
 
-    return { ...routeNamedParams, ...parsedParams }
-  }
+    return { ...routeNamedParams, ...parsedParams };
+  };
 
-  function get() {
+  const get = () => {
     return {
       name: path,
       component: routeInfo.component,
@@ -16,11 +16,11 @@ function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, 
       queryParams: urlParser.queryParams,
       namedParams: namedParams(),
       path,
-      language
-    }
-  }
+      language,
+    };
+  };
 
-  return Object.freeze({ get, namedParams })
+  return Object.freeze({ get, namedParams });
 }
 
-export { RouterRoute }
+export { RouterRoute };

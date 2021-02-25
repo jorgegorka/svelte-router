@@ -1,22 +1,22 @@
-import { RouterGuard } from './guard'
+import { RouterGuard } from './guard';
 
-function RouterRedirect(route, currentPath) {
-  const guard = RouterGuard(route.onlyIf)
+const RouterRedirect = (route, currentPath) => {
+  const guard = RouterGuard(route.onlyIf);
 
-  function path() {
-    let redirectTo = currentPath
+  const path = () => {
+    let redirectTo = currentPath;
     if (route.redirectTo && route.redirectTo.length > 0) {
-      redirectTo = route.redirectTo
+      redirectTo = route.redirectTo;
     }
 
     if (guard.valid() && guard.redirect()) {
-      redirectTo = guard.redirectPath()
+      redirectTo = guard.redirectPath();
     }
 
-    return redirectTo
-  }
+    return redirectTo;
+  };
 
-  return Object.freeze({ path })
-}
+  return Object.freeze({ path });
+};
 
-export { RouterRedirect }
+export { RouterRedirect };

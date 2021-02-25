@@ -1,19 +1,19 @@
-import { writable } from 'svelte/store'
+import { writable } from 'svelte/store';
 
-const router = writable({})
+const router = writable({});
 
-function set(route) {
-  router.set(route)
-}
+const set = (route) => {
+  router.set(route);
+};
 
-function remove() {
-  router.set({})
-}
+const remove = () => {
+  router.set({});
+};
 
 const activeRoute = {
   subscribe: router.subscribe,
   set,
-  remove
-}
+  remove,
+};
 
-export { activeRoute }
+export { activeRoute };
