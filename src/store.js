@@ -1,17 +1,13 @@
 import { writable } from 'svelte/store';
 
-const router = writable({});
-
-const set = (route) => {
-  router.set(route);
-};
+const { set, subscribe } = writable({});
 
 const remove = () => {
-  router.set({});
+  set({});
 };
 
 const activeRoute = {
-  subscribe: router.subscribe,
+  subscribe,
   set,
   remove,
 };

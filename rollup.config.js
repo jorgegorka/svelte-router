@@ -10,7 +10,8 @@ export default [
     input: 'src/index.js',
     output: [
       { file: pkg.module, format: 'es' },
-      { file: pkg.main, format: 'umd', name: 'SvelteRouterSpa' },
+      { file: pkg.browser, format: 'umd', name: 'SvelteRouterSpa' },
+      { file: pkg.main, format: 'cjs' },
       { file: pkg.unpkg, format: 'umd', name: 'SvelteRouterSpa', plugins: [terser()] },
     ],
     plugins: [
