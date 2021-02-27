@@ -1,18 +1,36 @@
-import type { SvelteComponentTyped } from 'svelte/internal';
+import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
+
+type Language = Record<string, string> | string;
+
+export type Route = {
+  name: string;
+  component?: SvelteComponent;
+  layout?: SvelteComponent;
+  nestedRoutes?: Route[];
+  redirectTo?: string;
+  onlyIf?: {
+    guard: ReturnType<boolean>;
+    redirect: string;
+  };
+  lang?: Language;
+};
+
+export type RouterOptions = Partial<{
+  prefix: string;
+  gaPageviews: boolean;
+  lang: Language;
+  defaultLanguage: string;
+}>;
 
 export interface RouterProps {
-  routes: any[];
-  options: Partial<{
-    gaPageviews: string;
-    lang: string;
-    defaultLanguage: string;
-  }>;
+  routes: Route[];
+  options: RouterOptions;
 }
 
 export interface RouterEvents {}
 
 export interface RouterSlots {}
 
-declare class Router extends SvelteComponentTyped<RouterProps, RouterEvents, RouterSlots> {}
+declare class RouterComponent extends SvelteComponentTyped<RouterProps, RouterEvents, RouterSlots> {}
 
-export default Router;
+export default RouterComponent;

@@ -1,9 +1,13 @@
 import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
 
-type CurrentRoute = {
-  layout?: SvelteComponent;
-  component?: SvelteComponent;
-  childRoute?: CurrentRoute;
+export type CurrentRoute = {
+  name: string;
+  component: SvelteComponent;
+  layout: SvelteComponent;
+  queryParams: Record<string, any>;
+  namedParams: Record<string, any>;
+  childRoute: CurrentRoute;
+  language: string;
 };
 
 export interface RouteProps {
@@ -15,6 +19,6 @@ export interface RouteEvents {}
 
 export interface RouteSlots {}
 
-declare class Route extends SvelteComponentTyped<RouteProps, RouteEvents, RouteSlots> {}
+declare class RouteComponent extends SvelteComponentTyped<RouteProps, RouteEvents, RouteSlots> {}
 
-export default Route;
+export default RouteComponent;
