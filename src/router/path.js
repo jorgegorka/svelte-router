@@ -43,7 +43,7 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
 
     const namedParams = getNamedParams(localisedPathName())
     if (namedParams && namedParams.length > 0) {
-      namedParams.forEach(function() {
+      namedParams.forEach(function () {
         if (pathNames.length > 0) {
           routePathValue += `/${pathNames.shift()}`
         }
@@ -70,7 +70,7 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
     namedPath,
     pathNames,
     routeLanguage,
-    routePath
+    routePath,
   })
 }
 

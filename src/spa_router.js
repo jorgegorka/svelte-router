@@ -34,17 +34,17 @@ function SpaRouter(routes, currentUrl, options = {}) {
       convert = true
     }
 
-    return RouterFinder(routes, currentUrl, routerOptions.lang, convert).findActiveRoute()
+    return RouterFinder({ routes, currentUrl, routerOptions, convert }).findActiveRoute()
   }
 
   /**
    * Redirect current route to another
    * @param destinationUrl
    **/
-  function navigateNow(destinationUrl) {
+  function navigateNow(destinationUrl, updateBrowserHistory) {
     if (typeof window !== 'undefined') {
       if (destinationUrl === NotFoundPage) {
-        routerCurrent.setActive({ path: NotFoundPage })
+        routerCurrent.setActive({ path: NotFoundPage }, updateBrowserHistory)
       } else {
         navigateTo(destinationUrl)
       }
@@ -53,13 +53,13 @@ function SpaRouter(routes, currentUrl, options = {}) {
     return destinationUrl
   }
 
-  function setActiveRoute() {
+  function setActiveRoute(updateBrowserHistory = true) {
     const currentRoute = findActiveRoute()
     if (currentRoute.redirectTo) {
-      return navigateNow(currentRoute.redirectTo)
+      return navigateNow(currentRoute.redirectTo, updateBrowserHistory)
     }
 
-    routerCurrent.setActive(currentRoute)
+    routerCurrent.setActive(currentRoute, updateBrowserHistory)
     activeRoute.set(currentRoute)
 
     return currentRoute
@@ -67,7 +67,7 @@ function SpaRouter(routes, currentUrl, options = {}) {
 
   return Object.freeze({
     setActiveRoute,
-    findActiveRoute
+    findActiveRoute,
   })
 }
 
@@ -86,15 +86,16 @@ function localisedRoute(pathName, language) {
  * Updates the current active route and updates the browser pathname
  * @param pathName String
  * @param language String
+ * @param updateBrowserHistory Boolean
  **/
-function navigateTo(pathName, language = null) {
+function navigateTo(pathName, language = null, updateBrowserHistory = true) {
   pathName = removeSlash(pathName, 'lead')
 
   if (language) {
     routerOptions.langConvertTo = language
   }
 
-  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute()
+  return SpaRouter(userDefinedRoutes, 'http://fake.com/' + pathName, routerOptions).setActiveRoute(updateBrowserHistory)
 }
 
 /**
@@ -108,16 +109,31 @@ function routeIsActive(queryPath, includePath = false) {
 
 if (typeof window !== 'undefined') {
   // Avoid full page reload on local routes
-  window.addEventListener('click', event => {
-    if (event.target.pathname && event.target.hostname === window.location.hostname && event.target.localName === 'a') {
+  window.addEventListener('click', (event) => {
+    if (event.target.localName.toLowerCase() !== 'a') return
+    if (event.metaKey || event.ctrlKey || event.shiftKey) return
+
+    const sitePrefix = routerOptions.prefix ? `/${routerOptions.prefix.toLowerCase()}` : ''
+    const targetHostNameInternal = event.target.pathname && event.target.host === window.location.host
+    const prefixMatchPath = sitePrefix.length > 1 ? event.target.pathname.startsWith(sitePrefix) : true
+
+    if (targetHostNameInternal && prefixMatchPath) {
       event.preventDefault()
-      // event.stopPropagation()
-      navigateTo(event.target.pathname + event.target.search)
+      let navigatePathname = event.target.pathname + event.target.search
+
+      const destinationUrl = navigatePathname + event.target.search + event.target.hash
+      if (event.target.target === '_blank') {
+        window.open(destinationUrl, 'newTab')
+      } else {
+        navigateTo(destinationUrl)
+      }
     }
   })
 
-  window.onpopstate = function(_event) {
-    navigateTo(window.location.pathname + window.location.search)
+  window.onpopstate = function (_event) {
+    let navigatePathname = window.location.pathname + window.location.search + window.location.hash
+
+    navigateTo(navigatePathname, null, false)
   }
 }
 

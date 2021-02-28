@@ -3,24 +3,30 @@ const { UrlParser } = require('url-params-parser')
 const { RouterRedirect } = require('./redirect')
 const { RouterRoute } = require('./route')
 const { RouterPath } = require('./path')
-const { anyEmptyNestedRoutes, pathWithoutQueryParams } = require('../lib/utils')
+const { anyEmptyNestedRoutes, pathWithoutQueryParams, startsWithNamedParam } = require('../lib/utils')
 
 const NotFoundPage = '/404.html'
 
-function RouterFinder(routes, currentUrl, language, convert) {
+function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
+  const defaultLanguage = routerOptions.defaultLanguage
+  const sitePrefix = routerOptions.prefix ? routerOptions.prefix.toLowerCase() : ''
+  const urlParser = parseCurrentUrl(currentUrl, sitePrefix)
   let redirectTo = ''
   let routeNamedParams = {}
-  const urlParser = UrlParser(currentUrl)
+  let staticParamMatch = false
 
   function findActiveRoute() {
-    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, language, convert)
+    let searchActiveRoute = searchActiveRoutes(routes, '', urlParser.pathNames, routerOptions.lang, convert)
 
     if (!searchActiveRoute || !Object.keys(searchActiveRoute).length || anyEmptyNestedRoutes(searchActiveRoute)) {
       if (typeof window !== 'undefined') {
-        searchActiveRoute = { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
+        searchActiveRoute = routeNotFound(routerOptions.lang)
       }
     } else {
       searchActiveRoute.path = pathWithoutQueryParams(searchActiveRoute)
+      if (sitePrefix) {
+        searchActiveRoute.path = `/${sitePrefix}${searchActiveRoute.path}`
+      }
     }
 
     return searchActiveRoute
@@ -36,12 +42,12 @@ function RouterFinder(routes, currentUrl, language, convert) {
     let currentRoute = {}
     let basePathName = pathNames.shift().toLowerCase()
     const routerPath = RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage })
+    staticParamMatch = false
 
-    routes.forEach(function(route) {
+    routes.forEach(function (route) {
       routerPath.updatedPath(route)
-      if (routerPath.basePathSameAsLocalised()) {
+      if (matchRoute(routerPath, route.name)) {
         let routePath = routerPath.routePath()
-
         redirectTo = RouterRedirect(route, redirectTo).path()
 
         if (currentRoute.name !== routePath) {
@@ -50,7 +56,7 @@ function RouterFinder(routes, currentUrl, language, convert) {
             routePath,
             routeLanguage: routerPath.routeLanguage(),
             urlParser,
-            namedPath: routerPath.namedPath()
+            namedPath: routerPath.namedPath(),
           })
         }
 
@@ -87,8 +93,26 @@ function RouterFinder(routes, currentUrl, language, convert) {
     return currentRoute
   }
 
+  function matchRoute(routerPath, routeName) {
+    const basePathSameAsLocalised = routerPath.basePathSameAsLocalised()
+    if (basePathSameAsLocalised) {
+      staticParamMatch = true
+    }
+
+    return basePathSameAsLocalised || (!staticParamMatch && startsWithNamedParam(routeName))
+  }
+
   function nestedRoutesAndNoPath(route, pathNames) {
     return route.nestedRoutes && route.nestedRoutes.length > 0 && pathNames.length === 0
+  }
+
+  function parseCurrentUrl(currentUrl, sitePrefix) {
+    if (sitePrefix && sitePrefix.trim().length > 0) {
+      const noPrefixUrl = currentUrl.replace(sitePrefix + '/', '')
+      return UrlParser(noPrefixUrl)
+    } else {
+      return UrlParser(currentUrl)
+    }
   }
 
   function setCurrentRoute({ route, routePath, routeLanguage, urlParser, namedPath }) {
@@ -98,11 +122,21 @@ function RouterFinder(routes, currentUrl, language, convert) {
       path: routePath,
       routeNamedParams,
       namedPath,
-      language: routeLanguage
+      language: routeLanguage || defaultLanguage,
     })
     routeNamedParams = routerRoute.namedParams()
 
     return routerRoute.get()
+  }
+
+  function routeNotFound(customLanguage) {
+    const custom404Page = routes.find((route) => route.name == '404')
+    const language = customLanguage || defaultLanguage || ''
+    if (custom404Page) {
+      return { ...custom404Page, language, path: '404' }
+    } else {
+      return { name: '404', component: '', path: '404', redirectTo: NotFoundPage }
+    }
   }
 
   return Object.freeze({ findActiveRoute })

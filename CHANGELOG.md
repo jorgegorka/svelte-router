@@ -1,5 +1,53 @@
 # Svelte Router changelog
 
+## 5.8.4
+
+Use host instead of hostname to include port in url comparison.
+
+## 5.8.3
+
+Remove console log.
+
+## 5.8.2
+
+Fix issue with history when using browser's back button.
+
+## 5.8.1
+
+Improve handling of href links.
+
+## 5.8.0
+
+Added prefix param to constrain routes.
+
+## 5.7.4
+
+Fix bug with anchor tags.
+
+## 5.7.3
+
+Fix assignment to constat variable error.
+
+## 5.7.2
+
+Fix bug that prevented internal links to be open in a new tab.
+
+## 5.7.1
+
+Fix bug that removed anchor tags from url.
+
+## 5.7.0
+
+Support named params at the beginning of the path name.
+
+## 5.6.0
+
+Add custom 404 page.
+
+## 5.5.0
+
+Add a default language.
+
 ## 5.4.4
 
 Fix bug that was duplicating query params on page reload.
@@ -52,8 +100,8 @@ const adminRoutes = [
   {
     name: 'employees',
     layout: EmployeesPage,
-    lang: { es: 'empleados', fr: 'employes', de: 'angestellte', it: 'impiegati' }
-  }
+    lang: { es: 'empleados', fr: 'employes', de: 'angestellte', it: 'impiegati' },
+  },
 ]
 ```
 
@@ -73,11 +121,11 @@ const adminRoutes = [
         component: DashboardIndex,
         onlyIf: {
           guard: isLoggedIn,
-          redirect: '/login'
-        }
-      }
-    ]
-  }
+          redirect: '/login',
+        },
+      },
+    ],
+  },
 ]
 ```
 

@@ -20,6 +20,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 - Named params.
 - Localisation.
 - Guards to protect urls. Public and private urls.
+- Route prefix.
 - Track pageviews in Google Analytics (optional).
 - Use standard `<a href="/about-us">About</a>` elements to navigate between pages (or use [`<Navigate />`](#navigate) for bonus features).
 
@@ -70,7 +71,7 @@ function userIsAdmin() {
 const routes = [
   {
     name: '/',
-    component: PublicLayout
+    component: PublicLayout,
   },
   { name: 'login', component: Login, layout: PublicLayout },
   {
@@ -84,11 +85,11 @@ const routes = [
         component: '',
         nestedRoutes: [
           { name: 'index', component: EmployeesIndex },
-          { name: 'show/:id', component: EmployeesShow }
-        ]
-      }
-    ]
-  }
+          { name: 'show/:id', component: EmployeesShow },
+        ],
+      },
+    ],
+  },
 ]
 
 export { routes }
@@ -138,6 +139,7 @@ Filename: _admin_layout.svelte_
   import { Route } from "svelte-router-spa";
 
   export let currentRoute;
+  const params = {}
 </script>
 
 <div>
@@ -158,7 +160,7 @@ Each route is an object that may have the following properties:
 
 ```javascript
 
-function userIdAdmin() {
+function userIsAdmin() {
   // return true or false
 }
 
@@ -206,7 +208,7 @@ const routes = [
   {
     name: '/',
     component: PublicIndex,
-    layout: PublicLayout
+    layout: PublicLayout,
   },
   { name: 'login', component: Login, layout: PublicLayout },
   {
@@ -223,13 +225,13 @@ const routes = [
             component: EmployeesShowLayout,
             nestedRoutes: [
               { name: 'index', component: EmployeesShow },
-              { name: 'list', component: EmployeesShowList }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+              { name: 'list', component: EmployeesShowList },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -243,6 +245,46 @@ The routes that this file will parse successfully are:
 /admin/employees/show
 /admin/employees/show/{id}
 /admin/employees/show/{id}/list
+```
+
+### Using named params as first part of path name (not recommended)
+
+Svelte Router is usually smart enough to find the right route for you. It means that you don't need to care about the order in which you write your routes. There is an exception to this rule: If you define a named param as the very first part of the path like: /:user-name/edit
+
+In this specific case order matters and you should add that route **after** all other routes.
+
+This is not recommended and you should always start your routes with a static path name. You can add as many named params as you need after the first static name.
+
+```javascript
+
+function userIsAdmin() {
+  // return true or false
+}
+
+
+{
+  name: 'about-us',
+  component: About,
+  lang: { es: 'acerca-de' },
+  nestedRoutes: [
+    {
+      name: 'our-values', component: CompanyValues, lang: { es: 'nuestros-valores' }
+    }
+  ]
+},
+{
+  name: '/',
+  component: HomeComponent
+},
+{
+  name: '/project/:name',
+  component: ProjectComponent
+},
+{
+  name: '/:user-name/edit',
+  component: EditUserComponent
+}
+
 ```
 
 ## API
@@ -268,11 +310,13 @@ The simplest approach (although not required) is to have an App.svelte file like
 
 The layout and/or the component that matches the active route will be rendered inside _Router_.
 
-Options is an object that supports two properties:
+Options is an object that supports three properties:
 
 _gaPageviews_ that will record route changes as pageviews in Google Analytics. It's disabled by default.
 
 _lang_ a string that sets the language that the router will use to match the active route. Check [Localisation](#localisation)
+
+_defaultLanguage_ If no language is set the active route will return this value as the active language.
 
 ### Route
 
@@ -304,7 +348,7 @@ Example:
   <TopHeader />
   <section class="section">
     <Route {currentRoute} {params} />
-    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams)
+    <p>Route params are: {currentRoute.namedParams} and {currentRoute.queryParams}</p>
   </section>
   <FooterContent />
 </div>
@@ -337,11 +381,11 @@ const routes = [
         component: 'AboutUsLayout',
         nestedRoutes: [
           { name: 'company', component: CompanyPage },
-          { name: 'people', component: PeoplePage }
-        ]
-      }
-    ]
-  }
+          { name: 'people', component: PeoplePage },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -402,7 +446,7 @@ Example:
 
 <div class="app">
   <h1>My content</h1>
-  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate>
+  <p>Now I want to generate a <Navigate to="admin/employees">link to /admin/employees</Navigate></p>
 </div>
 ```
 
@@ -503,7 +547,37 @@ localisedRoute('setup', 'it') // Will return the string "/configurazione"
 
 ### Not Found - 404
 
-Svelte Router redirects to a 404.html page if a route is not found. You need to host and upload that page to your site. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages so chances are you already have one.
+#### Default behaviour
+
+Svelte Router redirects to a 404.html page if a route is not found. Most hosting providers support this configuration and will serve a 404.html page automatically for not found pages. Just add a 404.html page in the same directory where your index.html file is.
+
+#### Custom behaviour
+
+If you define a 404 route it will be rendered instead of the default behaviour.
+
+```javascript
+  // Example of a custom 404 route
+  {
+    name: '404',
+    path: '404',
+    component: MyCustomNotFoundcomponent
+  }
+```
+
+## Route prefix
+
+You can easily constrain all your routes to a specific path like _/blog_
+
+```javascript
+<Router { routes } options={ {prefix: 'blog'} } />
+```
+
+With this option you don't have to define all your routes starting with _blog_ they will be prefixed automatically.
+
+Using prefix has two advantages:
+
+- You don't need to create a top level route in your routes file and then add every route as a nested route.
+- Routes that don't start with the prefix will not be returned as 404 since they are out of the scope of the prefixed routes so you can navigate to them.
 
 ## Google Analytics
 
@@ -529,7 +603,7 @@ Let's see some examples using the following routes.
 const routes = [
   {
     name: '/',
-    component: PublicIndex
+    component: PublicIndex,
   },
   { name: 'login', component: Login, lang: { es: 'iniciar-sesion' } },
   { name: 'signup', component: SignUp, lang: { es: 'registrarse' } },
@@ -550,19 +624,19 @@ const routes = [
             nestedRoutes: [
               {
                 name: 'index',
-                component: ShowEmployee
+                component: ShowEmployee,
               },
               {
                 name: 'calendar/:month',
                 component: CalendarEmployee,
-                lang: { es: 'calendario/:month', de: 'kalender/:month' }
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+                lang: { es: 'calendario/:month', de: 'kalender/:month' },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ]
 ```
 
@@ -645,18 +719,30 @@ navigateTo('setup') // Will redirect to /setup
 navigateTo('setup', 'es') // Will redirect to /configuracion
 ```
 
-There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you just want the translation and not navigating to the route.
+There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you want the translation but not navigating to the route.
 
-Inside your application you just need to define your routes using the default language (_route name_) and then when you specify a language, the route will be translated to the specified language automatically.
+The router options accept a property called _defaultLanguage_ This value will be returned by the activeRoute object if there is no language selected.
 
 ## Credits
 
 Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es) - Twitter: [@jorgealvarez](https://twitter.com/jorgealvarez)
 
-I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/issues). Your feedback is the best way of improving.
+I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/discussions). Your feedback is the best way of improving.
 
 ### Contributors
 
 [Mark Kopenga](https://github.com/mjarkk)
 
 [Fidel Ramos](https://github.com/haplo)
+
+[Steve Phillips](https://github.com/elimisteve)
+
+[David McCrea](https://github.com/davemccrea)
+
+[Pascal Clanget](https://github.com/Gh05d)
+
+[A J](https://github.com/aj-nk)
+
+[David Kiss](https://github.com/xdavidkissx)
+
+[Common Creator](https://github.com/CommonCreator)

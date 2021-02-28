@@ -6,7 +6,7 @@
   export let styles = ''
   export let lang = null
 
-  onMount(function() {
+  onMount(function () {
     if (lang) {
       const route = localisedRoute(to, lang)
       if (route) {
@@ -16,6 +16,7 @@
   })
 
   function navigate(event) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey) return
     event.preventDefault()
     event.stopPropagation()
     navigateTo(to)
