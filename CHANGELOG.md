@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 6.0.0
+
+Use esm modules.
+
 ## 5.8.4
 
 Use host instead of hostname to include port in url comparison.
