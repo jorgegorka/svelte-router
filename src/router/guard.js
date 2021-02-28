@@ -1,24 +1,22 @@
-function RouterGuard(onlyIf) {
-  const guardInfo = onlyIf
+export const RouterGuard = (onlyIf) => {
+  const guardInfo = onlyIf;
 
-  function valid() {
-    return guardInfo && guardInfo.guard && typeof guardInfo.guard === 'function'
-  }
+  const valid = () => {
+    return guardInfo && guardInfo.guard && typeof guardInfo.guard === 'function';
+  };
 
-  function redirect() {
-    return !guardInfo.guard()
-  }
+  const redirect = () => {
+    return !guardInfo.guard();
+  };
 
-  function redirectPath() {
-    let destinationUrl = '/'
+  const redirectPath = () => {
+    let destinationUrl = '/';
     if (guardInfo.redirect && guardInfo.redirect.length > 0) {
-      destinationUrl = guardInfo.redirect
+      destinationUrl = guardInfo.redirect;
     }
 
-    return destinationUrl
-  }
+    return destinationUrl;
+  };
 
-  return Object.freeze({ valid, redirect, redirectPath })
-}
-
-module.exports = { RouterGuard }
+  return Object.freeze({ valid, redirect, redirectPath });
+};

@@ -2,23 +2,36 @@
   "name": "svelte-router-spa",
   "version": "5.8.4",
   "description": "A full featured router component for Svelte and your Single Page Applications.",
-  "main": "src/index.js",
+  "main": "lib/cjs/index.js",
+  "browser": "lib/index.js",
+  "module": "lib/esm/index.js",
   "svelte": "src/index.js",
+  "unpkg": "lib/index.min.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -cw",
     "prepublishOnly": "npm test",
     "testWatch": "mocha --reporter min --watch --recursive --watch-files ./",
-    "test": "mocha"
+    "test": "mocha -r esm"
   },
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.2.0",
-    "eslint": "^7.18.0",
-    "mocha": "^8.2.1",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.2.0",
+    "@tsconfig/svelte": "^1.0.10",
+    "chai": "^4.3.0",
+    "eslint": "^7.20.0",
+    "esm": "^3.2.25",
+    "mocha": "^8.3.0",
     "mocha-jsdom": "^2.0.0",
-    "svelte": "^3.32.0"
+    "rollup": "^2.39.1",
+    "rollup-plugin-svelte": "^7.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "svelte": "^3.32.3",
+    "svelte-preprocess": "^4.6.9"
   },
   "dependencies": {
     "url-params-parser": "^1.0.3"
