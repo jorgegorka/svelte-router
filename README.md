@@ -725,7 +725,7 @@ The router options accept a property called _defaultLanguage_ This value will be
 
 ## Credits
 
-Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es) - Twitter: [@jorgealvarez](https://twitter.com/jorgealvarez)
+Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es)
 
 I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/discussions). Your feedback is the best way of improving.
 
@@ -746,3 +746,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [David Kiss](https://github.com/xdavidkissx)
 
 [Common Creator](https://github.com/CommonCreator)
+
+[SianLoong](https://github.com/si3nloong)
