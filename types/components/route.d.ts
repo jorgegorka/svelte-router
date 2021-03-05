@@ -3,11 +3,11 @@ import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
 export type CurrentRoute = {
   name: string;
   component: SvelteComponent;
-  layout: SvelteComponent;
-  queryParams: Record<string, any>;
-  namedParams: Record<string, any>;
-  childRoute: CurrentRoute;
-  language: string;
+  layout?: SvelteComponent;
+  queryParams?: Record<string, any>;
+  namedParams?: Record<string, any>;
+  childRoute?: CurrentRoute;
+  language?: string;
 };
 
 export interface RouteProps {
