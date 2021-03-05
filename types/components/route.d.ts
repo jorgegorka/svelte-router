@@ -1,18 +1,23 @@
-import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
+import { SvelteComponent } from 'svelte';
+import type { SvelteComponentTyped } from 'svelte/internal';
 
-export type CurrentRoute = {
+type CurrentRouteProp = {
   name: string;
-  component: SvelteComponent;
-  layout: SvelteComponent;
-  queryParams: Record<string, any>;
-  namedParams: Record<string, any>;
+  path: string;
+  hash: string;
+  component?: string | typeof SvelteComponent;
+  layout?: string | typeof SvelteComponent;
+  queryParams: Record<string, string>;
+  namedParams: Record<string, string>;
   childRoute: CurrentRoute;
-  language: string;
+  language?: string;
 };
 
+export type CurrentRoute = Omit<CurrentRouteProp, 'childRoute'>;
+
 export interface RouteProps {
-  currentRoute: CurrentRoute;
-  params?: Record<string, any>;
+  currentRoute: CurrentRouteProp;
+  params?: Record<string, string>;
 }
 
 export interface RouteEvents {}
