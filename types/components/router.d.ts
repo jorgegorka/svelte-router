@@ -9,7 +9,7 @@ export type Route = {
   nestedRoutes?: Route[];
   redirectTo?: string;
   onlyIf?: {
-    guard: ReturnType<boolean>;
+    guard: (...args: any) => boolean;
     redirect: string;
   };
   lang?: Language;
