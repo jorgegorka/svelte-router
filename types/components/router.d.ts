@@ -1,11 +1,11 @@
-import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
+import type { SvelteComponent, SvelteComponentDev, SvelteComponentTyped } from 'svelte/internal';
 
 type Language = Record<string, string> | string;
 
 export type Route = {
   name: string;
-  component?: SvelteComponent;
-  layout?: SvelteComponent;
+  component?: typeof SvelteComponentDev | typeof SvelteComponent;
+  layout?: typeof SvelteComponentDev | typeof SvelteComponent;
   nestedRoutes?: Route[];
   redirectTo?: string;
   onlyIf?: {
@@ -24,13 +24,13 @@ export type RouterOptions = Partial<{
 
 export interface RouterProps {
   routes: Route[];
-  options: RouterOptions;
+  options?: RouterOptions;
 }
 
-export interface RouterEvents {}
+export interface RouterEvents { }
 
-export interface RouterSlots {}
+export interface RouterSlots { }
 
-declare class RouterComponent extends SvelteComponentTyped<RouterProps, RouterEvents, RouterSlots> {}
+declare class RouterComponent extends SvelteComponentTyped<RouterProps, RouterEvents, RouterSlots> { }
 
 export default RouterComponent;
