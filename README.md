@@ -12,6 +12,27 @@ With Svelte Router SPA you have all the features you need to create modern web a
 
 It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
 
+* [Features](#features)
+* [Install](#install)
+* [Usage](#usage)
+  * [Layouts and route info](#layouts-and-route-info)
+  * [Anatomy of a route](#anatomy-of-a-route)
+  * [Using named params as first part of path name (not recommended)](#using-named-params-as-first-part-of-path-name-not-recommended)
+* [Route prefix](#route-prefix)
+* [Localisation](#localisation)
+  * [Rendering a page in different languages](#rendering-a-page-in-different-languages)
+* [Google Analytics](#google-analytics) 
+* [Not Found - 404](#not-found---404)
+* [API](#api)
+  * [Router](#router)
+  * [Route](#route)
+  * [currentRoute](#currentroute)
+  * [Navigate](#navigate)
+  * [navigateTo](#navigateto)
+  * [routeIsActive](#routeisactive)
+  * [localisedRoute](#localisedroute)
+* [Credits](#credits)  
+
 ## Features
 
 - Define your routes in a single interface
