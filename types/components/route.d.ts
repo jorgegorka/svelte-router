@@ -1,13 +1,16 @@
 import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
 
+export type AsyncSvelteComponent = () => Promise<{ default: typeof SvelteComponent }>;
+
 export type CurrentRoute = {
   name: string;
-  component: SvelteComponent;
-  layout: SvelteComponent;
-  queryParams: Record<string, any>;
-  namedParams: Record<string, any>;
-  childRoute: CurrentRoute;
-  language: string;
+  component?: SvelteComponent;
+  asyncComponent?: AsyncSvelteComponent;
+  layout?: SvelteComponent;
+  queryParams?: Record<string, any>;
+  namedParams?: Record<string, any>;
+  childRoute?: CurrentRoute;
+  language?: string;
 };
 
 export interface RouteProps {
