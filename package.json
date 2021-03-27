@@ -18,7 +18,7 @@
   "author": "Jorge Alvarez <jorge@alvareznavarro.es>",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.0",
     "@tsconfig/svelte": "^1.0.10",

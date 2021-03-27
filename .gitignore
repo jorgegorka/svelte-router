@@ -1,5 +1,6 @@
 .DS_Store
 .idea
 .vscode
+**/*.swp
 node_modules
 yarn.lock
