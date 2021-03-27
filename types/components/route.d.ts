@@ -5,8 +5,8 @@ type CurrentRouteProp = {
   name: string;
   path: string;
   hash: string;
-  component?: string | typeof SvelteComponent;
-  layout?: string | typeof SvelteComponent;
+  component?: typeof SvelteComponent;
+  layout?: typeof SvelteComponent;
   queryParams: Record<string, string>;
   namedParams: Record<string, string>;
   childRoute: CurrentRoute;

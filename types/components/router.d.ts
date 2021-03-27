@@ -10,7 +10,7 @@ export type Route = {
   nestedRoutes?: Route[];
   redirectTo?: string;
   onlyIf?: {
-    guard: () => boolean | Promise<boolean>;
+    guard: (...args: any) => boolean | Promise<boolean>;
     redirect: string;
   };
   lang?: Language;
@@ -25,7 +25,7 @@ export type RouterOptions = Partial<{
 
 export interface RouterProps {
   routes: Route[];
-  options: RouterOptions;
+  options?: RouterOptions;
 }
 
 export interface RouterEvents {}
