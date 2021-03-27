@@ -1,5 +1,10 @@
 # Svelte Router changelog
 
+## 6.0.1
+
+Update type definitions.
+Upgrade packages.
+
 ## 6.0.0
 
 Use esm modules.
