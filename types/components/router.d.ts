@@ -1,15 +1,16 @@
-import type { SvelteComponent, SvelteComponentTyped } from 'svelte/internal';
+import { SvelteComponent } from 'svelte';
+import type { SvelteComponentTyped } from 'svelte/internal';
 
 type Language = Record<string, string> | string;
 
 export type Route = {
   name: string;
-  component?: SvelteComponent;
-  layout?: SvelteComponent;
+  component?: typeof SvelteComponent;
+  layout?: typeof SvelteComponent;
   nestedRoutes?: Route[];
   redirectTo?: string;
   onlyIf?: {
-    guard: ReturnType<boolean>;
+    guard: (...args: any) => boolean | Promise<boolean>;
     redirect: string;
   };
   lang?: Language;
@@ -24,7 +25,7 @@ export type RouterOptions = Partial<{
 
 export interface RouterProps {
   routes: Route[];
-  options: RouterOptions;
+  options?: RouterOptions;
 }
 
 export interface RouterEvents {}
