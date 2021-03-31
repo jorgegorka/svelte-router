@@ -33,6 +33,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
   * [navigateTo](#navigateto)
   * [routeIsActive](#routeisactive)
   * [localisedRoute](#localisedroute)
+* [Example of use](#example-of-use)
 * [Credits](#credits)  
 
 ## Features
@@ -745,6 +746,10 @@ navigateTo('setup', 'es') // Will redirect to /configuracion
 There is also available a function called _localisedRoute_ that will return a string with the translated route, in case you want the translation but not navigating to the route.
 
 The router options accept a property called _defaultLanguage_ This value will be returned by the activeRoute object if there is no language selected.
+
+### Example of use
+
+[Demanda](https://github.com/jorgegorka/demanda) is an open source e-commerce application made with Ruby on Rails for the backend and Svelte for the frontend.  It is a [very good example](https://github.com/jorgegorka/demanda/tree/master/frontend/src/lib/routes) of how to use Svelte Router SPA.
 
 ## Credits
 
