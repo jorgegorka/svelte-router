@@ -427,7 +427,7 @@ describe('Router', function () {
               nestedRoutes: [
                 { name: 'index', component: 'EmployeesIndex' },
                 {
-                  name: 'show/:id/:full-name',
+                  name: '/show/:id/:full-name',
                   component: 'ShowEmployee',
                 },
               ],
@@ -436,6 +436,7 @@ describe('Router', function () {
         },
       ]
     })
+
     describe('When path is nested with named params', function () {
       let showEmployeeRoute
       let activeRoute

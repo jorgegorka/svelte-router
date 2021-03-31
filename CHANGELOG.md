@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 6.0.2
+
+Fix bug with named routes starting with a /.
+
 ## 6.0.1
 
 Update type definitions.

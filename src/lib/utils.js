@@ -159,20 +159,12 @@ const removeExtraPaths = (pathNames, basePathNames) => {
  **/
 
 const removeSlash = (pathName, position = 'lead') => {
-  if (pathName.trim().length < 1) {
-    return '';
-  }
-
   if (position === 'trail' || position === 'both') {
-    if (pathName.slice(-1) === '/') {
-      pathName = pathName.slice(0, -1);
-    }
+    pathName = pathName.replace(/\/$/, '');
   }
 
   if (position === 'lead' || position === 'both') {
-    if (pathName[0] === '/') {
-      pathName = pathName.slice(1);
-    }
+    pathName = pathName.replace(/^\//, '');
   }
 
   return pathName;
@@ -198,6 +190,7 @@ const routeNameLocalised = (route, language = null) => {
  **/
 const startsWithNamedParam = (currentRoute) => {
   const routeName = removeSlash(currentRoute);
+
   return routeName.startsWith(':');
 };
 

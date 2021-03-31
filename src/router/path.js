@@ -1,4 +1,11 @@
-import { updateRoutePath, getNamedParams, nameToPath, removeExtraPaths, routeNameLocalised } from '../lib/utils';
+import {
+  getNamedParams,
+  nameToPath,
+  updateRoutePath,
+  removeExtraPaths,
+  removeSlash,
+  routeNameLocalised
+} from '../lib/utils';
 
 function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage }) {
   let updatedPathRoute;
