@@ -45,9 +45,11 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
     routes.forEach(function (route) {
       routerPath.updatedPath(route);
-      const routeName = route.name === '/' ? route.name : removeSlash(route.name);
-      
-      if (matchRoute(routerPath, routeName)) {
+      if (route.name !== '/') {
+        route.name = removeSlash(route.name);
+      }
+
+      if (matchRoute(routerPath, route.name)) {
         let routePath = routerPath.routePath();
         redirectTo = RouterRedirect(route, redirectTo).path();
 
