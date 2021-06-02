@@ -456,11 +456,11 @@ describe('Router', function () {
         expect(showEmployeeRoute.component).to.equal('ShowEmployee')
       })
 
-      it('should set named params', function () {
+      it('should set named params id', function () {
         expect(showEmployeeRoute.namedParams.id).to.equal('12')
       })
 
-      it('should set named params', function () {
+      it('should set named params full-name', function () {
         expect(showEmployeeRoute.namedParams['full-name']).to.equal('Danny-filth')
       })
     })
