@@ -33,8 +33,8 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
 
   function namedPath() {
     let localisedPath = localisedPathName();
-    if (localisedPath && !localisedPath.startsWith("/")) {
-      localisedPath = "/" + localisedPath;
+    if (localisedPath && !localisedPath.startsWith('/')) {
+      localisedPath = '/' + localisedPath;
     }
 
     return basePath ? `${basePath}${localisedPath}` : localisedPath;
