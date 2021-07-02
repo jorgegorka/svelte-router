@@ -3,7 +3,6 @@ import {
   nameToPath,
   updateRoutePath,
   removeExtraPaths,
-  removeSlash,
   routeNameLocalised
 } from '../lib/utils';
 
@@ -33,9 +32,12 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
   }
 
   function namedPath() {
-    const localisedPath = localisedPathName();
+    let localisedPath = localisedPathName();
+    if (localisedPath && !localisedPath.startsWith('/')) {
+      localisedPath = '/' + localisedPath;
+    }
 
-    return basePath ? `${basePath}/${localisedPath}` : localisedPath;
+    return basePath ? `${basePath}${localisedPath}` : localisedPath;
   }
 
   function routePath() {

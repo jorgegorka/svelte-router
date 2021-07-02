@@ -2,7 +2,7 @@ import { UrlParser } from './url_parser';
 import { RouterRedirect } from './redirect';
 import { RouterRoute } from './route';
 import { RouterPath } from './path';
-import { anyEmptyNestedRoutes, pathWithoutQueryParams, removeSlash, startsWithNamedParam } from '../lib/utils';
+import { anyEmptyNestedRoutes, pathWithoutQueryParams, startsWithNamedParam } from '../lib/utils';
 
 const NotFoundPage = '/404.html';
 
@@ -45,9 +45,6 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
     routes.forEach(function (route) {
       routerPath.updatedPath(route);
-      if (route.name !== '/') {
-        route.name = removeSlash(route.name);
-      }
 
       if (matchRoute(routerPath, route.name)) {
         let routePath = routerPath.routePath();
