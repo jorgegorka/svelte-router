@@ -1863,6 +1863,21 @@ describe('With site prefix', function () {
     },
   ]
 
+  describe('root route', function () {
+    beforeEach(function () {
+      currentUrl = 'http://web.app/company/'
+      activeRoute = SpaRouter(routes, currentUrl, { prefix: 'company' }).setActiveRoute()
+    })
+
+    it('should set path to root path', function () {
+      expect(activeRoute.path).to.equal('/company/')
+    })
+
+    it('should set component name', function () {
+      expect(activeRoute.component).to.equal('PublicLayout')
+    })
+  })
+
   describe('about us route', function () {
     beforeEach(function () {
       currentUrl = 'http://web.app/company/about-us'

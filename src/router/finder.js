@@ -108,7 +108,8 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
 
   function parseCurrentUrl(currentUrl, sitePrefix) {
     if (sitePrefix && sitePrefix.trim().length > 0) {
-      const noPrefixUrl = currentUrl.replace(sitePrefix + '/', '');
+      const replacePattern = currentUrl.endsWith(sitePrefix) ? sitePrefix : sitePrefix + "/";
+      const noPrefixUrl = currentUrl.replace(replacePattern, '');
       return UrlParser(noPrefixUrl);
     } else {
       return UrlParser(currentUrl);
