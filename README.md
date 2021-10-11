@@ -23,7 +23,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
 * [Route prefix](#route-prefix)
 * [Localisation](#localisation)
   * [Rendering a page in different languages](#rendering-a-page-in-different-languages)
-* [Google Analytics](#google-analytics) 
+* [Google Analytics](#google-analytics)
 * [Not Found - 404](#not-found---404)
 * [API](#api)
   * [Router](#router)
@@ -34,7 +34,7 @@ It's designed for Single Page Applications (SPA). If you need Server Side Render
   * [routeIsActive](#routeisactive)
   * [localisedRoute](#localisedroute)
 * [Example of use](#example-of-use)
-* [Credits](#credits)  
+* [Credits](#credits)
 
 ## Features
 
@@ -776,3 +776,5 @@ I would like to thank all the people that create issues and comment on [Github](
 [Common Creator](https://github.com/CommonCreator)
 
 [SianLoong](https://github.com/si3nloong)
+
+[Frippertronics](https://github.com/frippertronics)
