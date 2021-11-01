@@ -121,7 +121,13 @@ const pathWithQueryParams = (currentRoute) => {
   let queryParams = [];
   if (currentRoute.queryParams) {
     for (let [key, value] of Object.entries(currentRoute.queryParams)) {
-      queryParams.push(`${key}=${value}`);
+      if (Array.isArray(value)) {
+        for (let subvalue of value) {
+          queryParams.push(`${key}=${subvalue}`)
+        }
+      } else {
+        queryParams.push(`${key}=${value}`);
+      }
     }
   }
 

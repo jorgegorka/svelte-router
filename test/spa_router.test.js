@@ -247,10 +247,27 @@ describe('Router', function() {
         expect(testRouter.queryParams['fullView']).to.equal('true')
       })
     })
+
+    describe('Multiple values for same field', function () {
+      beforeEach(function () {
+        pathName = 'http://web.app/login?climate=change&consequence=sea-rising&consequence=temperature-rising&consequence=extreme-weather'
+        testRouter = SpaRouter(routes, pathName).setActiveRoute()
+      })
+
+      it('should update queryParams', function () {
+        expect(testRouter.queryParams.climate).to.equal('change')
+      })
+      it('should update queryParams with a list', function () {
+        expect(testRouter.queryParams['consequence']).to.have.same.members(['sea-rising', 'temperature-rising', 'extreme-weather'])
+      })
+      it('should keep multiple values in url', function () {
+        expect(global.window.history.state.page).to.equal("/login?climate=change&consequence=sea-rising&consequence=temperature-rising&consequence=extreme-weather")
+      })
+    })
   })
 
-  describe('When there are valid routes no nesting with named params', function() {
-    beforeEach(function() {
+  describe('When there are valid routes no nesting with named params', function () {
+    beforeEach(function () {
       routes = [
         {
           name: '/',

@@ -120,7 +120,11 @@ const UrlParser = (urlString, namedUrl = '') => {
   function queryParams() {
     const params = {};
     urlBase.searchParams.forEach((value, key) => {
-      params[key] = value;
+      if (params.hasOwnProperty(key)) {
+        params[key] = [].concat(params[key]).concat(value)
+      } else {
+        params[key] = value;
+      }
     });
 
     return params;
