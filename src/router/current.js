@@ -1,6 +1,6 @@
-import { UrlParser } from './url_parser';
+import { UrlParser } from './url_parser.js';
 
-import { pathWithQueryParams, removeSlash } from '../lib/utils';
+import { pathWithQueryParams, removeSlash } from '../lib/utils.js';
 
 const RouterCurrent = (trackPage) => {
   const trackPageview = trackPage || false;

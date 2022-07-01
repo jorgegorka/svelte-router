@@ -1,4 +1,4 @@
-import { UrlParser } from './url_parser';
+import { UrlParser } from './url_parser.js';
 
 function RouterRoute({ routeInfo, path, routeNamedParams, urlParser, namedPath, language }) {
   const namedParams = () => {

@@ -1,3 +1,4 @@
-require('./lib/utils.test.js')
-require('./router/finder.test.js')
-require('./spa_router.test.js')
+import './lib/utils.test.js'
+import './router/finder.test.js'
+import './router/guard.test.js'
+import './spa_router.test.js'

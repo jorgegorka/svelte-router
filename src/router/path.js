@@ -4,7 +4,7 @@ import {
   updateRoutePath,
   removeExtraPaths,
   routeNameLocalised
-} from '../lib/utils';
+} from '../lib/utils.js';
 
 function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage }) {
   let updatedPathRoute;
@@ -52,7 +52,7 @@ function RouterPath({ basePath, basePathName, pathNames, convert, currentLanguag
 
     const namedParams = getNamedParams(localisedPathName());
     if (namedParams && namedParams.length > 0) {
-      namedParams.forEach(function () {
+      namedParams.forEach(function() {
         if (pathNames.length > 0) {
           routePathValue += `/${pathNames.shift()}`;
         }

@@ -142,7 +142,7 @@ const pathWithQueryParams = (currentRoute) => {
 const removeExtraPaths = (pathNames, basePathNames) => {
   const names = basePathNames.split('/');
   if (names.length > 1) {
-    names.forEach(function (name, index) {
+    names.forEach(function(name, index) {
       if (name.length > 0 && index > 0) {
         pathNames.shift();
       }

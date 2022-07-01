@@ -1,7 +1,7 @@
-import { activeRoute } from './store';
-import { RouterCurrent } from './router/current';
-import { RouterFinder } from './router/finder';
-import { removeSlash } from './lib/utils';
+import { activeRoute } from './store.js';
+import { RouterCurrent } from './router/current.js';
+import { RouterFinder } from './router/finder.js';
+import { removeSlash } from './lib/utils.js';
 
 const NotFoundPage = '/404.html';
 
@@ -132,7 +132,7 @@ if (typeof window !== 'undefined') {
     }
   });
 
-  window.onpopstate = function (_event) {
+  window.onpopstate = function(_event) {
     let navigatePathname = window.location.pathname + window.location.search + window.location.hash;
 
     navigateTo(navigatePathname, null, false);

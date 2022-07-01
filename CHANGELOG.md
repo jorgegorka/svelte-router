@@ -1,5 +1,10 @@
 # Svelte Router changelog
 
+## 7.0.0
+
+Use ES modules.
+Upgrade packages.
+
 ## 6.0.3
 
 Fix bug when sitePrefix is under a subdomain.

@@ -1,8 +1,8 @@
-import { UrlParser } from './url_parser';
-import { RouterRedirect } from './redirect';
-import { RouterRoute } from './route';
-import { RouterPath } from './path';
-import { anyEmptyNestedRoutes, pathWithoutQueryParams, startsWithNamedParam } from '../lib/utils';
+import { UrlParser } from './url_parser.js';
+import { RouterRedirect } from './redirect.js';
+import { RouterRoute } from './route.js';
+import { RouterPath } from './path.js';
+import { anyEmptyNestedRoutes, pathWithoutQueryParams, startsWithNamedParam } from '../lib/utils.js';
 
 const NotFoundPage = '/404.html';
 
@@ -43,7 +43,7 @@ function RouterFinder({ routes, currentUrl, routerOptions, convert }) {
     const routerPath = RouterPath({ basePath, basePathName, pathNames, convert, currentLanguage });
     staticParamMatch = false;
 
-    routes.forEach(function (route) {
+    routes.forEach(function(route) {
       routerPath.updatedPath(route);
 
       if (matchRoute(routerPath, route.name)) {
