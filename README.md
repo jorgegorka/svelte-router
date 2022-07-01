@@ -10,7 +10,9 @@ Svelte Router adds routing to your Svelte apps. It keeps your routes organized i
 
 With Svelte Router SPA you have all the features you need to create modern web applications with minimal configuration.
 
-It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Sapper](https://sapper.svelte.dev/).
+It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Svelte Kit](https://kit.svelte.dev/).
+
+## -- Svelte Router SPA is featured complete. No new features will be added, only bugfixes will be solved --.
 
 ## Index
 
@@ -754,8 +756,6 @@ The router options accept a property called _defaultLanguage_ This value will be
 ## Credits
 
 Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.es)
-
-I would like to thank all the people that create issues and comment on [Github](https://github.com/jorgegorka/svelte-router/discussions). Your feedback is the best way of improving.
 
 ### Contributors
 
