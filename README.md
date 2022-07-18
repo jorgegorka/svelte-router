@@ -12,7 +12,7 @@ With Svelte Router SPA you have all the features you need to create modern web a
 
 It's designed for Single Page Applications (SPA). If you need Server Side Rendering then consider using [Svelte Kit](https://kit.svelte.dev/).
 
-## -- Svelte Router SPA is featured complete. No new features will be added, only bugfixes will be solved --.
+## -- Svelte Router SPA is feature complete. No new features will be added, only bugfixes will be solved --.
 
 ## Index
 
