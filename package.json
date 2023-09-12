@@ -10,6 +10,9 @@
     ".": {
       "svelte": "./src/index.js"
     },
+    "./src/spa_router.js": {
+      "svelte": "./src/spa_router.js"
+    },
     "./src/store.js": {
       "svelte": "./src/store.js"
     }
