@@ -8,9 +8,12 @@
   "module": "lib/esm/index.js",
   "svelte": "src/index.js",
   "exports": {
-     ".": {
-       "svelte": "./src/index.js"
-     }
+    ".": {
+      "svelte": "./src/index.js"
+    },
+    "./src/store.js": {
+      "svelte": "./src/store.js"
+    }
   },
   "unpkg": "lib/index.min.js",
   "types": "types/index.d.ts",
