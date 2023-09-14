@@ -1,5 +1,9 @@
 # Svelte Router changelog
 
+## 7.0.1
+
+Remove warning message.
+
 ## 7.0.0
 
 Use ES modules.

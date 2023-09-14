@@ -1,6 +1,6 @@
 {
   "name": "svelte-router-spa",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "type": "module",
   "description": "A full featured router component for Svelte and your Single Page Applications.",
   "main": "lib/cjs/index.js",
