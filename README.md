@@ -779,4 +779,4 @@ Svelte Router has been developed by [Jorge Alvarez](https://www.alvareznavarro.e
 
 [Frippertronics](https://github.com/frippertronics)
 
-[CHmalainen](https://github.com/CHamalainen)
+[CHamalainen](https://github.com/CHamalainen)
