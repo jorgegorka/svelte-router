@@ -48,7 +48,7 @@
     "url-params-parser": "^1.0.3"
   },
   "peerDependencies": {
-    "svelte": "^3.36.0"
+    "svelte": "^4.0.0"
   },
   "repository": {
     "type": "git",
